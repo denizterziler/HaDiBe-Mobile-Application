@@ -11,7 +11,7 @@ class ContentProvider with ChangeNotifier {
       "https://upload.wikimedia.org/wikipedia/en/0/06/Ultimate_Matrix_Collection_poster.jpg",
       length: 136,
       description: "The matrix is amazing",
-      rate: 8.7,
+      rate: 10.0,
     ),
     Content(
       name: "Dracula",
@@ -49,5 +49,10 @@ class ContentProvider with ChangeNotifier {
   ];
   List<Content> get items {
     return [..._items];
+  }
+  @override
+  void notifyListeners() {
+    // TODO: implement notifyListeners
+    super.notifyListeners();
   }
 }

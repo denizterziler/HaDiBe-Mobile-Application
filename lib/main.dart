@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:se_380_project/Screens/rate.dart';
 import 'List_of_contents.dart';
 import 'package:provider/provider.dart';
 import './Providers/content_provider.dart';
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
         home: const ListOfContents(),
         routes: {
           ContentDetailPage.routeName: (context) => const ContentDetailPage(),
+          Rate.routeName: (context) => const Rate(),
         },
         debugShowCheckedModeBanner: false,
       ),

@@ -9,7 +9,7 @@ class Content with ChangeNotifier{
   final double length;
   final String description;
   bool isFavorite;
-  final double rate;
+  late double rate;
 
   Content({
     required this.name,

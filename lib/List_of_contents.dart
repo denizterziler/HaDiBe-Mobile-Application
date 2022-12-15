@@ -6,7 +6,6 @@ import 'Screens/filter_by.dart';
 import 'Screens/profile.dart';
 import './Providers/content_provider.dart';
 
-
 class ListOfContents extends StatelessWidget {
   const ListOfContents({Key? key}) : super(key: key);
 
@@ -14,6 +13,7 @@ class ListOfContents extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.black,
         title: const Center(child: Text("HaDiBe!")),
         leading: IconButton(
           onPressed: () {
@@ -38,7 +38,7 @@ class ListOfContents extends StatelessWidget {
           ),
         ],
       ),
-      body: const ContentGrid(),
+      body: Container(child: const ContentGrid(),color: Colors.black38,),
     );
   }
 }
@@ -62,11 +62,11 @@ class ContentGrid extends StatelessWidget {
       itemBuilder: (context, index) => ChangeNotifierProvider(
         create: (context) => contents[index],
         child: ContentInList(
-          //contents[index].name,
-          //contents[index].platform,
-          //contents[index].imageUrl,
-          //contents[index].rate,
-        ),
+            //contents[index].name,
+            //contents[index].platform,
+            //contents[index].imageUrl,
+            //contents[index].rate,
+            ),
       ),
     );
   }
@@ -98,10 +98,12 @@ class _ContentInListState extends State<ContentInList> {
               ),
             ],
           ),
-          leading:IconButton(
-            icon: Icon(content.isFavorite ? Icons.favorite : Icons.favorite_border),
+          leading: IconButton(
+            icon: Icon(content.isFavorite
+                ? Icons.favorite
+                : Icons.favorite_border),
             color: Colors.red,
-            onPressed: (){
+            onPressed: () {
               content.favoriteStatus();
             },
           ),
@@ -110,8 +112,8 @@ class _ContentInListState extends State<ContentInList> {
         ),
         child: GestureDetector(
           onTap: () {
-            Navigator.of(context)
-                .pushNamed(ContentDetailPage.routeName, arguments: content.name);
+            Navigator.of(context).pushNamed(ContentDetailPage.routeName,
+                arguments: content.name);
           },
           child: Image.network(
             content.imageUrl,
