@@ -41,24 +41,26 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
           ],
         ),
         body: Container(
-          color: Colors.black38,
+          color: Colors.grey,
           child: ListView(
             children: [
               Center(
-                child: Image.network(loadedContent.imageUrl),
+                child: Image.network(loadedContent.imageUrl, scale: 1.2,),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(25.0),
                 child: Column(
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(30.0),
                       child: Container(
-                        color: Colors.orange,
+                        color: Colors.black,
                         alignment: Alignment.center,
+
                         constraints: const BoxConstraints(
-                          maxWidth: 300,
-                          maxHeight: 100,
+                          maxWidth: 400,
+                          maxHeight: 50,
+
                         ),
                         child: Text.rich(
                           TextSpan(
@@ -66,9 +68,16 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                               const WidgetSpan(
                                   child: Icon(
                                 Icons.star,
-                                color: Colors.red,
-                                size: 30,
+                                color: Colors.yellow,
+                                size: 20,
                               )),
+                              WidgetSpan(
+                                  child: Container(
+                                    color: Colors.black,
+                                    padding: EdgeInsets.all(1.0),
+                                    child: Text("   "),
+                                  )
+                              ),
                               TextSpan(
                                 text:
                                     'Rate of ${loadedContent.name} is:${loadedContent.rate}/10',
@@ -76,8 +85,9 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                             ],
                           ),
                           textAlign: TextAlign.center,
-                          style: const TextStyle(fontSize: 25),
+                          style: const TextStyle(fontSize: 20, color: Colors.white),
                         ),
+
                       ),
                     ),
                     Padding(
@@ -85,10 +95,10 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(30.0),
                         child: Container(
-                          color: Colors.pink,
+                          color: Colors.black,
                           alignment: Alignment.center,
                           constraints: const BoxConstraints(
-                            maxWidth: 250,
+                            maxWidth: 400,
                             maxHeight: 50,
                           ),
                           child: Text.rich(
@@ -98,22 +108,29 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                                     child: Icon(
                                   Icons.info_outline,
                                   color: Colors.teal,
-                                  size: 30,
+                                  size: 20,
                                 )),
+                                WidgetSpan(
+                                    child: Container(
+                                      color: Colors.black,
+                                      padding: EdgeInsets.all(1.0),
+                                      child: Text("   "),
+                                    )
+                                ),
                                 TextSpan(
                                   text: 'Available on ${loadedContent.platform}',
                                 ),
                               ],
                             ),
                             textAlign: TextAlign.center,
-                            style: const TextStyle(fontSize: 25),
+                            style: const TextStyle(fontSize: 20, color: Colors.white),
                           ),
                         ),
                       ),
                     ),
                     Text(
-                      "Description of ${loadedContent.name}",
-                      style: const TextStyle(fontSize: 30),
+                      "Description of ${loadedContent.name}:",
+                      style: const TextStyle(fontSize: 25),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -130,15 +147,18 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                   children: [
                     Expanded(
                       child: ElevatedButton(
-                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.amber)),
+                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.black)),
 
                         onPressed: null,
-                        child: const Text("Comment"),
+                        child: const Text(
+                            "Comment",
+                            style: TextStyle(color: Colors.white)
+                        ),
                       ),
                     ),
                     Expanded(
                       child: ElevatedButton(
-                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.amber)),
+                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.black)),
                         onPressed: () {
                           Navigator.of(context).pushNamed(Rate.routeName,
                               arguments: loadedContent.name);
@@ -151,18 +171,24 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                     ),
                      Expanded(
                       child: ElevatedButton(
-                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.amber)),
+                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.black)),
 
                         onPressed: null,
-                        child: const Text("+ List"),
+                        child: const Text(
+                            "+ List",
+                            style: TextStyle(color: Colors.white)
+                        ),
                       ),
                     ),
                      Expanded(
                       child: ElevatedButton(
-                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.amber)),
+                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.black)),
 
                         onPressed: null,
-                        child: const Text("Other"),
+                        child: const Text(
+                            "Other",
+                            style: TextStyle(color: Colors.white)
+                        ),
                       ),
                     ),
                   ],
