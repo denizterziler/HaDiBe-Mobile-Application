@@ -23,7 +23,7 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
         .firstWhere((element) => element.name == contentName);
     return ChangeNotifierProvider.value(
       value: ContentProvider(),
-     // create: (BuildContext context) => ContentProvider(), ChangeNotifierProvider{}
+      // create: (BuildContext context) => ContentProvider(), ChangeNotifierProvider{}
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.black,
@@ -42,6 +42,69 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
               },
             ),
           ],
+        ),
+        bottomNavigationBar: ListTile(
+          tileColor: Colors.black54,
+          title: Row(
+            children: [
+              Expanded(
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.black)),
+                  onPressed: null,
+                  child: const Text("Comment",
+                      style: TextStyle(color: Colors.white)),
+                ),
+              ),
+              Expanded(
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.black)),
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(Rate.routeName,
+                        arguments: loadedContent.name);
+                    loadedContent.addListener(() {
+                      setState(() {});
+                    });
+                  },
+                  child: const Text("Rate"),
+                ),
+              ),
+              Expanded(
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.black)),
+                  onPressed: () {
+                    provider.addWatchList(
+                        loadedContent, provider.isAdded(loadedContent));
+                    final snackBar = SnackBar(
+                      content: provider.isAdded(loadedContent)
+                          ? Text(
+                              '${loadedContent.name} has been added to your list')
+                          : Text(
+                              '${loadedContent.name} has been removed from your list'),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  },
+                  child: const Text("+ List",
+                      style: TextStyle(color: Colors.white)),
+                ),
+              ),
+              Expanded(
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.black)),
+                  onPressed: null,
+                  child: const Text("Other",
+                      style: TextStyle(color: Colors.white)),
+                ),
+              ),
+            ],
+          ),
         ),
         body: Container(
           color: Colors.grey,
@@ -143,68 +206,6 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                     loadedContent.isFavorite
                         ? const Text("Favorite")
                         : const Text("Not fav"),
-                  ],
-                ),
-              ),
-              ListTile(
-                title: Row(
-                  children: [
-                    Expanded(
-                      child: ElevatedButton(
-                        style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all<Color>(Colors.black)),
-                        onPressed: null,
-                        child: const Text("Comment",
-                            style: TextStyle(color: Colors.white)),
-                      ),
-                    ),
-                    Expanded(
-                      child: ElevatedButton(
-                        style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all<Color>(Colors.black)),
-                        onPressed: () {
-                          Navigator.of(context).pushNamed(Rate.routeName,
-                              arguments: loadedContent.name);
-                          loadedContent.addListener(() {
-                            setState(() {});
-                          });
-                        },
-                        child: const Text("Rate"),
-                      ),
-                    ),
-                    Expanded(
-                      child: ElevatedButton(
-                        style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all<Color>(Colors.black)),
-                        onPressed: () {
-                          provider.addWatchList(
-                              loadedContent, provider.isAdded(loadedContent));
-                          final snackBar = SnackBar(
-                            content: provider.isAdded(loadedContent)
-                                ? Text(
-                                    '${loadedContent.name} has been added to your list')
-                                : Text(
-                                    '${loadedContent.name} has been removed from your list'),
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        },
-                        child: const Text("+ List",
-                            style: TextStyle(color: Colors.white)),
-                      ),
-                    ),
-                    Expanded(
-                      child: ElevatedButton(
-                        style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all<Color>(Colors.black)),
-                        onPressed: null,
-                        child: const Text("Other",
-                            style: TextStyle(color: Colors.white)),
-                      ),
-                    ),
                   ],
                 ),
               ),
