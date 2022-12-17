@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:se_380_project/Models/content.dart';
 import 'package:se_380_project/Providers/content_provider.dart';
 import 'package:se_380_project/Screens/rate.dart';
 
@@ -15,12 +16,14 @@ class ContentDetailPage extends StatefulWidget {
 class _ContentDetailPageState extends State<ContentDetailPage> {
   @override
   Widget build(BuildContext context) {
+    var provider = Provider.of<ContentProvider>(context);
     var contentName = ModalRoute.of(context)?.settings.arguments as String;
     var loadedContent = Provider.of<ContentProvider>(context)
         .items
         .firstWhere((element) => element.name == contentName);
-    return ChangeNotifierProvider(
-      create: (BuildContext context) => ContentProvider(),
+    return ChangeNotifierProvider.value(
+      value: ContentProvider(),
+     // create: (BuildContext context) => ContentProvider(), ChangeNotifierProvider{}
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.black,
@@ -45,7 +48,10 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
           child: ListView(
             children: [
               Center(
-                child: Image.network(loadedContent.imageUrl, scale: 1.2,),
+                child: Image.network(
+                  loadedContent.imageUrl,
+                  scale: 1.2,
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.all(25.0),
@@ -56,11 +62,9 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                       child: Container(
                         color: Colors.black,
                         alignment: Alignment.center,
-
                         constraints: const BoxConstraints(
                           maxWidth: 400,
                           maxHeight: 50,
-
                         ),
                         child: Text.rich(
                           TextSpan(
@@ -73,11 +77,10 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                               )),
                               WidgetSpan(
                                   child: Container(
-                                    color: Colors.black,
-                                    padding: EdgeInsets.all(1.0),
-                                    child: Text("   "),
-                                  )
-                              ),
+                                color: Colors.black,
+                                padding: const EdgeInsets.all(1.0),
+                                child: const Text("   "),
+                              )),
                               TextSpan(
                                 text:
                                     'Rate of ${loadedContent.name} is:${loadedContent.rate}/10',
@@ -85,9 +88,9 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                             ],
                           ),
                           textAlign: TextAlign.center,
-                          style: const TextStyle(fontSize: 20, color: Colors.white),
+                          style: const TextStyle(
+                              fontSize: 20, color: Colors.white),
                         ),
-
                       ),
                     ),
                     Padding(
@@ -112,18 +115,19 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                                 )),
                                 WidgetSpan(
                                     child: Container(
-                                      color: Colors.black,
-                                      padding: EdgeInsets.all(1.0),
-                                      child: Text("   "),
-                                    )
-                                ),
+                                  color: Colors.black,
+                                  padding: const EdgeInsets.all(1.0),
+                                  child: const Text("   "),
+                                )),
                                 TextSpan(
-                                  text: 'Available on ${loadedContent.platform}',
+                                  text:
+                                      'Available on ${loadedContent.platform}',
                                 ),
                               ],
                             ),
                             textAlign: TextAlign.center,
-                            style: const TextStyle(fontSize: 20, color: Colors.white),
+                            style: const TextStyle(
+                                fontSize: 20, color: Colors.white),
                           ),
                         ),
                       ),
@@ -147,18 +151,19 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                   children: [
                     Expanded(
                       child: ElevatedButton(
-                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.black)),
-
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all<Color>(Colors.black)),
                         onPressed: null,
-                        child: const Text(
-                            "Comment",
-                            style: TextStyle(color: Colors.white)
-                        ),
+                        child: const Text("Comment",
+                            style: TextStyle(color: Colors.white)),
                       ),
                     ),
                     Expanded(
                       child: ElevatedButton(
-                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.black)),
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all<Color>(Colors.black)),
                         onPressed: () {
                           Navigator.of(context).pushNamed(Rate.routeName,
                               arguments: loadedContent.name);
@@ -169,26 +174,35 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                         child: const Text("Rate"),
                       ),
                     ),
-                     Expanded(
+                    Expanded(
                       child: ElevatedButton(
-                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.black)),
-
-                        onPressed: null,
-                        child: const Text(
-                            "+ List",
-                            style: TextStyle(color: Colors.white)
-                        ),
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all<Color>(Colors.black)),
+                        onPressed: () {
+                          provider.addWatchList(
+                              loadedContent, provider.isAdded(loadedContent));
+                          final snackBar = SnackBar(
+                            content: provider.isAdded(loadedContent)
+                                ? Text(
+                                    '${loadedContent.name} has been added to your list')
+                                : Text(
+                                    '${loadedContent.name} has been removed from your list'),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        },
+                        child: const Text("+ List",
+                            style: TextStyle(color: Colors.white)),
                       ),
                     ),
-                     Expanded(
+                    Expanded(
                       child: ElevatedButton(
-                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.black)),
-
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all<Color>(Colors.black)),
                         onPressed: null,
-                        child: const Text(
-                            "Other",
-                            style: TextStyle(color: Colors.white)
-                        ),
+                        child: const Text("Other",
+                            style: TextStyle(color: Colors.white)),
                       ),
                     ),
                   ],

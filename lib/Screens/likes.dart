@@ -7,9 +7,21 @@ class Likes extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Likes"),
+        backgroundColor: Colors.black,
+        centerTitle: true,
+        title: Text("Likes"),
       ),
-      body: const Text("Likes Page"),
+      body: Container(
+        color: Colors.black38,
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: const [
+              Text("Likes"),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

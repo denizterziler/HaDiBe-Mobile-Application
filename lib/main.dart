@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:se_380_project/Screens/favorites.dart';
 import 'package:se_380_project/Screens/rate.dart';
 import 'List_of_contents.dart';
 import 'package:provider/provider.dart';
 import './Providers/content_provider.dart';
 import './Screens/content_detail_page.dart';
 import 'package:flutter_gradient_colors/flutter_gradient_colors.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -14,8 +16,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (BuildContext context) => ContentProvider(),
+    return MultiProvider(
+      providers: [ChangeNotifierProvider<ContentProvider>.value(
+        value: ContentProvider(),
+      )
+      ],
       child: MaterialApp(
         title: 'HaDiBe!',
         theme: ThemeData(
@@ -25,6 +30,7 @@ class MyApp extends StatelessWidget {
         routes: {
           ContentDetailPage.routeName: (context) => const ContentDetailPage(),
           Rate.routeName: (context) => const Rate(),
+          Favorites.routeName: (context) => const Favorites(),
         },
         debugShowCheckedModeBanner: false,
       ),

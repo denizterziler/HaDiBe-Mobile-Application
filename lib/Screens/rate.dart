@@ -57,7 +57,6 @@ class _RateState extends State<Rate> {
                       print("total after $_total");
                       loadedContent.notifyListeners();
                     });
-
                   }),
             ],
           ),

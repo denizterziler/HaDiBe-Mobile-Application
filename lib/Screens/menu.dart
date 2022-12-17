@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:se_380_project/Models/content.dart';
 import 'package:se_380_project/Screens/comments.dart';
 import 'package:se_380_project/Screens/favorites.dart';
 import 'package:se_380_project/Screens/profile_page.dart';
@@ -6,11 +8,12 @@ import 'package:se_380_project/Screens/watch_list.dart';
 
 import 'likes.dart';
 
-class Profile extends StatelessWidget {
-  const Profile({Key? key}) : super(key: key);
+class Menu extends StatelessWidget {
+  const Menu({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    //final content = Provider.of<Content>(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
@@ -141,11 +144,8 @@ class Profile extends StatelessWidget {
                 child: ElevatedButton(
                   style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.amber)),
                   onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const Favorites(),
-                      ),
-                    );
+                    /*Navigator.of(context).pushNamed(Favorites.routeName,
+                        arguments: content.name);*/
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,

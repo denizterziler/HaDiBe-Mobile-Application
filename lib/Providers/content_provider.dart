@@ -47,12 +47,33 @@ class ContentProvider with ChangeNotifier {
       rate: 8.4,
     ),
   ];
+  final List<Content> watchList = [];
+  void addWatchList(Content content, bool isAdded){
+    if(isAdded){
+      watchList.remove(content);
+    }
+    else {
+      watchList.add(content);
+    }
+   // watchList.add(content);
+    notifyListeners();
+  }
+  bool isAdded(Content content){
+    return watchList.contains(content);
+  }
+  var _showFavs = false;
   List<Content> get items {
+    if(_showFavs){
+      return _items.where((element) => element.isFavorite).toList();
+    }
     return [..._items];
   }
-  @override
-  void notifyListeners() {
-    // TODO: implement notifyListeners
-    super.notifyListeners();
+  void showFavOnly(){
+    _showFavs = true;
+    notifyListeners();
   }
+  void showAll(){
+    _showFavs = false;
+  }
+
 }
