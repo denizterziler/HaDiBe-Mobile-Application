@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:se_380_project/Models/content.dart';
 import 'package:se_380_project/Providers/content_provider.dart';
+import 'package:se_380_project/Screens/comments.dart';
 import 'package:se_380_project/Screens/rate.dart';
 
 class ContentDetailPage extends StatefulWidget {
@@ -52,7 +53,13 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                   style: ButtonStyle(
                       backgroundColor:
                           MaterialStateProperty.all<Color>(Colors.black)),
-                  onPressed: null,
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(Comments.routeName,
+                        arguments: loadedContent.name);
+                    loadedContent.addListener(() {
+                      setState(() {});
+                    });
+                  },
                   child: const Text("Comment",
                       style: TextStyle(color: Colors.white)),
                 ),
@@ -195,6 +202,7 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                         ),
                       ),
                     ),
+                    const Padding(padding: EdgeInsets.all(25.0),),
                     Text(
                       "Description of ${loadedContent.name}:",
                       style: const TextStyle(fontSize: 25),
@@ -203,9 +211,10 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                       padding: const EdgeInsets.all(8.0),
                       child: Text(loadedContent.description),
                     ),
+                    const Padding(padding: EdgeInsets.all(25.0),),
                     loadedContent.isFavorite
                         ? const Text("Favorite")
-                        : const Text("Not fav"),
+                        : const Text("Not favourite"),
                   ],
                 ),
               ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Comments extends StatelessWidget {
+  static const routeName = '/comment';
   const Comments({Key? key}) : super(key: key);
 
   @override
