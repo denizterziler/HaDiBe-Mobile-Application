@@ -14,6 +14,7 @@ class _ContentInWatchListState extends State<ContentInWatchList> {
   @override
   Widget build(BuildContext context) {
     final content = Provider.of<Content>(context);
+    final provider = Provider.of<ContentProvider>(context);
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: GridTile(
@@ -36,8 +37,8 @@ class _ContentInWatchListState extends State<ContentInWatchList> {
             color: Colors.red,
             onPressed: () {
               setState(() {});
+              provider.addFavsList(content, provider.isAddedFavList(content));
               content.favoriteStatus();
-              content.notifyListeners();
             },
           ),
           title: Text(content.name),

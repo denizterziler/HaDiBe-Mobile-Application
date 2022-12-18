@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:se_380_project/Models/content.dart';
 import 'package:se_380_project/Providers/content_provider.dart';
 import 'package:se_380_project/Screens/rate.dart';
 
@@ -23,7 +22,6 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
         .firstWhere((element) => element.name == contentName);
     return ChangeNotifierProvider.value(
       value: ContentProvider(),
-      // create: (BuildContext context) => ContentProvider(), ChangeNotifierProvider{}
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.black,
@@ -37,8 +35,9 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
               color: Colors.red,
               onPressed: () {
                 setState(() {});
+                provider.addFavsList(
+                    loadedContent, provider.isAddedFavList(loadedContent));
                 loadedContent.favoriteStatus();
-                loadedContent.notifyListeners();
               },
             ),
           ],
@@ -99,7 +98,7 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                       backgroundColor:
                           MaterialStateProperty.all<Color>(Colors.black)),
                   onPressed: null,
-                  child: const Text("Other",
+                  child: const Text("Detail",
                       style: TextStyle(color: Colors.white)),
                 ),
               ),
@@ -146,7 +145,7 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                               )),
                               TextSpan(
                                 text:
-                                    'Rate of ${loadedContent.name} is:${loadedContent.rate}/10',
+                                    'Rate of ${loadedContent.name} is:${loadedContent.rate.toStringAsFixed(2)}/10',
                               ),
                             ],
                           ),
@@ -204,8 +203,48 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                       child: Text(loadedContent.description),
                     ),
                     loadedContent.isFavorite
-                        ? const Text("Favorite")
-                        : const Text("Not fav"),
+                        ? Text.rich(TextSpan(
+                            children: <InlineSpan>[
+                              const WidgetSpan(
+                                child: Icon(
+                                  Icons.favorite,
+                                  color: Colors.red,
+                                  size: 20,
+                                ),
+                              ),
+                              WidgetSpan(
+                                  child: Container(
+                                color: Colors.transparent,
+                                padding: const EdgeInsets.all(1.0),
+                                child: const Text(" "),
+                              )),
+                              TextSpan(
+                                  text:
+                                      "${loadedContent.name} is in your Favorites")
+                            ],
+                          ))
+                        : Text.rich(
+                            TextSpan(
+                              children: <InlineSpan>[
+                                const WidgetSpan(
+                                  child: Icon(
+                                    Icons.favorite_border_outlined,
+                                    color: Colors.black,
+                                    size: 20,
+                                  ),
+                                ),
+                                WidgetSpan(
+                                    child: Container(
+                                  color: Colors.transparent,
+                                  padding: const EdgeInsets.all(1.0),
+                                  child: const Text(" "),
+                                )),
+                                TextSpan(
+                                    text:
+                                        "${loadedContent.name} is not in your Favorites")
+                              ],
+                            ),
+                          ),
                   ],
                 ),
               ),

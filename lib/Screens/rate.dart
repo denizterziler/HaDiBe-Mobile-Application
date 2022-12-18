@@ -55,6 +55,7 @@ class _RateState extends State<Rate> {
                       print("loaded rate after ${loadedContent.rate}");
                       _total += rating;
                       print("total after $_total");
+                      //loadedContent.addListener(() { });
                       loadedContent.notifyListeners();
                     });
                   }),

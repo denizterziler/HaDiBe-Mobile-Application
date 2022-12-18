@@ -58,12 +58,13 @@ class Menu extends StatelessWidget {
                     );
                   },
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: const [
                       Icon(
                         Icons.comment,
                         size: 50,
                       ),
+                      SizedBox(width: 70,),
                       Text(
                         "Comments",
                         style: TextStyle(
@@ -89,12 +90,13 @@ class Menu extends StatelessWidget {
                     );
                   },
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: const [
                       Icon(
                         Icons.insert_emoticon,
                         size: 50,
                       ),
+                      SizedBox(width: 105,),
                       Text(
                         "Likes",
                         style: TextStyle(
@@ -120,12 +122,13 @@ class Menu extends StatelessWidget {
                     );
                   },
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: const [
                       Icon(
                         Icons.remove_red_eye_outlined,
                         size: 50,
                       ),
+                      SizedBox(width: 70,),
                       Text(
                         "Watch List",
                         style: TextStyle(
@@ -144,16 +147,19 @@ class Menu extends StatelessWidget {
                 child: ElevatedButton(
                   style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.amber)),
                   onPressed: () {
-                    /*Navigator.of(context).pushNamed(Favorites.routeName,
-                        arguments: content.name);*/
+                    Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const Favorites(),
+                        ),);
                   },
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: const [
                       Icon(
                         Icons.favorite,
                         size: 50,
                       ),
+                      SizedBox(width: 80,),
                       Text(
                         "Favorites",
                         style: TextStyle(
@@ -173,12 +179,13 @@ class Menu extends StatelessWidget {
                   style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.amber)),
                   onPressed: null,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: const [
                       Icon(
                         Icons.logout_outlined,
                         size: 50,
                       ),
+                      SizedBox(width: 90,),
                       Text(
                         "Log Out",
                         style: TextStyle(

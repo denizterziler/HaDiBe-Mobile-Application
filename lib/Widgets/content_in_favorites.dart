@@ -3,15 +3,14 @@ import 'package:provider/provider.dart';
 import 'package:se_380_project/Models/content.dart';
 import 'package:se_380_project/Providers/content_provider.dart';
 import 'package:se_380_project/Screens/content_detail_page.dart';
-
-class ContentInList extends StatefulWidget {
-  const ContentInList({super.key});
+class ContentInFavorites extends StatefulWidget {
+  const ContentInFavorites({Key? key}) : super(key: key);
 
   @override
-  State<ContentInList> createState() => _ContentInListState();
+  State<ContentInFavorites> createState() => _ContentInFavoritesState();
 }
 
-class _ContentInListState extends State<ContentInList> {
+class _ContentInFavoritesState extends State<ContentInFavorites> {
   @override
   Widget build(BuildContext context) {
     final content = Provider.of<Content>(context);

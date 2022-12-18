@@ -8,6 +8,7 @@ class FilterBy extends StatefulWidget {
 }
 
 class _FilterByState extends State<FilterBy> {
+  bool isCheckedSeries = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,12 +37,18 @@ class _FilterByState extends State<FilterBy> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Row(
-                            children: const [
+                            children: [
                               Checkbox(
-                                value: false,
-                                onChanged: null,
+                                checkColor: Colors.white,
+                                activeColor: Colors.amber,
+                                value: isCheckedSeries,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    isCheckedSeries = value!;
+                                  });
+                                },
                               ),
-                              Text("Series"),
+                              const Text("Series"),
                             ],
                           ),
                           Row(
@@ -183,7 +190,9 @@ class _FilterByState extends State<FilterBy> {
                     child: Column(
                       children: [
                         ElevatedButton.icon(
-                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.amber)),
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  Colors.amber)),
                           icon: const Icon(Icons.save),
                           onPressed: null,
                           label: const Text("Save"),
@@ -196,7 +205,9 @@ class _FilterByState extends State<FilterBy> {
                     child: Column(
                       children: [
                         ElevatedButton.icon(
-                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.amber)),
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  Colors.amber)),
                           icon: const Icon(Icons.lock_reset),
                           onPressed: null,
                           label: const Text("Reset"),
@@ -206,7 +217,6 @@ class _FilterByState extends State<FilterBy> {
                   ),
                 ],
               )
-
             ],
           ),
         ),

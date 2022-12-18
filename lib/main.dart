@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:se_380_project/Screens/favorites.dart';
 import 'package:se_380_project/Screens/rate.dart';
+import 'package:se_380_project/Screens/search.dart';
 import 'List_of_contents.dart';
 import 'package:provider/provider.dart';
 import './Providers/content_provider.dart';
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
           ContentDetailPage.routeName: (context) => const ContentDetailPage(),
           Rate.routeName: (context) => const Rate(),
           Favorites.routeName: (context) => const Favorites(),
+          SearchPage.routeName: (context) => const SearchPage(),
         },
         debugShowCheckedModeBanner: false,
       ),

@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:se_380_project/Providers/content_provider.dart';
+import 'package:se_380_project/Widgets/content_in_favorites.dart';
 import 'package:se_380_project/Widgets/content_in_watch_list.dart';
 
-class WatchListContentGrid extends StatelessWidget {
-  const WatchListContentGrid({super.key});
+class FavoritesContentGrid extends StatelessWidget {
+  const FavoritesContentGrid({super.key});
 
   @override
   Widget build(BuildContext context) {
     final contentData = Provider.of<ContentProvider>(context);
-    final contents = contentData.watchList;
+    final contents = contentData.favList;
     if (contents.isNotEmpty) {
       return GridView.builder(
         padding: const EdgeInsets.all(10.0),
@@ -22,7 +23,7 @@ class WatchListContentGrid extends StatelessWidget {
         ),
         itemBuilder: (context, index) => ChangeNotifierProvider.value(
           value: contents[index],
-          child: const ContentInWatchList(),
+          child: const ContentInFavorites(),
         ),
       );
     } else {
@@ -39,8 +40,7 @@ class WatchListContentGrid extends StatelessWidget {
                 height: 50,
                 color: Colors.blue,
                 child: const Center(
-                  child: Text(
-                    "You don't have any content to watch",
+                  child: Text("You don't have any favorite content",
                     style: TextStyle(fontSize: 20),
                   ),
                 ),
@@ -58,9 +58,7 @@ class WatchListContentGrid extends StatelessWidget {
                 child: const Center(
                   child: Text(
                     "You can add contents from the Content Detail Pages",
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
+                    style: TextStyle(fontSize: 20),
                     textAlign: TextAlign.center,
                   ),
                 ),
