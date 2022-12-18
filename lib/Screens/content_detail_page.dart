@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:se_380_project/Models/content.dart';
 import 'package:se_380_project/Providers/content_provider.dart';
+import 'package:se_380_project/Screens/comments.dart';
 import 'package:se_380_project/Screens/rate.dart';
 
 class ContentDetailPage extends StatefulWidget {
@@ -22,6 +24,7 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
         .firstWhere((element) => element.name == contentName);
     return ChangeNotifierProvider.value(
       value: ContentProvider(),
+      // create: (BuildContext context) => ContentProvider(), ChangeNotifierProvider{}
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.black,
@@ -35,9 +38,9 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
               color: Colors.red,
               onPressed: () {
                 setState(() {});
-                provider.addFavsList(
-                    loadedContent, provider.isAddedFavList(loadedContent));
+                provider.addFavsList(loadedContent, provider.isAddedFavList(loadedContent));
                 loadedContent.favoriteStatus();
+                loadedContent.notifyListeners();
               },
             ),
           ],
@@ -50,8 +53,14 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                 child: ElevatedButton(
                   style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.black)),
-                  onPressed: null,
+                      MaterialStateProperty.all<Color>(Colors.black)),
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(Comments.routeName,
+                        arguments: loadedContent.name);
+                    loadedContent.addListener(() {
+                      setState(() {});
+                    });
+                  },
                   child: const Text("Comment",
                       style: TextStyle(color: Colors.white)),
                 ),
@@ -60,7 +69,7 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                 child: ElevatedButton(
                   style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.black)),
+                      MaterialStateProperty.all<Color>(Colors.black)),
                   onPressed: () {
                     Navigator.of(context).pushNamed(Rate.routeName,
                         arguments: loadedContent.name);
@@ -75,16 +84,16 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                 child: ElevatedButton(
                   style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.black)),
+                      MaterialStateProperty.all<Color>(Colors.black)),
                   onPressed: () {
                     provider.addWatchList(
                         loadedContent, provider.isAdded(loadedContent));
                     final snackBar = SnackBar(
                       content: provider.isAdded(loadedContent)
                           ? Text(
-                              '${loadedContent.name} has been added to your list')
+                          '${loadedContent.name} has been added to your list')
                           : Text(
-                              '${loadedContent.name} has been removed from your list'),
+                          '${loadedContent.name} has been removed from your list'),
                     );
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   },
@@ -96,9 +105,9 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                 child: ElevatedButton(
                   style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.black)),
+                      MaterialStateProperty.all<Color>(Colors.black)),
                   onPressed: null,
-                  child: const Text("Detail",
+                  child: const Text("Other",
                       style: TextStyle(color: Colors.white)),
                 ),
               ),
@@ -133,19 +142,19 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                             children: <InlineSpan>[
                               const WidgetSpan(
                                   child: Icon(
-                                Icons.star,
-                                color: Colors.yellow,
-                                size: 20,
-                              )),
+                                    Icons.star,
+                                    color: Colors.yellow,
+                                    size: 20,
+                                  )),
                               WidgetSpan(
                                   child: Container(
-                                color: Colors.black,
-                                padding: const EdgeInsets.all(1.0),
-                                child: const Text("   "),
-                              )),
+                                    color: Colors.black,
+                                    padding: const EdgeInsets.all(1.0),
+                                    child: const Text("   "),
+                                  )),
                               TextSpan(
                                 text:
-                                    'Rate of ${loadedContent.name} is:${loadedContent.rate.toStringAsFixed(2)}/10',
+                                'Rate of ${loadedContent.name} is:${loadedContent.rate}/10',
                               ),
                             ],
                           ),
@@ -171,19 +180,19 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                               children: <InlineSpan>[
                                 const WidgetSpan(
                                     child: Icon(
-                                  Icons.info_outline,
-                                  color: Colors.teal,
-                                  size: 20,
-                                )),
+                                      Icons.info_outline,
+                                      color: Colors.teal,
+                                      size: 20,
+                                    )),
                                 WidgetSpan(
                                     child: Container(
-                                  color: Colors.black,
-                                  padding: const EdgeInsets.all(1.0),
-                                  child: const Text("   "),
-                                )),
+                                      color: Colors.black,
+                                      padding: const EdgeInsets.all(1.0),
+                                      child: const Text("   "),
+                                    )),
                                 TextSpan(
                                   text:
-                                      'Available on ${loadedContent.platform}',
+                                  'Available on ${loadedContent.platform}',
                                 ),
                               ],
                             ),
@@ -194,6 +203,7 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                         ),
                       ),
                     ),
+                    const Padding(padding: EdgeInsets.all(25.0),),
                     Text(
                       "Description of ${loadedContent.name}:",
                       style: const TextStyle(fontSize: 25),
@@ -202,49 +212,10 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                       padding: const EdgeInsets.all(8.0),
                       child: Text(loadedContent.description),
                     ),
+                    const Padding(padding: EdgeInsets.all(25.0),),
                     loadedContent.isFavorite
-                        ? Text.rich(TextSpan(
-                            children: <InlineSpan>[
-                              const WidgetSpan(
-                                child: Icon(
-                                  Icons.favorite,
-                                  color: Colors.red,
-                                  size: 20,
-                                ),
-                              ),
-                              WidgetSpan(
-                                  child: Container(
-                                color: Colors.transparent,
-                                padding: const EdgeInsets.all(1.0),
-                                child: const Text(" "),
-                              )),
-                              TextSpan(
-                                  text:
-                                      "${loadedContent.name} is in your Favorites")
-                            ],
-                          ))
-                        : Text.rich(
-                            TextSpan(
-                              children: <InlineSpan>[
-                                const WidgetSpan(
-                                  child: Icon(
-                                    Icons.favorite_border_outlined,
-                                    color: Colors.black,
-                                    size: 20,
-                                  ),
-                                ),
-                                WidgetSpan(
-                                    child: Container(
-                                  color: Colors.transparent,
-                                  padding: const EdgeInsets.all(1.0),
-                                  child: const Text(" "),
-                                )),
-                                TextSpan(
-                                    text:
-                                        "${loadedContent.name} is not in your Favorites")
-                              ],
-                            ),
-                          ),
+                        ? Text("${loadedContent.name} is in your Favorites")
+                        : Text("${loadedContent.name} is not in your Favorites"),
                   ],
                 ),
               ),

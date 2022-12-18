@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:se_380_project/Screens/comments.dart';
 import 'package:se_380_project/Screens/favorites.dart';
 import 'package:se_380_project/Screens/rate.dart';
 import 'package:se_380_project/Screens/search.dart';
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
           Rate.routeName: (context) => const Rate(),
           Favorites.routeName: (context) => const Favorites(),
           SearchPage.routeName: (context) => const SearchPage(),
+          Comments.routeName: (context) => const Comments(),
         },
         debugShowCheckedModeBanner: false,
       ),
