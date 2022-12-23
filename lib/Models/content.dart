@@ -10,6 +10,8 @@ class Content with ChangeNotifier{
   final String description;
   bool isFavorite;
   late double rate;
+  late double rateCount;
+  late int hadiBe;
 
   Content({
     required this.name,
@@ -21,6 +23,8 @@ class Content with ChangeNotifier{
     required this.description,
     this.isFavorite = false,
     required this.rate,
+    required this.rateCount,
+    required this.hadiBe,
   });
   void favoriteStatus(){
     isFavorite = !isFavorite;

@@ -14,7 +14,6 @@ class Rate extends StatefulWidget {
 }
 
 class _RateState extends State<Rate> {
-  var _counter = 1;
   late double _total;
 
   @override
@@ -23,7 +22,7 @@ class _RateState extends State<Rate> {
     var loadedContent = Provider.of<ContentProvider>(context)
         .items
         .firstWhere((element) => element.name == contentName);
-    _total = loadedContent.rate;
+    _total = loadedContent.rate * loadedContent.rateCount;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
@@ -48,10 +47,12 @@ class _RateState extends State<Rate> {
                       const Icon(Icons.star, color: Colors.amber),
                   onRatingUpdate: (rating) {
                     setState(() {
+                      print(rating);
+                      rating == 10.0 ? loadedContent.hadiBe++ : null;
                       print("total before $_total");
-                      _counter++;
+                      loadedContent.rateCount++;
                       print("loaded rate before ${loadedContent.rate}");
-                      loadedContent.rate = (_total + rating) / _counter;
+                      loadedContent.rate = (_total + rating) / loadedContent.rateCount;
                       print("loaded rate after ${loadedContent.rate}");
                       _total += rating;
                       print("total after $_total");
@@ -59,6 +60,27 @@ class _RateState extends State<Rate> {
                       loadedContent.notifyListeners();
                     });
                   }),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(30.0),
+                  child: Container(
+                    width: 300,
+                    height: 100,
+                    color: Colors.red,
+                    child: Center(
+                      child: Text(
+                       "${loadedContent.hadiBe} HaDiBe",
+                        style: const TextStyle(
+                          fontSize: 20,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                ),
+              )
+
             ],
           ),
         ),

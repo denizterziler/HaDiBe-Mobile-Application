@@ -38,7 +38,8 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
               color: Colors.red,
               onPressed: () {
                 setState(() {});
-                provider.addFavsList(loadedContent, provider.isAddedFavList(loadedContent));
+                provider.addFavsList(
+                    loadedContent, provider.isAddedFavList(loadedContent));
                 loadedContent.favoriteStatus();
                 loadedContent.notifyListeners();
               },
@@ -53,7 +54,7 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                 child: ElevatedButton(
                   style: ButtonStyle(
                       backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.black)),
+                          MaterialStateProperty.all<Color>(Colors.black)),
                   onPressed: () {
                     Navigator.of(context).pushNamed(Comments.routeName,
                         arguments: loadedContent.name);
@@ -69,7 +70,7 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                 child: ElevatedButton(
                   style: ButtonStyle(
                       backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.black)),
+                          MaterialStateProperty.all<Color>(Colors.black)),
                   onPressed: () {
                     Navigator.of(context).pushNamed(Rate.routeName,
                         arguments: loadedContent.name);
@@ -84,16 +85,16 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                 child: ElevatedButton(
                   style: ButtonStyle(
                       backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.black)),
+                          MaterialStateProperty.all<Color>(Colors.black)),
                   onPressed: () {
                     provider.addWatchList(
                         loadedContent, provider.isAdded(loadedContent));
                     final snackBar = SnackBar(
                       content: provider.isAdded(loadedContent)
                           ? Text(
-                          '${loadedContent.name} has been added to your list')
+                              '${loadedContent.name} has been added to your list')
                           : Text(
-                          '${loadedContent.name} has been removed from your list'),
+                              '${loadedContent.name} has been removed from your list'),
                     );
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   },
@@ -105,7 +106,7 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                 child: ElevatedButton(
                   style: ButtonStyle(
                       backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.black)),
+                          MaterialStateProperty.all<Color>(Colors.black)),
                   onPressed: null,
                   child: const Text("Other",
                       style: TextStyle(color: Colors.white)),
@@ -128,39 +129,42 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                 padding: const EdgeInsets.all(25.0),
                 child: Column(
                   children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(30.0),
-                      child: Container(
-                        color: Colors.black,
-                        alignment: Alignment.center,
-                        constraints: const BoxConstraints(
-                          maxWidth: 400,
-                          maxHeight: 50,
-                        ),
-                        child: Text.rich(
-                          TextSpan(
-                            children: <InlineSpan>[
-                              const WidgetSpan(
-                                  child: Icon(
-                                    Icons.star,
-                                    color: Colors.yellow,
-                                    size: 20,
-                                  )),
-                              WidgetSpan(
-                                  child: Container(
-                                    color: Colors.black,
-                                    padding: const EdgeInsets.all(1.0),
-                                    child: const Text("   "),
-                                  )),
-                              TextSpan(
-                                text:
-                                'Rate of ${loadedContent.name} is:${loadedContent.rate}/10',
-                              ),
-                            ],
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(30.0),
+                        child: Container(
+                          color: Colors.black,
+                          alignment: Alignment.center,
+                          constraints: const BoxConstraints(
+                            maxWidth: 400,
+                            maxHeight: 50,
                           ),
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                              fontSize: 20, color: Colors.white),
+                          child: Text.rich(
+                            TextSpan(
+                              children: <InlineSpan>[
+                                const WidgetSpan(
+                                    child: Icon(
+                                  Icons.star,
+                                  color: Colors.yellow,
+                                  size: 20,
+                                )),
+                                WidgetSpan(
+                                    child: Container(
+                                  color: Colors.black,
+                                  padding: const EdgeInsets.all(1.0),
+                                  child: const Text("   "),
+                                )),
+                                TextSpan(
+                                  text:
+                                      'Rate of ${loadedContent.name} is ${loadedContent.rate.toStringAsFixed(2)}/10',
+                                ),
+                              ],
+                            ),
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                                fontSize: 20, color: Colors.white),
+                          ),
                         ),
                       ),
                     ),
@@ -180,19 +184,19 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                               children: <InlineSpan>[
                                 const WidgetSpan(
                                     child: Icon(
-                                      Icons.info_outline,
-                                      color: Colors.teal,
-                                      size: 20,
-                                    )),
+                                  Icons.info_outline,
+                                  color: Colors.teal,
+                                  size: 20,
+                                )),
                                 WidgetSpan(
                                     child: Container(
-                                      color: Colors.black,
-                                      padding: const EdgeInsets.all(1.0),
-                                      child: const Text("   "),
-                                    )),
+                                  color: Colors.black,
+                                  padding: const EdgeInsets.all(1.0),
+                                  child: const Text("   "),
+                                )),
                                 TextSpan(
                                   text:
-                                  'Available on ${loadedContent.platform}',
+                                      'Available on ${loadedContent.platform}',
                                 ),
                               ],
                             ),
@@ -203,19 +207,159 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                         ),
                       ),
                     ),
-                    const Padding(padding: EdgeInsets.all(25.0),),
-                    Text(
-                      "Description of ${loadedContent.name}:",
-                      style: const TextStyle(fontSize: 25),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(30.0),
+                        child: Container(
+                          color: Colors.black,
+                          alignment: Alignment.center,
+                          constraints: const BoxConstraints(
+                            maxWidth: 400,
+                            maxHeight: 50,
+                          ),
+                          child: Text.rich(
+                            TextSpan(
+                              children: <InlineSpan>[
+                                WidgetSpan(
+                                    child: Icon(
+                                  loadedContent.isFavorite
+                                      ? Icons.favorite
+                                      : Icons.favorite_border_outlined,
+                                  color: loadedContent.isFavorite
+                                      ? Colors.red
+                                      : Colors.white,
+                                  size: 20,
+                                )),
+                                TextSpan(
+                                  text: loadedContent.isFavorite
+                                      ? '${loadedContent.name} in your Favorites'
+                                      : '${loadedContent.name} not in your Favorites',
+                                ),
+                              ],
+                            ),
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                                fontSize: 20, color: Colors.white),
+                          ),
+                        ),
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text(loadedContent.description),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(30.0),
+                        child: Container(
+                          color: Colors.black,
+                          alignment: Alignment.center,
+                          constraints: const BoxConstraints(
+                            maxWidth: 400,
+                            maxHeight: 50,
+                          ),
+                          child: Text.rich(
+                            TextSpan(
+                              children: <InlineSpan>[
+                                const WidgetSpan(
+                                    child: Icon(
+                                  Icons.warning_amber,
+                                  color: Colors.redAccent,
+                                  size: 20,
+                                )),
+                                WidgetSpan(
+                                    child: Container(
+                                  color: Colors.black,
+                                  padding: const EdgeInsets.all(1.0),
+                                  child: const Text("   "),
+                                )),
+                                TextSpan(
+                                  text: '${loadedContent.hadiBe} HaDiBe',
+                                ),
+                              ],
+                            ),
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                                fontSize: 20, color: Colors.white),
+                          ),
+                        ),
+                      ),
                     ),
-                    const Padding(padding: EdgeInsets.all(25.0),),
-                    loadedContent.isFavorite
-                        ? Text("${loadedContent.name} is in your Favorites")
-                        : Text("${loadedContent.name} is not in your Favorites"),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: OutlinedButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: Center(child: Text(loadedContent.name)),
+                              content: Container(
+                                height: 300,
+                                padding: const EdgeInsets.all(10.0),
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.black),
+                                ),
+                                child: SingleChildScrollView(
+                                  child: Center(
+                                    child: Text(
+                                      loadedContent.description,
+                                      style: const TextStyle(
+                                        fontSize: 15,
+                                        fontStyle: FontStyle.italic,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: const Center(child: Text("Close")),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                        style: ButtonStyle(
+                          shape: MaterialStateProperty.all(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
+                          ),
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.black),
+                        ),
+                        child: Container(
+                          alignment: Alignment.center,
+                          constraints: const BoxConstraints(
+                            maxWidth: 400,
+                            maxHeight: 50,
+                          ),
+                          child: Text.rich(
+                            TextSpan(
+                              children: <InlineSpan>[
+                                const WidgetSpan(
+                                    child: Icon(
+                                  Icons.description,
+                                  color: Colors.blue,
+                                  size: 20,
+                                )),
+                                WidgetSpan(
+                                    child: Container(
+                                  color: Colors.black,
+                                  padding: const EdgeInsets.all(1.0),
+                                  child: const Text("   "),
+                                )),
+                                TextSpan(
+                                  text: 'Description of ${loadedContent.name}',
+                                ),
+                              ],
+                            ),
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                                fontSize: 20, color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),

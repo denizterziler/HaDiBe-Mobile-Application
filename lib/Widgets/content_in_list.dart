@@ -27,7 +27,7 @@ class _ContentInListState extends State<ContentInList> {
                 size: 9,
               ),
               Text(
-                "${content.rate}/10",
+                "${content.rate.toStringAsFixed(1)}/10",
                 style: const TextStyle(color: Colors.white),
               ),
             ],
