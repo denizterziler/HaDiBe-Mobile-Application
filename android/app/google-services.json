@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "50059146933",
+    "project_id": "hadibe-fa1fc",
+    "storage_bucket": "hadibe-fa1fc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:50059146933:android:9769d48d013fb0fa9470fc",
+        "android_client_info": {
+          "package_name": "com.example.se_380_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "50059146933-ufe4t253v18409ap42j0sm29tea5e7qf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVlBt5083KcanRep-CEn1O3bGsMY8gh5w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "50059146933-ufe4t253v18409ap42j0sm29tea5e7qf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

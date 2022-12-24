@@ -1,20 +1,56 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:se_380_project/Screens/comments.dart';
 import 'package:se_380_project/Screens/favorites.dart';
+import 'package:se_380_project/Screens/login_page.dart';
 import 'package:se_380_project/Screens/rate.dart';
 import 'package:se_380_project/Screens/search.dart';
 import 'List_of_contents.dart';
 import 'package:provider/provider.dart';
 import './Providers/content_provider.dart';
 import './Screens/content_detail_page.dart';
-import 'package:flutter_gradient_colors/flutter_gradient_colors.dart';
 
-void main() {
-  runApp(const MyApp());
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(const MyAp());
+}
+
+class MyAp extends StatelessWidget {
+  const MyAp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: LoginPage(),
+    );
+  }
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.lightBlue,
+      ),
+      home: LoginPage(),
+    );
+  }
+}
+
+class MyAppp extends StatelessWidget {
+  const MyAppp({super.key});
 
   @override
   Widget build(BuildContext context) {
