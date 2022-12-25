@@ -24,6 +24,8 @@ class Auth {
     await _firestore.collection("Users").doc(user.user!.uid).set({
       'userName': name,
       'email': email,
+      'URL' : "",
+      'password' : password,
     });
     return user.user;
   }
