@@ -1,44 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:se_380_project/Firebase/auth.dart';
 import 'package:se_380_project/Models/content.dart';
 import 'package:se_380_project/Screens/comments.dart';
 import 'package:se_380_project/Screens/favorites.dart';
+import 'package:se_380_project/Screens/login_page.dart';
 import 'package:se_380_project/Screens/profile_page.dart';
 import 'package:se_380_project/Screens/watch_list.dart';
+
 
 import 'likes.dart';
 
 class Menu extends StatelessWidget {
-  const Menu({Key? key}) : super(key: key);
+  Menu({Key? key}) : super(key: key);
+  final Auth _authService = Auth();
 
   @override
   Widget build(BuildContext context) {
-    //final content = Provider.of<Content>(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
-        leading: ElevatedButton(
-          style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.black)),
+        backgroundColor: Colors.black.withOpacity(.75),
+        leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: const Icon(Icons.home),
+          icon: const Icon(Icons.home),
         ),
         actions: [
-          ElevatedButton(
-            style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.black)),
+          IconButton(
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => const ProfilePage(),
+                  builder: (context) => ProfilePage(),
                 ),
               );
             },
-            child: const Icon(Icons.account_box),
+            icon: const Icon(Icons.account_box),
           ),
         ],
         centerTitle: true,
-        title: const Text("Profile Page"),
+        title: const Text("Menu"),
       ),
       body: Container(
         color: Colors.black38,
@@ -177,7 +178,9 @@ class Menu extends StatelessWidget {
                 height: 100,
                 child: ElevatedButton(
                   style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.amber)),
-                  onPressed: null,
+                  onPressed: (){
+                    _authService.signOut();
+                    Navigator.popUntil(context, ModalRoute.withName(Navigator.defaultRouteName));                  },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: const [

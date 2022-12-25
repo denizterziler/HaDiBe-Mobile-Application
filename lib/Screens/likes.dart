@@ -7,7 +7,7 @@ class Likes extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.black.withOpacity(.75),
         centerTitle: true,
         title: Text("Likes"),
       ),

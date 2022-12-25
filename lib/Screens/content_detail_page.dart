@@ -27,7 +27,7 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
       // create: (BuildContext context) => ContentProvider(), ChangeNotifierProvider{}
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.black,
+          backgroundColor: Colors.black.withOpacity(.75),
           centerTitle: true,
           title: Text(loadedContent.name),
           actions: [
@@ -102,7 +102,7 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                       style: TextStyle(color: Colors.white)),
                 ),
               ),
-              Expanded(
+              /*Expanded(
                 child: ElevatedButton(
                   style: ButtonStyle(
                       backgroundColor:
@@ -111,7 +111,7 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                   child: const Text("Other",
                       style: TextStyle(color: Colors.white)),
                 ),
-              ),
+              ),*/
             ],
           ),
         ),
@@ -312,7 +312,7 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                               actions: [
                                 TextButton(
                                   onPressed: () => Navigator.pop(context),
-                                  child: const Center(child: Text("Close")),
+                                  child: const Center(child: Text("Close",style: TextStyle(color: Colors.black54),)),
                                 ),
                               ],
                             ),

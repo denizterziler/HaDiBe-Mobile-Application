@@ -14,43 +14,12 @@ import './Screens/content_detail_page.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const MyAp());
+  runApp(const MyApp());
 }
 
-class MyAp extends StatelessWidget {
-  const MyAp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: LoginPage(),
-    );
-  }
-}
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.lightBlue,
-      ),
-      home: LoginPage(),
-    );
-  }
-}
-
-class MyAppp extends StatelessWidget {
-  const MyAppp({super.key});
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -64,8 +33,9 @@ class MyAppp extends StatelessWidget {
         theme: ThemeData(
           primaryColor: Colors.black12,
         ),
-        home: const ListOfContents(),
+        home: const LoginPage(),
         routes: {
+          ListOfContents.routeName: (context) => const ListOfContents(),
           ContentDetailPage.routeName: (context) => const ContentDetailPage(),
           Rate.routeName: (context) => const Rate(),
           Favorites.routeName: (context) => const Favorites(),

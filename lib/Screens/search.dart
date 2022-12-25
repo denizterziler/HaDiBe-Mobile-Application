@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:se_380_project/Models/content.dart';
 import 'package:se_380_project/Providers/content_provider.dart';
 import 'package:se_380_project/Screens/content_detail_page.dart';
@@ -21,7 +20,7 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.black.withOpacity(.75),
         centerTitle: true,
         title: const Text("Search Page"),
       ),

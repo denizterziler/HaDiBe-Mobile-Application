@@ -5,6 +5,8 @@ import 'Screens/filter_by.dart';
 import 'Screens/menu.dart';
 
 class ListOfContents extends StatelessWidget {
+  static const routeName = '/list-of-contents';
+
   const ListOfContents({Key? key}) : super(key: key);
 
   @override
@@ -12,12 +14,12 @@ class ListOfContents extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.black.withOpacity(.75),
         title: const Text("HaDiBe!"),
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => const Menu(),
+              builder: (context) => Menu(),
             ));
           },
           iconSize: 40,

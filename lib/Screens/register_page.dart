@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:se_380_project/Firebase/auth.dart';
 
 class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
+
   @override
   _RegisterPageState createState() => _RegisterPageState();
 }
@@ -11,8 +13,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _passwordAgainController =
-  TextEditingController();
+  final TextEditingController _passwordAgainController = TextEditingController();
 
   final Auth _authService = Auth();
 

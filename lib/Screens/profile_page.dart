@@ -1,20 +1,45 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:se_380_project/Firebase/auth.dart';
 
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+class ProfilePage extends StatefulWidget {
+
+  ProfilePage({Key? key}) : super(key: key);
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  String name = "";
+  String email = "";
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.black.withOpacity(.75),
         centerTitle: true,
-        title: const Text("User Name"),
+        title: FutureBuilder(builder: (context,snapshot){
+          if(snapshot.connectionState != ConnectionState.done){
+            return const Text("loading...");
+          }
+          return Text(name);
+        },future: _fetch(),),
       ),
       body: Container(
         color: Colors.black38,
         child: Column(
           children: [
+            FutureBuilder(builder: (context,snapshot){
+              if(snapshot.connectionState != ConnectionState.done){
+                return const Text("loading...");
+              }
+              return Text(email);
+            },future: _fetch(),),
             SizedBox(
               height: 100,
               child: Padding(
@@ -110,7 +135,7 @@ class ProfilePage extends StatelessWidget {
                       child: ElevatedButton(
                         style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.amber)),
                         onPressed: null,
-                        child: const Text("Favorite Movie"),
+                        child: const Text("Favorite Series"),
                       ),
                     ),
                   ],
@@ -121,5 +146,17 @@ class ProfilePage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  _fetch() async{
+    final firebaseUser = await FirebaseAuth.instance.currentUser!;
+    await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(firebaseUser.uid)
+        .get()
+        .then((value) {
+          name = value.get('userName');
+          email = value.get('email');
+        });
   }
 }

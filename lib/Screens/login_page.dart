@@ -1,9 +1,13 @@
 import 'package:se_380_project/Firebase/auth.dart';
-import 'package:se_380_project/Screens/home.dart';
+import 'package:se_380_project/List_of_contents.dart';
 import 'package:se_380_project/Screens/register_page.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
+  static const routeName = '/log-in';
+
+  const LoginPage({super.key});
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -103,10 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                               .signIn(
                               _emailController.text, _passwordController.text)
                               .then((value) {
-                            return Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => HomePage()));
+                            return Navigator.of(context).pushNamed(ListOfContents.routeName);
                           });
                         },
                         child: Container(
