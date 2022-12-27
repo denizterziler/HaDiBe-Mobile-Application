@@ -27,12 +27,18 @@ class Comments extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
               ),
-              TextField(
-                decoration: InputDecoration(
-                    prefixIcon: Icon(
-                  Icons.comment,
-                  color: Colors.black,
-                )),
+              Card(
+                child: Column(
+                  children: [
+                    TextField(
+                      decoration: InputDecoration(
+                          prefixIcon: Icon(
+                            Icons.comment,
+                            color: Colors.black,
+                          )),
+                    ),
+                  ],
+                ),
               ),
               SingleChildScrollView(
                 padding: EdgeInsets.fromLTRB(0, 50, 0, 50),
