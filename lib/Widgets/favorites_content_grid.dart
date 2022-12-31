@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:se_380_project/Firebase/auth.dart';
 import 'package:se_380_project/Providers/content_provider.dart';
 import 'package:se_380_project/Widgets/content_in_favorites.dart';
 import 'package:se_380_project/Widgets/content_in_watch_list.dart';
@@ -9,6 +10,7 @@ class FavoritesContentGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Auth _authService = Auth();
     final contentData = Provider.of<ContentProvider>(context);
     final contents = contentData.favList;
     if (contents.isNotEmpty) {

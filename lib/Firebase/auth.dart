@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 class Auth {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -26,7 +27,41 @@ class Auth {
       'email': email,
       'URL' : "",
       'password' : password,
+      'favs' : [],
+      'watchList' : [],
     });
     return user.user;
+  }
+  addToFirebaseFavs(String contentName) async {
+    final firebaseUser = FirebaseAuth.instance.currentUser!;
+    DocumentReference documentReference = FirebaseFirestore.instance.collection('Users').doc(firebaseUser.uid);
+    DocumentSnapshot doc = await documentReference.get();
+    List favs = doc['favs'];
+    if(favs.contains(contentName)==true){
+      documentReference.update({
+        'favs' : FieldValue.arrayRemove([contentName])
+      });
+    }
+    else{
+      documentReference.update({
+        'favs' : FieldValue.arrayUnion([contentName])
+      });
+    }
+  }
+  addToFirebaseWatchList(String contentName) async {
+    final firebaseUser = FirebaseAuth.instance.currentUser!;
+    DocumentReference documentReference = FirebaseFirestore.instance.collection('Users').doc(firebaseUser.uid);
+    DocumentSnapshot doc = await documentReference.get();
+    List watchList = doc['watchList'];
+    if(watchList.contains(contentName)==true){
+      documentReference.update({
+        'watchList' : FieldValue.arrayRemove([contentName])
+      });
+    }
+    else{
+      documentReference.update({
+        'watchList' : FieldValue.arrayUnion([contentName])
+      });
+    }
   }
 }

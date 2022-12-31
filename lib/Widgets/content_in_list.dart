@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:se_380_project/Firebase/auth.dart';
 import 'package:se_380_project/Models/content.dart';
 import 'package:se_380_project/Providers/content_provider.dart';
 import 'package:se_380_project/Screens/content_detail_page.dart';
@@ -12,6 +15,7 @@ class ContentInList extends StatefulWidget {
 }
 
 class _ContentInListState extends State<ContentInList> {
+  final Auth _authService = Auth();
   @override
   Widget build(BuildContext context) {
     final content = Provider.of<Content>(context);
@@ -40,6 +44,7 @@ class _ContentInListState extends State<ContentInList> {
               setState(() {});
               provider.addFavsList(content, provider.isAddedFavList(content));
               content.favoriteStatus();
+              _authService.addToFirebaseFavs(content.name);
             },
           ),
           title: Text(content.name),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:se_380_project/Firebase/auth.dart';
 import 'package:se_380_project/Models/content.dart';
 import 'package:se_380_project/Providers/content_provider.dart';
 import 'package:se_380_project/Screens/comments.dart';
@@ -15,6 +16,7 @@ class ContentDetailPage extends StatefulWidget {
 }
 
 class _ContentDetailPageState extends State<ContentDetailPage> {
+  final Auth _authService = Auth();
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<ContentProvider>(context);
@@ -42,6 +44,7 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                     loadedContent, provider.isAddedFavList(loadedContent));
                 loadedContent.favoriteStatus();
                 loadedContent.notifyListeners();
+                _authService.addToFirebaseFavs(loadedContent.name);
               },
             ),
           ],
@@ -89,6 +92,7 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                   onPressed: () {
                     provider.addWatchList(
                         loadedContent, provider.isAdded(loadedContent));
+                    _authService.addToFirebaseWatchList(loadedContent.name);
                     final snackBar = SnackBar(
                       content: provider.isAdded(loadedContent)
                           ? Text(
@@ -290,12 +294,13 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                           showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
-                              title: Center(child: Text(loadedContent.name)),
+                              backgroundColor: Colors.black54.withOpacity(.75),
+                              title: Center(child: Text(loadedContent.name,style: const TextStyle(color: Colors.white),)),
                               content: Container(
                                 height: 300,
                                 padding: const EdgeInsets.all(10.0),
                                 decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.black),
+                                  border: Border.all(color: Colors.white),
                                 ),
                                 child: SingleChildScrollView(
                                   child: Center(
@@ -304,6 +309,7 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                                       style: const TextStyle(
                                         fontSize: 15,
                                         fontStyle: FontStyle.italic,
+                                        color: Colors.white,
                                       ),
                                     ),
                                   ),
@@ -312,7 +318,7 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                               actions: [
                                 TextButton(
                                   onPressed: () => Navigator.pop(context),
-                                  child: const Center(child: Text("Close",style: TextStyle(color: Colors.black54),)),
+                                  child: const Center(child: Text("Close",style: TextStyle(color: Colors.white),)),
                                 ),
                               ],
                             ),
