@@ -100,6 +100,12 @@ class ContentProvider with ChangeNotifier {
       hadiBe: 0,
     ),
   ];
+  List<Content> sort(List<Content> list){
+    list.sort((a, b){
+      return b.rate.compareTo(a.rate);
+    });
+    return list;
+  }
   final List<Content> favList = [];
 
   void addFavsList(Content content, bool isAdded) {

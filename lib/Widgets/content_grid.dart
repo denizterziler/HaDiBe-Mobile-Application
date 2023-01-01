@@ -9,7 +9,8 @@ class ContentGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final contentData = Provider.of<ContentProvider>(context);
-    final contents = contentData.items;
+    //final contents = contentData.items;
+    final contents = contentData.sort(contentData.items);
     return GridView.builder(
       padding: const EdgeInsets.all(10.0),
       itemCount: contents.length,

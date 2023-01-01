@@ -9,6 +9,28 @@ class FilterBy extends StatefulWidget {
 
 class _FilterByState extends State<FilterBy> {
   bool isCheckedSeries = false;
+  bool isCheckedMovies = false;
+  bool netflix = false;
+  bool disney = false;
+  bool action = false;
+  bool dram = false;
+  bool sci_fi = false;
+  bool comedy = false;
+  bool horror = false;
+  bool animation = false;
+  Map<String, dynamic> filterData = {
+    "isCheckedSeries": false,
+    "isCheckedMovies": false,
+    "netflix": false,
+    "disney": false,
+    "action": false,
+    "dram": false,
+    "sci_fi": false,
+    "comedy": false,
+    "horror": false,
+    "animation": false
+  };
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,6 +67,8 @@ class _FilterByState extends State<FilterBy> {
                                 onChanged: (bool? value) {
                                   setState(() {
                                     isCheckedSeries = value!;
+                                    filterData["isCheckedSeries"] =
+                                        isCheckedSeries;
                                   });
                                 },
                               ),
@@ -52,12 +76,20 @@ class _FilterByState extends State<FilterBy> {
                             ],
                           ),
                           Row(
-                            children: const [
+                            children: [
                               Checkbox(
-                                value: false,
-                                onChanged: null,
+                                checkColor: Colors.white,
+                                activeColor: Colors.amber,
+                                value: isCheckedMovies,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    isCheckedMovies = value!;
+                                    filterData["isCheckedMovies"] =
+                                        isCheckedMovies;
+                                  });
+                                },
                               ),
-                              Text("Movies"),
+                              const Text("Movies"),
                             ],
                           ),
                         ],
@@ -79,21 +111,35 @@ class _FilterByState extends State<FilterBy> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Row(
-                          children: const [
+                          children: [
                             Checkbox(
-                              value: false,
-                              onChanged: null,
+                              checkColor: Colors.white,
+                              activeColor: Colors.amber,
+                              value: netflix,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  netflix = value!;
+                                  filterData["netflix"] = netflix;
+                                });
+                              },
                             ),
-                            Text("Netflix"),
+                            const Text("Netflix"),
                           ],
                         ),
                         Row(
-                          children: const [
+                          children: [
                             Checkbox(
-                              value: false,
-                              onChanged: null,
+                              checkColor: Colors.white,
+                              activeColor: Colors.amber,
+                              value: disney,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  disney = value!;
+                                  filterData["disney"] = disney;
+                                });
+                              },
                             ),
-                            Text("Disney+"),
+                            const Text("Disney+"),
                           ],
                         ),
                       ],
@@ -117,30 +163,51 @@ class _FilterByState extends State<FilterBy> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
-                              children: const [
+                              children: [
                                 Checkbox(
-                                  value: false,
-                                  onChanged: null,
+                                  checkColor: Colors.white,
+                                  activeColor: Colors.amber,
+                                  value: action,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      action = value!;
+                                      filterData["action"] = action;
+                                    });
+                                  },
                                 ),
-                                Text("Action"),
+                                const Text("Action"),
                               ],
                             ),
                             Row(
-                              children: const [
+                              children: [
                                 Checkbox(
-                                  value: false,
-                                  onChanged: null,
+                                  checkColor: Colors.white,
+                                  activeColor: Colors.amber,
+                                  value: sci_fi,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      sci_fi = value!;
+                                      filterData["sci_fi"] = sci_fi;
+                                    });
+                                  },
                                 ),
-                                Text("Sci-fi"),
+                                const Text("Sci-fi"),
                               ],
                             ),
                             Row(
-                              children: const [
+                              children: [
                                 Checkbox(
-                                  value: false,
-                                  onChanged: null,
+                                  checkColor: Colors.white,
+                                  activeColor: Colors.amber,
+                                  value: horror,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      horror = value!;
+                                      filterData["horror"] = horror;
+                                    });
+                                  },
                                 ),
-                                Text("Horror"),
+                                const Text("Horror"),
                               ],
                             ),
                           ],
@@ -149,30 +216,51 @@ class _FilterByState extends State<FilterBy> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
-                              children: const [
+                              children: [
                                 Checkbox(
-                                  value: false,
-                                  onChanged: null,
+                                  checkColor: Colors.white,
+                                  activeColor: Colors.amber,
+                                  value: dram,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      dram = value!;
+                                      filterData["dram"] = dram;
+                                    });
+                                  },
                                 ),
-                                Text("Dram"),
+                                const Text("Dram"),
                               ],
                             ),
                             Row(
-                              children: const [
+                              children: [
                                 Checkbox(
-                                  value: false,
-                                  onChanged: null,
+                                  checkColor: Colors.white,
+                                  activeColor: Colors.amber,
+                                  value: comedy,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      comedy = value!;
+                                      filterData["comedy"] = comedy;
+                                    });
+                                  },
                                 ),
-                                Text("Comedy"),
+                                const Text("Comedy"),
                               ],
                             ),
                             Row(
-                              children: const [
+                              children: [
                                 Checkbox(
-                                  value: false,
-                                  onChanged: null,
+                                  checkColor: Colors.white,
+                                  activeColor: Colors.amber,
+                                  value: animation,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      animation = value!;
+                                      filterData["animation"] = animation;
+                                    });
+                                  },
                                 ),
-                                Text("Animation"),
+                                const Text("Animation"),
                               ],
                             ),
                           ],
@@ -194,7 +282,9 @@ class _FilterByState extends State<FilterBy> {
                               backgroundColor: MaterialStateProperty.all<Color>(
                                   Colors.amber)),
                           icon: const Icon(Icons.save),
-                          onPressed: null,
+                          onPressed: () {
+                            print(filterData);
+                          },
                           label: const Text("Save"),
                         ),
                       ],
@@ -209,7 +299,32 @@ class _FilterByState extends State<FilterBy> {
                               backgroundColor: MaterialStateProperty.all<Color>(
                                   Colors.amber)),
                           icon: const Icon(Icons.lock_reset),
-                          onPressed: null,
+                          onPressed: () {
+                            setState(() {
+                              isCheckedSeries = false;
+                              isCheckedMovies = false;
+                              netflix = false;
+                              disney = false;
+                              action = false;
+                              dram = false;
+                              sci_fi = false;
+                              comedy = false;
+                              horror = false;
+                              animation = false;
+                              filterData = {
+                                "isCheckedSeries": false,
+                                "isCheckedMovies": false,
+                                "netflix": false,
+                                "disney": false,
+                                "action": false,
+                                "dram": false,
+                                "sci_fi": false,
+                                "comedy": false,
+                                "horror": false,
+                                "animation": false
+                              };
+                            });
+                          },
                           label: const Text("Reset"),
                         ),
                       ],
