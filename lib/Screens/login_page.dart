@@ -15,7 +15,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
+  bool passwordVisible = false;
   final Auth _authService = Auth();
 
   @override
@@ -77,23 +77,31 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         cursorColor: Colors.white,
                         controller: _passwordController,
-                        obscureText: true,
-                        decoration: const InputDecoration(
-                          prefixIcon: Icon(
+                        obscureText: !passwordVisible,
+                        decoration: InputDecoration(
+                          prefixIcon: const Icon(
                             Icons.vpn_key,
                             color: Colors.white,
                           ),
+                          suffixIcon: IconButton(
+                              icon: Icon(
+                                passwordVisible ? Icons.visibility : Icons.visibility_off,color: Colors.white,),
+                              onPressed: () {
+                                setState(() {
+                                  passwordVisible = !passwordVisible;
+                                });
+                              }),
                           hintText: 'Password',
                           prefixText: ' ',
-                          hintStyle: TextStyle(
+                          hintStyle: const TextStyle(
                             color: Colors.white,
                           ),
                           focusColor: Colors.white,
-                          focusedBorder: UnderlineInputBorder(
+                          focusedBorder: const UnderlineInputBorder(
                               borderSide: BorderSide(
                             color: Colors.white,
                           )),
-                          enabledBorder: UnderlineInputBorder(
+                          enabledBorder: const UnderlineInputBorder(
                               borderSide: BorderSide(
                             color: Colors.white,
                           )),

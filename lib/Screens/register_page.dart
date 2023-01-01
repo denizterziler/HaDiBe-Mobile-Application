@@ -14,12 +14,14 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _passwordAgainController = TextEditingController();
-
+  bool passwordVisible = false;
   final Auth _authService = Auth();
+  @override
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+   // bool passwordVisible = false;
     return Scaffold(
         body: Stack(
           children: [
@@ -106,21 +108,29 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                               cursorColor: Colors.white,
                               controller: _passwordController,
-                              obscureText: true,
-                              decoration: const InputDecoration(
-                                prefixIcon: Icon(
+                              obscureText: !passwordVisible,
+                              decoration: InputDecoration(
+                                prefixIcon: const Icon(
                                   Icons.vpn_key,
                                   color: Colors.white,
                                 ),
+                                  suffixIcon: IconButton(
+                                      icon: Icon(
+                                          passwordVisible ? Icons.visibility : Icons.visibility_off,color: Colors.white,),
+                                      onPressed: () {
+                                        setState(() {
+                                          passwordVisible = !passwordVisible;
+                                        });
+                                      }),
                                 hintText: 'Password',
                                 prefixText: ' ',
-                                hintStyle: TextStyle(color: Colors.white),
+                                hintStyle: const TextStyle(color: Colors.white),
                                 focusColor: Colors.white,
-                                focusedBorder: UnderlineInputBorder(
+                                focusedBorder: const UnderlineInputBorder(
                                     borderSide: BorderSide(
                                       color: Colors.white,
                                     )),
-                                enabledBorder: UnderlineInputBorder(
+                                enabledBorder: const UnderlineInputBorder(
                                     borderSide: BorderSide(
                                       color: Colors.white,
                                     )),
@@ -134,21 +144,29 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                               cursorColor: Colors.white,
                               controller: _passwordAgainController,
-                              obscureText: true,
-                              decoration: const InputDecoration(
-                                prefixIcon: Icon(
+                              obscureText: !passwordVisible,
+                              decoration:  InputDecoration(
+                                prefixIcon: const Icon(
                                   Icons.vpn_key,
                                   color: Colors.white,
                                 ),
+                                suffixIcon: IconButton(
+                                    icon: Icon(
+                                      passwordVisible ? Icons.visibility : Icons.visibility_off,color: Colors.white,),
+                                    onPressed: () {
+                                      setState(() {
+                                        passwordVisible = !passwordVisible;
+                                      });
+                                    }),
                                 hintText: 'Password Again',
                                 prefixText: ' ',
-                                hintStyle: TextStyle(color: Colors.white),
+                                hintStyle: const TextStyle(color: Colors.white),
                                 focusColor: Colors.white,
-                                focusedBorder: UnderlineInputBorder(
+                                focusedBorder: const UnderlineInputBorder(
                                     borderSide: BorderSide(
                                       color: Colors.white,
                                     )),
-                                enabledBorder: UnderlineInputBorder(
+                                enabledBorder: const UnderlineInputBorder(
                                     borderSide: BorderSide(
                                       color: Colors.white,
                                     )),
@@ -167,7 +185,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 return Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => LoginPage()));
+                                        builder: (context) => const LoginPage()));
                               });
                             },
                             child: Container(
