@@ -88,21 +88,6 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                 child: ElevatedButton(
                   style: ButtonStyle(
                       backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.black)),
-                  onPressed: () {
-                    setState(() {});
-                    provider.addLikeList(
-                        loadedContent, provider.isAddedLikeList(loadedContent));
-                    loadedContent.likeStatus();
-                    loadedContent.notifyListeners();
-                  },
-                  child: const Text("Like"),
-                ),
-              ),
-              Expanded(
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor:
                           MaterialStateProperty.all<Color>(Colors.black)),
                   onPressed: () {
                     provider.addWatchList(
@@ -371,44 +356,6 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                                 )),
                                 TextSpan(
                                   text: 'Description of ${loadedContent.name}',
-                                ),
-                              ],
-                            ),
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                                fontSize: 20, color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(30.0),
-                        child: Container(
-                          color: Colors.black,
-                          alignment: Alignment.center,
-                          constraints: const BoxConstraints(
-                            maxWidth: 400,
-                            maxHeight: 50,
-                          ),
-                          child: Text.rich(
-                            TextSpan(
-                              children: <InlineSpan>[
-                                WidgetSpan(
-                                    child: Icon(
-                                      loadedContent.isLiked
-                                          ? Icons.favorite
-                                          : Icons.favorite_border_outlined,
-                                      color: loadedContent.isLiked
-                                          ? Colors.red
-                                          : Colors.white,
-                                      size: 20,
-                                    )),
-                                TextSpan(
-                                  text: loadedContent.isLiked
-                                      ? ' You liked ${loadedContent.name}'
-                                      : ' You did not like ${loadedContent.name}',
                                 ),
                               ],
                             ),

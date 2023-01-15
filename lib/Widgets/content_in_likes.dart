@@ -38,7 +38,6 @@ class _ContentInLikesState extends State<ContentInLikes> {
             color: Colors.red,
             onPressed: () {
               setState(() {});
-              provider.addLikeList(content, provider.isAddedLikeList(content));
               content.likeStatus();
             },
           ),

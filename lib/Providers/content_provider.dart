@@ -121,21 +121,6 @@ class ContentProvider with ChangeNotifier {
     return favList.contains(content);
   }
 
-  final List<Content> likeList = [];
-
-  void addLikeList(Content content, bool isAddedLikeList) {
-    if (isAddedLikeList) {
-      likeList.remove(content);
-    } else {
-      likeList.add(content);
-    }
-    notifyListeners();
-  }
-
-  bool isAddedLikeList(Content content) {
-    return favList.contains(content);
-  }
-
   final List<Content> watchList = [];
 
   void addWatchList(Content content, bool isAdded) {

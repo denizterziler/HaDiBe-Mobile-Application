@@ -9,7 +9,7 @@ class LikesContentGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final contentData = Provider.of<ContentProvider>(context);
-    final contents = contentData.likeList;
+    final contents = contentData.favList;
     if (contents.isNotEmpty) {
       return GridView.builder(
         padding: const EdgeInsets.all(10.0),
