@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:se_380_project/Widgets/likes_content_grid.dart';
+class Likes extends StatefulWidget {
+  static const routeName = '/favorites';
 
-class Likes extends StatelessWidget {
   const Likes({Key? key}) : super(key: key);
 
+  @override
+  State<Likes> createState() => _LikesState();
+}
+
+class _LikesState extends State<Likes> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black.withOpacity(.75),
         centerTitle: true,
-        title: Text("Likes"),
+        title: const Text("Liked"),
       ),
       body: Container(
         color: Colors.black38,
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: const [
-              Text("Likes"),
-            ],
-          ),
-        ),
+        child: const LikesContentGrid(),
       ),
     );
   }

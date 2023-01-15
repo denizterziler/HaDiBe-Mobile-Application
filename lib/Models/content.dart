@@ -9,6 +9,7 @@ class Content with ChangeNotifier{
   final double length;
   final String description;
   bool isFavorite;
+  bool isLiked;
   late double rate;
   late double rateCount;
   late int hadiBe;
@@ -22,12 +23,18 @@ class Content with ChangeNotifier{
     required this.length,
     required this.description,
     this.isFavorite = false,
+    this.isLiked = false,
     required this.rate,
     required this.rateCount,
     required this.hadiBe,
   });
+
   void favoriteStatus(){
     isFavorite = !isFavorite;
+    notifyListeners();
+  }
+  void likeStatus(){
+    isLiked = !isLiked;
     notifyListeners();
   }
 }

@@ -9,6 +9,18 @@ class FilterBy extends StatefulWidget {
 
 class _FilterByState extends State<FilterBy> {
   bool isCheckedSeries = false;
+  bool isCheckedMovies = false;
+  bool isCheckedNetflix = false;
+  bool isCheckedDisney = false;
+  bool isCheckedAction = false;
+  bool isCheckedDram = false;
+  bool isCheckedScifi = false;
+  bool isCheckedComedy = false;
+  bool isCheckedHorror = false;
+  bool isCheckedAnimation = false;
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,10 +64,16 @@ class _FilterByState extends State<FilterBy> {
                             ],
                           ),
                           Row(
-                            children: const [
+                            children: [
                               Checkbox(
-                                value: false,
-                                onChanged: null,
+                                checkColor: Colors.white,
+                                activeColor: Colors.amber,
+                                value: isCheckedMovies,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    isCheckedMovies = value!;
+                                  });
+                                },
                               ),
                               Text("Movies"),
                             ],
@@ -79,19 +97,31 @@ class _FilterByState extends State<FilterBy> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Row(
-                          children: const [
+                          children: [
                             Checkbox(
-                              value: false,
-                              onChanged: null,
+                              checkColor: Colors.white,
+                              activeColor: Colors.amber,
+                              value: isCheckedNetflix,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  isCheckedNetflix = value!;
+                                });
+                              },
                             ),
                             Text("Netflix"),
                           ],
                         ),
                         Row(
-                          children: const [
+                          children: [
                             Checkbox(
-                              value: false,
-                              onChanged: null,
+                              checkColor: Colors.white,
+                              activeColor: Colors.amber,
+                              value: isCheckedDisney,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  isCheckedDisney = value!;
+                                });
+                              },
                             ),
                             Text("Disney+"),
                           ],
@@ -117,28 +147,46 @@ class _FilterByState extends State<FilterBy> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
-                              children: const [
+                              children: [
                                 Checkbox(
-                                  value: false,
-                                  onChanged: null,
+                                  checkColor: Colors.white,
+                                  activeColor: Colors.amber,
+                                  value: isCheckedAction,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      isCheckedAction = value!;
+                                    });
+                                  },
                                 ),
                                 Text("Action"),
                               ],
                             ),
                             Row(
-                              children: const [
+                              children: [
                                 Checkbox(
-                                  value: false,
-                                  onChanged: null,
+                                  checkColor: Colors.white,
+                                  activeColor: Colors.amber,
+                                  value: isCheckedScifi,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      isCheckedScifi = value!;
+                                    });
+                                  },
                                 ),
                                 Text("Sci-fi"),
                               ],
                             ),
                             Row(
-                              children: const [
+                              children: [
                                 Checkbox(
-                                  value: false,
-                                  onChanged: null,
+                                  checkColor: Colors.white,
+                                  activeColor: Colors.amber,
+                                  value: isCheckedHorror,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      isCheckedHorror = value!;
+                                    });
+                                  },
                                 ),
                                 Text("Horror"),
                               ],
@@ -149,28 +197,46 @@ class _FilterByState extends State<FilterBy> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
-                              children: const [
+                              children: [
                                 Checkbox(
-                                  value: false,
-                                  onChanged: null,
+                                  checkColor: Colors.white,
+                                  activeColor: Colors.amber,
+                                  value: isCheckedDram,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      isCheckedDram = value!;
+                                    });
+                                  },
                                 ),
                                 Text("Dram"),
                               ],
                             ),
                             Row(
-                              children: const [
+                              children: [
                                 Checkbox(
-                                  value: false,
-                                  onChanged: null,
+                                  checkColor: Colors.white,
+                                  activeColor: Colors.amber,
+                                  value: isCheckedComedy,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      isCheckedComedy = value!;
+                                    });
+                                  },
                                 ),
                                 Text("Comedy"),
                               ],
                             ),
                             Row(
-                              children: const [
+                              children: [
                                 Checkbox(
-                                  value: false,
-                                  onChanged: null,
+                                  checkColor: Colors.white,
+                                  activeColor: Colors.amber,
+                                  value: isCheckedAnimation,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      isCheckedAnimation = value!;
+                                    });
+                                  },
                                 ),
                                 Text("Animation"),
                               ],
@@ -209,7 +275,20 @@ class _FilterByState extends State<FilterBy> {
                               backgroundColor: MaterialStateProperty.all<Color>(
                                   Colors.amber)),
                           icon: const Icon(Icons.lock_reset),
-                          onPressed: null,
+                          onPressed: () {
+                            setState(() {
+                              isCheckedSeries = false;
+                              isCheckedMovies = false;
+                              isCheckedNetflix = false;
+                              isCheckedDisney = false;
+                              isCheckedAction = false;
+                              isCheckedDram = false;
+                              isCheckedScifi = false;
+                              isCheckedComedy = false;
+                              isCheckedHorror = false;
+                              isCheckedAnimation = false;
+                            });
+                          },
                           label: const Text("Reset"),
                         ),
                       ],

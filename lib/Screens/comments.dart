@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 
-class Comments extends StatelessWidget {
+class Comments extends StatefulWidget {
   static const routeName = '/comment';
 
   const Comments({Key? key}) : super(key: key);
+
+  @override
+  State<Comments> createState() => _CommentsState();
+}
+
+class _CommentsState extends State<Comments>{
+  List<String> commentArray = [];
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +43,9 @@ class Comments extends StatelessWidget {
                             Icons.comment,
                             color: Colors.black,
                           )),
+                      onChanged: (String value) {
+                        commentArray.add(value);
+                      },
                     ),
                   ],
                 ),
@@ -53,7 +63,8 @@ class Comments extends StatelessWidget {
                   children: [
                         Column(
                           children: [
-                            Text('Name Placeholder'),
+                            if (commentArray.length > 0)
+                            Text(commentArray.elementAt(0)),
                           ],
                         ),
                     SizedBox(height: 50),
@@ -69,3 +80,4 @@ class Comments extends StatelessWidget {
     );
   }
 }
+
