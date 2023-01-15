@@ -56,7 +56,7 @@ class FavoritesContentGrid extends StatelessWidget {
                 color: Colors.red,
                 child: const Center(
                   child: Text(
-                    "You can add contents from the Content Detail Pages",
+                    "You can add contents with Favorite buttons",
                     style: TextStyle(fontSize: 20),
                     textAlign: TextAlign.center,
                   ),
