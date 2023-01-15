@@ -1,8 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:se_380_project/Firebase/auth.dart';
 import 'package:se_380_project/Models/content.dart';
 import 'package:se_380_project/Providers/content_provider.dart';
 import 'package:se_380_project/Screens/content_detail_page.dart';
+
 class ContentInWatchList extends StatefulWidget {
   const ContentInWatchList({Key? key}) : super(key: key);
 
@@ -11,6 +15,7 @@ class ContentInWatchList extends StatefulWidget {
 }
 
 class _ContentInWatchListState extends State<ContentInWatchList> {
+  final Auth _authService = Auth();
   @override
   Widget build(BuildContext context) {
     final content = Provider.of<Content>(context);
@@ -26,7 +31,7 @@ class _ContentInWatchListState extends State<ContentInWatchList> {
                 size: 9,
               ),
               Text(
-                "${content.rate}/10",
+                "${content.rate.toStringAsFixed(1)}/10",
                 style: const TextStyle(color: Colors.white),
               ),
             ],
@@ -39,6 +44,7 @@ class _ContentInWatchListState extends State<ContentInWatchList> {
               setState(() {});
               provider.addFavsList(content, provider.isAddedFavList(content));
               content.favoriteStatus();
+              _authService.addToFirebaseFavs(content.name);
             },
           ),
           title: Text(content.name),
@@ -58,5 +64,3 @@ class _ContentInWatchListState extends State<ContentInWatchList> {
     );
   }
 }
-
-

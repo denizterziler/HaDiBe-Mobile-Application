@@ -11,7 +11,7 @@ class ContentProvider with ChangeNotifier {
       imageUrl:
           "https://upload.wikimedia.org/wikipedia/en/0/06/Ultimate_Matrix_Collection_poster.jpg",
       length: 136,
-      description: "The matrix is amazing",
+      description: "The Matrix is a 1999 science fiction action film written and directed by the Wachowskis. It is the first installment in The Matrix film series, starring Keanu Reeves, Laurence Fishburne, Carrie-Anne Moss, Hugo Weaving, and Joe Pantoliano, and depicts a dystopian future in which humanity is unknowingly trapped inside the Matrix, a simulated reality that intelligent machines have created to distract humans while using their bodies as an energy source.When computer programmer Thomas Anderson, under the hacker alias \"Neo\", uncovers the truth, he joins a rebellion against the machines along with other people who have been freed from the Matrix.",
       rate: 10.0,
       rateCount: 1,
       hadiBe: 0,
@@ -24,7 +24,7 @@ class ContentProvider with ChangeNotifier {
       imageUrl:
           "https://upload.wikimedia.org/wikipedia/tr/6/60/Dracula_afiş.jpg",
       length: 100,
-      description: "Dracula is awesome",
+      description: "Dracula was theatrically released in the United States on November 13, 1992, to positive reviews,though Keanu Reeves' performance and English accent received criticism.The film opened at #1 in the United States, and grossed \$215 million against a production budget of \$40 million. It was nominated for four Academy Awards, of which it won three for Best Costume Design, Best Sound Editing, and Best Makeup while also being nominated for Best Art Direction. Its score was composed by Wojciech Kilar and its closing credits theme \"Love Song for a Vampire\", written and performed by Annie Lennox, became an international success.",
       rate: 7.4,
       rateCount: 1,
       hadiBe: 0,
@@ -38,7 +38,7 @@ class ContentProvider with ChangeNotifier {
           "https://upload.wikimedia.org/wikipedia/tr/b/b3/Titanik_film.jpg",
       length: 150,
       description:
-          "Titanic was a British passenger liner, operated by the White Star Line, which sank in the North Atlantic Ocean ",
+          "Titanic is a 1997 American epic romance and disaster film directed, written, produced, and co-edited by James Cameron. Incorporating both historical and fictionalized aspects, it is based on accounts of the sinking of the RMS Titanic and stars Kate Winslet and Leonardo DiCaprio as members of different social classes who fall in love aboard the ship during its ill-fated maiden voyage. Also starring are Billy Zane, Kathy Bates, Frances Fisher, Gloria Stuart, Bernard Hill, Jonathan Hyde, Victor Garber, and Bill Paxton.",
       rate: 7.9,
       rateCount: 1,
       hadiBe: 0,
@@ -66,7 +66,7 @@ class ContentProvider with ChangeNotifier {
           "https://upload.wikimedia.org/wikipedia/en/a/af/Batman_Begins_Poster.jpg",
       length: 140,
       description:
-          "TBatman Begins is a 2005 superhero film directed by Christopher Nolan and written by Nolan and David S. Goyer.",
+          "Batman Begins is a 2005 superhero film directed by Christopher Nolan and written by Nolan and David S. Goyer. The film is based on the DC Comics character Batman, it stars Christian Bale as Bruce Wayne / Batman, with Michael Caine, Liam Neeson, Katie Holmes, Gary Oldman, Cillian Murphy, Tom Wilkinson, Rutger Hauer, Ken Watanabe, and Morgan Freeman in supporting roles. The film reboots the Batman film series, telling the origin story of Bruce Wayne from the death of his parents to his journey to become Batman and his fight to stop Ra's al Ghul and the Scarecrow from plunging Gotham City into chaos.",
       rate: 8.2,
       rateCount: 1,
       hadiBe: 0,
@@ -80,8 +80,7 @@ class ContentProvider with ChangeNotifier {
           "https://upload.wikimedia.org/wikipedia/en/1/1c/The_Dark_Knight_%282008_film%29.jpg",
       length: 152,
       description:
-          "The Dark Knight is a 2008 superhero film directed by Christopher Nolan from a screenplay he co-wrote with his brother Jonathan. Based on the DC Comics superhero, Batman, it is the sequel to Batman Begins (2005) and the second installment in The Dark Knight Trilogy. The plot follows the vigilante Batman, police lieutenant James Gordon, and district attorney Harvey Dent, who form an alliance to dismantle organized crime in Gotham City. Their efforts are derailed by the Joker, an anarchistic mastermind who seeks to test how far Batman will go to save the city from chaos. The ensemble cast includes Christian Bale, Michael Caine, Heath Ledger, Gary Oldman, Aaron Eckhart, Maggie Gyllenhaal, and Morgan Freeman."+
-              "The Dark Knight is a 2008 superhero film directed by Christopher Nolan from a screenplay he co-wrote with his brother Jonathan. Based on the DC Comics superhero, Batman, it is the sequel to Batman Begins (2005) and the second installment in The Dark Knight Trilogy. The plot follows the vigilante Batman, police lieutenant James Gordon, and district attorney Harvey Dent, who form an alliance to dismantle organized crime in Gotham City. Their efforts are derailed by the Joker, an anarchistic mastermind who seeks to test how far Batman will go to save the city from chaos. The ensemble cast includes Christian Bale, Michael Caine, Heath Ledger, Gary Oldman, Aaron Eckhart, Maggie Gyllenhaal, and Morgan Freeman.",
+          "The Dark Knight is a 2008 superhero film directed by Christopher Nolan from a screenplay he co-wrote with his brother Jonathan. Based on the DC Comics superhero, Batman, it is the sequel to Batman Begins (2005) and the second installment in The Dark Knight Trilogy. The plot follows the vigilante Batman, police lieutenant James Gordon, and district attorney Harvey Dent, who form an alliance to dismantle organized crime in Gotham City. Their efforts are derailed by the Joker, an anarchistic mastermind who seeks to test how far Batman will go to save the city from chaos. The ensemble cast includes Christian Bale, Michael Caine, Heath Ledger, Gary Oldman, Aaron Eckhart, Maggie Gyllenhaal, and Morgan Freeman.",
       rate: 9.0,
       rateCount: 1,
       hadiBe: 0,
@@ -101,6 +100,12 @@ class ContentProvider with ChangeNotifier {
       hadiBe: 0,
     ),
   ];
+  List<Content> sort(List<Content> list){
+    list.sort((a, b){
+      return b.rate.compareTo(a.rate);
+    });
+    return list;
+  }
   final List<Content> favList = [];
 
   void addFavsList(Content content, bool isAdded) {
@@ -111,7 +116,7 @@ class ContentProvider with ChangeNotifier {
     }
     notifyListeners();
   }
-
+  
   bool isAddedFavList(Content content) {
     return favList.contains(content);
   }

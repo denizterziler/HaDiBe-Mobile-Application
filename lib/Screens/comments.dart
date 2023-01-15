@@ -18,15 +18,15 @@ class _CommentsState extends State<Comments>{
       appBar: AppBar(
         backgroundColor: Colors.black.withOpacity(.75),
         centerTitle: true,
-        title: Text("Comments"),
+        title: const Text("Comments"),
       ),
       body: Container(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         color: Colors.black12,
         child: Center(
           child: ListView(
             children: [
-              SingleChildScrollView(
+              const SingleChildScrollView(
                 padding: EdgeInsets.fromLTRB(0, 10, 0, 40),
                 child: Text(
                   "Make a Comment: ",
@@ -36,21 +36,18 @@ class _CommentsState extends State<Comments>{
               ),
               Card(
                 child: Column(
-                  children: [
+                  children: const [
                     TextField(
                       decoration: InputDecoration(
                           prefixIcon: Icon(
                             Icons.comment,
                             color: Colors.black,
                           )),
-                      onChanged: (String value) {
-                        commentArray.add(value);
-                      },
                     ),
                   ],
                 ),
               ),
-              SingleChildScrollView(
+              const SingleChildScrollView(
                 padding: EdgeInsets.fromLTRB(0, 50, 0, 50),
                 child: Text(
                   "Comments: ",
