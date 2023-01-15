@@ -123,8 +123,8 @@ class ContentProvider with ChangeNotifier {
 
   final List<Content> likeList = [];
 
-  void addLikeList(Content content, bool isAdded) {
-    if (isAdded) {
+  void addLikeList(Content content, bool isAddedLikeList) {
+    if (isAddedLikeList) {
       likeList.remove(content);
     } else {
       likeList.add(content);
