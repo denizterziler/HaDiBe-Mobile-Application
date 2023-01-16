@@ -6,7 +6,7 @@ import 'package:se_380_project/Firebase/auth.dart';
 import 'package:se_380_project/Models/content.dart';
 import 'package:se_380_project/Providers/content_provider.dart';
 import 'package:se_380_project/Screens/content_detail_page.dart';
-
+///FİREBASE ENTEGRE DEĞİL///
 class ContentInList extends StatefulWidget {
   const ContentInList({super.key});
 

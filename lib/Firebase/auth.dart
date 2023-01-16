@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:se_380_project/Models/content.dart';
 
 class Auth {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -63,5 +64,13 @@ class Auth {
         'watchList' : FieldValue.arrayUnion([contentName])
       });
     }
+  }
+  getFavorites() async{
+    List<Content> favContents = [];
+    final firebaseUser = FirebaseAuth.instance.currentUser!;
+    DocumentReference documentReference = FirebaseFirestore.instance.collection('users').doc(firebaseUser.uid);
+    DocumentSnapshot doc = await documentReference.get();
+    List favNames = doc['favs'];
+
   }
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:se_380_project/Providers/content_provider.dart';
 import 'package:se_380_project/Widgets/content_in_list.dart';
-
+/// Firebase Entegre DEĞİL///
 class ContentGrid extends StatelessWidget {
   const ContentGrid({super.key});
 
