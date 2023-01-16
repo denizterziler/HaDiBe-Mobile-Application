@@ -64,7 +64,7 @@ class _CommentsState extends State<Comments>{
   }
   void saveComments(BuildContext context,{required String commentText, required int commentId, required String authorComment, required String name}) async {
     try {
-      await FirebaseFirestore.instance.collection("comments").doc(commentId.toString()).set({
+      await FirebaseFirestore.instance.collection("Comments").doc(commentId.toString()).set({
         "commentText": commentText,
         "commentId": commentId,
         "authorComment": authorComment,
