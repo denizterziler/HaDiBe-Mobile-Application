@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:se_380_project/FirebaseContent/contentDetailFb.dart';
+import 'package:se_380_project/Screens/content_detail_page.dart';
 import 'package:se_380_project/Screens/search.dart';
 import 'package:se_380_project/Widgets/content_grid.dart';
 import 'Screens/filter_by.dart';
@@ -17,13 +19,16 @@ class ListOfContents extends StatefulWidget {
 class _ListOfContentsState extends State<ListOfContents> {
   final CollectionReference _referenceContents =
       FirebaseFirestore.instance.collection('Contents');
-  late Future<QuerySnapshot> _futureData;
+  late Stream<QuerySnapshot> _streamData;
+
+  //late Future<QuerySnapshot> _futureData;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _futureData = _referenceContents.get();
+    _streamData = _referenceContents.snapshots();
+    // _futureData = _referenceContents.get();
     /*_futureData.then((value) {
       setState(() {
         _items = parseData(value);
@@ -38,7 +43,10 @@ class _ListOfContentsState extends State<ListOfContents> {
               'content_name': e['name'],
               'content_platform': e['platform'],
               'image_url': e['imageUrl'],
-              'content_rate':e['rate'],
+              'content_rate': e['rate'],
+              'con_category': e['category'],
+              'con_description': e['description'],
+              'con_hadiBe': e['hadiBe'],
             })
         .toList();
     return listItems;
@@ -47,7 +55,6 @@ class _ListOfContentsState extends State<ListOfContents> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: Colors.black.withOpacity(.75),
@@ -90,8 +97,8 @@ class _ListOfContentsState extends State<ListOfContents> {
       ),*/
         body: Container(
           color: Colors.black38,
-          child: FutureBuilder<QuerySnapshot>(
-            future: _futureData,
+          child: StreamBuilder<QuerySnapshot>(
+            stream: _streamData,
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (snapshot.hasError) {
                 return const Text("Some error");
@@ -123,7 +130,10 @@ class _ListOfContentsState extends State<ListOfContents> {
             footer: GridTileBar(
               trailing: Row(
                 children: [
-                  Text(thisItem['content_rate'].toString(),style: const TextStyle(color: Colors.white),),
+                  Text(
+                    thisItem['content_rate'].toString(),
+                    style: const TextStyle(color: Colors.white),
+                  ),
                   const Icon(
                     Icons.star,
                     size: 9,
@@ -133,25 +143,17 @@ class _ListOfContentsState extends State<ListOfContents> {
               title: Text(thisItem['content_name']),
               backgroundColor: Colors.black54,
             ),
-            child: Image.network(
-              thisItem['image_url'],
-              fit: BoxFit.cover,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context)
+                    .pushNamed(ContentDetailFb.routeName, arguments: thisItem);
+              },
+              child: Image.network(
+                thisItem['image_url'],
+                fit: BoxFit.cover,
+              ),
             ),
           ),
-        );
-      },
-    );
-  }
-
-  ListView buildListView(List<Map<dynamic, dynamic>> items) {
-    return ListView.builder(
-      itemCount: items.length,
-      itemBuilder: (context, index) {
-        Map thisItem = items[index];
-        return ListTile(
-          leading: Image.network(thisItem['image_url']),
-          title: Text(thisItem['content_name']),
-          subtitle: Text(thisItem['content_platform']),
         );
       },
     );

@@ -5,7 +5,7 @@ import 'package:se_380_project/Models/content.dart';
 import 'package:se_380_project/Providers/content_provider.dart';
 import 'package:se_380_project/Screens/comments.dart';
 import 'package:se_380_project/Screens/rate.dart';
-
+///FİREBASE ENTEGRE DEĞİL///
 class ContentDetailPage extends StatefulWidget {
   static const routeName = '/content-detail';
 
