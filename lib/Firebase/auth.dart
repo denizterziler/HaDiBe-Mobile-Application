@@ -71,7 +71,19 @@ class Auth {
       });
     }
   }
-
+  getFavoritesList() async{
+    final firebaseUser = FirebaseAuth.instance.currentUser!;
+    DocumentReference documentReference =
+    FirebaseFirestore.instance.collection('Users').doc(firebaseUser.uid);
+    DocumentSnapshot doc = await documentReference.get();
+    List favs = doc['favs'];
+    if(favs.isNotEmpty){
+      return favs;
+    }
+    else{
+      return 'Favorites is empty';
+    }
+  }
 
 
 }
