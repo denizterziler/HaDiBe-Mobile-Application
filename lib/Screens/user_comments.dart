@@ -17,19 +17,24 @@ class _UserCommentsState extends State<UserComments> {
   void initState() {
     super.initState();
     _getUser();
+    _getUserComments();
   }
 
   _getUser() async {
     _user = await FirebaseAuth.instance.currentUser;
-    _getUserComments();
+    if(_user != null) {
+      final userDoc = await FirebaseFirestore.instance.collection('Users').doc(_user.uid).get();
+      setState(() {
+        _user = userDoc.get('userName');
+      });
+    }
   }
+
 
   _getUserComments() async {
     if (_user != null) {
       QuerySnapshot snapshot = await FirebaseFirestore.instance
-          .collection('comments')
-          .where('authorComment', isEqualTo: _user.email)
-          .get();
+          .collection('Comments').where('authorComment', isEqualTo: _user.userName).get();
       if(snapshot.docs.isNotEmpty){
         setState(() {
           _userComments = snapshot.docs.map((doc) => doc['commentText']).cast<String>().toList();
@@ -37,6 +42,7 @@ class _UserCommentsState extends State<UserComments> {
       }
     }
   }
+
 
   @override
   Widget build(BuildContext context) {

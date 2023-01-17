@@ -59,19 +59,19 @@ class _CommentsState extends State<Comments>{
     setState(() {
       commentArray.add(_controller.text);
       likes.add(Like(isLiked: false));
-      saveComments(context,commentText: _controller.text, commentId: commentArray.length -1, authorComment: _username, name: _name);
+      saveComments(commentText: _controller.text, commentId: commentArray.length -1, authorComment: _username, name: _name);
     });
   }
-  void saveComments(BuildContext context,{required String commentText, required int commentId, required String authorComment, required String name}) async {
+  void saveComments({required String commentText, required int commentId, required String authorComment, required String name}) async {
     try {
-      await FirebaseFirestore.instance.collection("Comments").doc(commentId.toString()).set({
+      await FirebaseFirestore.instance.collection("Comments").add({
         "commentText": commentText,
         "commentId": commentId,
         "authorComment": authorComment,
         "name": name,
       });
     } catch (e) {
-      // Handle errors here
+// Handle errors here
       print(e.toString());
     }
   }
