@@ -10,13 +10,15 @@ class Comments extends StatefulWidget {
 
 class _CommentsState extends State<Comments> {
   FirebaseAuth _auth = FirebaseAuth.instance;
-  FirebaseUser _user;
+  var _user;
   List<String> _userComments = [];
 
   @override
   void initState() {
     super.initState();
-    _getUser();
+    if(_user != null){
+      _getUserComments();
+    }
   }
 
   _getUser() async {
@@ -25,13 +27,17 @@ class _CommentsState extends State<Comments> {
   }
 
   _getUserComments() async {
-    QuerySnapshot snapshot = await FirebaseFirestore.instance
-        .collection('comments')
-        .where('authorComment', isEqualTo: _user.email)
-        .get();
-    setState(() {
-      _userComments = snapshot.docs.map((doc) => doc.data()['commentText']).cast<String>().toList();
-    });
+    if (_user != null) {
+      QuerySnapshot snapshot = await FirebaseFirestore.instance
+          .collection('comments')
+          .where('authorComment', isEqualTo: _user.email)
+          .get();
+      if(snapshot.docs.isNotEmpty){
+        setState(() {
+          _userComments = snapshot.docs.map((doc) => doc['commentText']).cast<String>().toList();
+        });
+      }
+    }
   }
 
 
