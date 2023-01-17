@@ -1,12 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:se_380_project/Firebase/auth.dart';
-import 'package:se_380_project/Models/content.dart';
-import 'package:se_380_project/Providers/content_provider.dart';
-import 'package:se_380_project/Screens/comments.dart';
-import 'package:se_380_project/Screens/rate.dart';
+import 'package:se_380_project/FirebaseContent/firebaseRate.dart';
+
 
 class ContentDetailFb extends StatefulWidget {
   static const routeName = '/content-detail-fb';
@@ -27,6 +24,18 @@ class _ContentDetailFbState extends State<ContentDetailFb> {
     DocumentSnapshot doc = await documentReference.get();
     List favList = doc['favs'];
     if (favList.contains(contentName) == true) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  Future<bool> isInWatchList(String contentName) async {
+    final firebaseUser = FirebaseAuth.instance.currentUser!;
+    DocumentReference documentReference =
+    FirebaseFirestore.instance.collection('Users').doc(firebaseUser.uid);
+    DocumentSnapshot doc = await documentReference.get();
+    List watchList = doc['watchList'];
+    if (watchList.contains(contentName) == true) {
       return true;
     } else {
       return false;
@@ -81,6 +90,71 @@ class _ContentDetailFbState extends State<ContentDetailFb> {
               }),
         ],
       ),
+      bottomNavigationBar: ListTile(
+        tileColor: Colors.black54,
+        title: Row(
+          children: [
+            Expanded(
+              child: ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor:
+                    MaterialStateProperty.all<Color>(Colors.black)),
+                onPressed: () {
+
+                },
+                child: const Text("Comment",
+                    style: TextStyle(color: Colors.white)),
+              ),
+            ),
+            Expanded(
+              child: ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor:
+                    MaterialStateProperty.all<Color>(Colors.black)),
+                onPressed: () {
+                  Navigator.of(context).pushNamed(FirebaseRate.routeName,
+                      arguments: content);
+                },
+                child: const Text("Rate"),
+              ),
+            ),
+            Expanded(
+              child: StreamBuilder<Object>(
+                  stream: FirebaseFirestore.instance
+                      .collection('Users')
+                      .doc(firebaseUser.uid)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    return FutureBuilder(
+                        future: isInWatchList(content['content_name']),
+                        builder: (BuildContext context, AsyncSnapshot snapshot) {
+                          if (snapshot.data == true) {
+                            return ElevatedButton(
+                              style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.black)),
+                                onPressed: () {
+                                  setState(() {
+                                    _authService
+                                        .addToFirebaseWatchList(content['content_name']);
+                                  });
+                                },
+                              child: const Text("- List"),);
+                          } else {
+                            return ElevatedButton(
+                              style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.black)),
+                              onPressed: () {
+                                  setState(() {
+                                    _authService
+                                        .addToFirebaseWatchList(content['content_name']);
+                                  });
+                                },
+                                child: const Text("+ List"),);
+                          }
+                        });
+                  }),
+            ),
+          ],
+        ),
+      ),
       body: Container(
         color: Colors.grey,
         child: ListView(
@@ -95,45 +169,54 @@ class _ContentDetailFbState extends State<ContentDetailFb> {
               padding: const EdgeInsets.all(25.0),
               child: Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(30.0),
-                      child: Container(
-                        color: Colors.black,
-                        alignment: Alignment.center,
-                        constraints: const BoxConstraints(
-                          maxWidth: 400,
-                          maxHeight: 50,
-                        ),
-                        child: Text.rich(
-                          TextSpan(
-                            children: <InlineSpan>[
-                              const WidgetSpan(
-                                  child: Icon(
-                                Icons.star,
-                                color: Colors.yellow,
-                                size: 20,
-                              )),
-                              WidgetSpan(
-                                  child: Container(
+                  StreamBuilder(
+                    stream: FirebaseFirestore.instance.collection('Contents').doc(content['con_id']).snapshots(),
+                      builder:(context, snapshot) {
+                        if(snapshot.hasData){
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(30.0),
+                              child: Container(
                                 color: Colors.black,
-                                padding: const EdgeInsets.all(1.0),
-                                child: const Text("   "),
-                              )),
-                              TextSpan(
-                                text:
-                                    'Rate of ${content['content_name']} is ${content['content_rate']}/10',
+                                alignment: Alignment.center,
+                                constraints: const BoxConstraints(
+                                  maxWidth: 400,
+                                  maxHeight: 50,
+                                ),
+                                child: Text.rich(
+                                  TextSpan(
+                                    children: <InlineSpan>[
+                                      const WidgetSpan(
+                                          child: Icon(
+                                            Icons.star,
+                                            color: Colors.yellow,
+                                            size: 20,
+                                          )),
+                                      WidgetSpan(
+                                          child: Container(
+                                            color: Colors.black,
+                                            padding: const EdgeInsets.all(1.0),
+                                            child: const Text("   "),
+                                          )),
+                                      TextSpan(
+                                        text:
+                                        'Rate of ${content['content_name']} is ${content['content_rate']}/10',
+                                      ),
+                                    ],
+                                  ),
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                      fontSize: 20, color: Colors.white),
+                                ),
                               ),
-                            ],
-                          ),
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                              fontSize: 20, color: Colors.white),
-                        ),
-                      ),
-                    ),
-                  ),
+                            ),
+                          );
+                        }
+                        else{
+                          return const Text("Error");
+                        }
+                      }),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: ClipRRect(
@@ -173,6 +256,101 @@ class _ContentDetailFbState extends State<ContentDetailFb> {
                       ),
                     ),
                   ),
+                  StreamBuilder<Object>(
+                      stream: FirebaseFirestore.instance
+                          .collection('Users')
+                          .doc(firebaseUser.uid)
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        return FutureBuilder(
+                            future: isInWatchList(content['content_name']),
+                            builder:
+                                (BuildContext context, AsyncSnapshot snapshot) {
+                              if (snapshot.data == true) {
+                                return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(30.0),
+                                    child: Container(
+                                      color: Colors.black,
+                                      alignment: Alignment.center,
+                                      constraints: const BoxConstraints(
+                                        maxWidth: 400,
+                                        maxHeight: 50,
+                                      ),
+                                      child: Text.rich(
+                                        TextSpan(
+                                          children: <InlineSpan>[
+                                            const WidgetSpan(
+                                                child: Icon(
+                                                  Icons.list,
+                                                  color: Colors.red,
+                                                  size: 20,
+                                                )),
+                                            WidgetSpan(
+                                                child: Container(
+                                                  color: Colors.black,
+                                                  padding:
+                                                  const EdgeInsets.all(1.0),
+                                                  child: const Text("   "),
+                                                )),
+                                            TextSpan(
+                                              text:
+                                              '${content['content_name']} is in your List',
+                                            ),
+                                          ],
+                                        ),
+                                        textAlign: TextAlign.center,
+                                        style: const TextStyle(
+                                            fontSize: 20, color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(30.0),
+                                    child: Container(
+                                      color: Colors.black,
+                                      alignment: Alignment.center,
+                                      constraints: const BoxConstraints(
+                                        maxWidth: 400,
+                                        maxHeight: 50,
+                                      ),
+                                      child: Text.rich(
+                                        TextSpan(
+                                          children: <InlineSpan>[
+                                            const WidgetSpan(
+                                                child: Icon(
+                                                  Icons.list,
+                                                  color: Colors.white,
+                                                  size: 20,
+                                                )),
+                                            WidgetSpan(
+                                                child: Container(
+                                                  color: Colors.black,
+                                                  padding:
+                                                  const EdgeInsets.all(1.0),
+                                                  child: const Text("   "),
+                                                )),
+                                            TextSpan(
+                                              text:
+                                              '${content['content_name']} is not in your List',
+                                            ),
+                                          ],
+                                        ),
+                                        textAlign: TextAlign.center,
+                                        style: const TextStyle(
+                                            fontSize: 20, color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }
+                            });
+                      }),
                   StreamBuilder<Object>(
                       stream: FirebaseFirestore.instance
                           .collection('Users')

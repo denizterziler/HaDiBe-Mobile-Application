@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:se_380_project/FirebaseContent/contentDetailFb.dart';
+import 'package:se_380_project/FirebaseContent/firebaseRate.dart';
 import 'package:se_380_project/Screens/comments.dart';
 import 'package:se_380_project/Screens/favorites.dart';
 import 'package:se_380_project/Screens/login_page.dart';
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
         ),
         home: const LoginPage(),
         routes: {
+          FirebaseRate.routeName:(context) => FirebaseRate(),
           ContentDetailFb.routeName:(context) => ContentDetailFb(),
           ListOfContents.routeName: (context) => ListOfContents(),
           ContentDetailPage.routeName: (context) => const ContentDetailPage(),

@@ -4,7 +4,8 @@ import 'package:se_380_project/Firebase/auth.dart';
 import 'package:se_380_project/Models/content.dart';
 import 'package:se_380_project/Screens/comments.dart';
 import 'package:se_380_project/Screens/favorites.dart';
-import 'package:se_380_project/Screens/firebaseFavorites.dart';
+import 'package:se_380_project/FirebaseContent/firebaseFavorites.dart';
+import 'package:se_380_project/FirebaseContent/firebaseWatchList.dart';
 import 'package:se_380_project/Screens/login_page.dart';
 import 'package:se_380_project/Screens/profile_page.dart';
 import 'package:se_380_project/Screens/watch_list.dart';
@@ -117,9 +118,14 @@ class Menu extends StatelessWidget {
                 child: ElevatedButton(
                   style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.amber)),
                   onPressed: () {
-                    Navigator.of(context).push(
+                    /*Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => const WatchListPage(),
+                      ),
+                    );*/
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) =>  FirebaseWatchList(),
                       ),
                     );
                   },

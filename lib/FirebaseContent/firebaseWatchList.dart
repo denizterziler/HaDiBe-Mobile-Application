@@ -7,25 +7,37 @@ import 'package:se_380_project/Screens/content_detail_page.dart';
 import 'package:se_380_project/Screens/search.dart';
 import 'package:se_380_project/Widgets/content_grid.dart';
 
-class FirebaseFavoriteList extends StatefulWidget {
+class FirebaseWatchList extends StatefulWidget {
   static const routeName = '/list-of-contents';
 
-  FirebaseFavoriteList({Key? key}) : super(key: key);
+  FirebaseWatchList({Key? key}) : super(key: key);
 
   @override
-  State<FirebaseFavoriteList> createState() => _FirebaseFavoriteListState();
+  State<FirebaseWatchList> createState() => _FirebaseWatchListState();
 }
 
-class _FirebaseFavoriteListState extends State<FirebaseFavoriteList> {
+class _FirebaseWatchListState extends State<FirebaseWatchList> {
   final CollectionReference _referenceContents =
-      FirebaseFirestore.instance.collection('Contents');
+  FirebaseFirestore.instance.collection('Contents');
   late Stream<QuerySnapshot> _streamData;
   final Auth _authService = Auth();
   late Map favMap;
+  Future<bool> isInWatchList(String contentName) async {
+    final firebaseUser = FirebaseAuth.instance.currentUser!;
+    DocumentReference documentReference =
+    FirebaseFirestore.instance.collection('Users').doc(firebaseUser.uid);
+    DocumentSnapshot doc = await documentReference.get();
+    List watchList = doc['watchList'];
+    if (watchList.contains(contentName) == true) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   Future<bool> isFavorite(String contentName) async {
     final firebaseUser = FirebaseAuth.instance.currentUser!;
     DocumentReference documentReference =
-        FirebaseFirestore.instance.collection('Users').doc(firebaseUser.uid);
+    FirebaseFirestore.instance.collection('Users').doc(firebaseUser.uid);
     DocumentSnapshot doc = await documentReference.get();
     List favList = doc['favs'];
     if (favList.contains(contentName) == true) {
@@ -34,14 +46,7 @@ class _FirebaseFavoriteListState extends State<FirebaseFavoriteList> {
       return false;
     }
   }
-  getFavs() async{
-    final firebaseUser = FirebaseAuth.instance.currentUser!;
-    DocumentReference documentReference =
-    FirebaseFirestore.instance.collection('Users').doc(firebaseUser.uid);
-    DocumentSnapshot doc = await documentReference.get();
-    List favList = doc['favs'];
-    return favList;
-  }
+
   @override
   void initState() {
 
@@ -53,14 +58,14 @@ class _FirebaseFavoriteListState extends State<FirebaseFavoriteList> {
     List<QueryDocumentSnapshot> listDocs = querySnapshot.docs;
     List<Map> listItems = listDocs
         .map((e) => {
-              'content_name': e['name'],
-              'content_platform': e['platform'],
-              'image_url': e['imageUrl'],
-              'content_rate': e['rate'],
-              'con_category': e['category'],
-              'con_description': e['description'],
-              'con_hadiBe': e['hadiBe'],
-            })
+      'content_name': e['name'],
+      'content_platform': e['platform'],
+      'image_url': e['imageUrl'],
+      'content_rate': e['rate'],
+      'con_category': e['category'],
+      'con_description': e['description'],
+      'con_hadiBe': e['hadiBe'],
+    })
         .toList();
     return listItems;
   }
@@ -71,7 +76,7 @@ class _FirebaseFavoriteListState extends State<FirebaseFavoriteList> {
         appBar: AppBar(
           backgroundColor: Colors.black.withOpacity(.75),
           centerTitle: true,
-          title: const Text("Favorites"),
+          title: const Text("Watch List"),
         ),
         body: Container(
           color: Colors.black38,
@@ -83,9 +88,6 @@ class _FirebaseFavoriteListState extends State<FirebaseFavoriteList> {
               }
               if (snapshot.hasData) {
                 List<Map> items = parseData(snapshot.data);
-                for(int i=0;i<items.length;i++){
-
-                }
                 return buildGridView(items);
               }
               return const Center(child: CircularProgressIndicator());
@@ -106,7 +108,7 @@ class _FirebaseFavoriteListState extends State<FirebaseFavoriteList> {
       itemBuilder: (context, index) {
         Map thisItem = items[index];
         return FutureBuilder(
-          future: isFavorite(thisItem['content_name']),
+          future: isInWatchList(thisItem['content_name']),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.data == true) {
               return ClipRRect(
@@ -116,7 +118,7 @@ class _FirebaseFavoriteListState extends State<FirebaseFavoriteList> {
                     trailing: Row(
                       children: [
                         Text(
-                          thisItem['content_rate'].toString(),
+                          thisItem['content_rate'].toStringAsFixed(2),
                           style: const TextStyle(color: Colors.white),
                         ),
                         const Icon(
@@ -178,7 +180,7 @@ class _FirebaseFavoriteListState extends State<FirebaseFavoriteList> {
                 ),
               );
             } else {
-              return const Center(child: Text("Not Fav"));
+              return const Center(child: Text("Not In Watch List"));
             }
           },
         );

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:se_380_project/Firebase/auth.dart';
 import 'package:se_380_project/FirebaseContent/contentDetailFb.dart';
+import 'package:se_380_project/FirebaseContent/firebaseSearch.dart';
 import 'package:se_380_project/Screens/content_detail_page.dart';
 import 'package:se_380_project/Screens/search.dart';
 import 'package:se_380_project/Widgets/content_grid.dart';
@@ -27,7 +28,7 @@ class _ListOfContentsState extends State<ListOfContents> {
   Future<bool> isFavorite(String contentName) async {
     final firebaseUser = FirebaseAuth.instance.currentUser!;
     DocumentReference documentReference =
-    FirebaseFirestore.instance.collection('Users').doc(firebaseUser.uid);
+        FirebaseFirestore.instance.collection('Users').doc(firebaseUser.uid);
     DocumentSnapshot doc = await documentReference.get();
     List favList = doc['favs'];
     if (favList.contains(contentName) == true) {
@@ -36,19 +37,12 @@ class _ListOfContentsState extends State<ListOfContents> {
       return false;
     }
   }
-  //late Future<QuerySnapshot> _futureData;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _streamData = _referenceContents.snapshots();
-    // _futureData = _referenceContents.get();
-    /*_futureData.then((value) {
-      setState(() {
-        _items = parseData(value);
-      });
-    });*/
   }
 
   List<Map> parseData(QuerySnapshot querySnapshot) {
@@ -62,6 +56,8 @@ class _ListOfContentsState extends State<ListOfContents> {
               'con_category': e['category'],
               'con_description': e['description'],
               'con_hadiBe': e['hadiBe'],
+              'con_rate_count': e['rateCount'],
+              'con_id':e['id'],
             })
         .toList();
     return listItems;
@@ -87,10 +83,10 @@ class _ListOfContentsState extends State<ListOfContents> {
           ),
           actions: [
             IconButton(
-              iconSize: 30,
+              iconSize: 40,
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const SearchPage(),
+                  builder: (context) => FirebaseSearch(),
                 ));
               },
               icon: const Icon(Icons.search),
@@ -106,10 +102,6 @@ class _ListOfContentsState extends State<ListOfContents> {
             ),
           ],
         ),
-        /*body: Container(
-        color: Colors.black38,
-        child:  const ContentGrid(),
-      ),*/
         body: Container(
           color: Colors.black38,
           child: StreamBuilder<QuerySnapshot>(
@@ -120,7 +112,6 @@ class _ListOfContentsState extends State<ListOfContents> {
               }
               if (snapshot.hasData) {
                 List<Map> items = parseData(snapshot.data);
-                //return buildListView(items);
                 return buildGridView(items);
               }
               return const Center(child: CircularProgressIndicator());
@@ -148,7 +139,7 @@ class _ListOfContentsState extends State<ListOfContents> {
               trailing: Row(
                 children: [
                   Text(
-                    thisItem['content_rate'].toString(),
+                    thisItem['content_rate'].toStringAsFixed(2),
                     style: const TextStyle(color: Colors.white),
                   ),
                   const Icon(
@@ -165,13 +156,14 @@ class _ListOfContentsState extends State<ListOfContents> {
                   builder: (context, snapshot) {
                     return FutureBuilder(
                         future: isFavorite(thisItem['content_name']),
-                        builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
                           if (snapshot.data == true) {
                             return IconButton(
                                 onPressed: () {
                                   setState(() {
-                                    _authService
-                                        .addToFirebaseFavs(thisItem['content_name']);
+                                    _authService.addToFirebaseFavs(
+                                        thisItem['content_name']);
                                   });
                                 },
                                 icon: const Icon(
@@ -182,8 +174,8 @@ class _ListOfContentsState extends State<ListOfContents> {
                             return IconButton(
                                 onPressed: () {
                                   setState(() {
-                                    _authService
-                                        .addToFirebaseFavs(thisItem['content_name']);
+                                    _authService.addToFirebaseFavs(
+                                        thisItem['content_name']);
                                   });
                                 },
                                 icon: const Icon(
