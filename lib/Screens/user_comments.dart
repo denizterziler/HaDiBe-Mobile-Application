@@ -3,12 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 
-class Comments extends StatefulWidget {
+class UserComments extends StatefulWidget {
   @override
-  State<Comments> createState() => _CommentsState();
+  State<UserComments> createState() => _UserCommentsState();
 }
 
-class _CommentsState extends State<Comments> {
+class _UserCommentsState extends State<UserComments> {
   FirebaseAuth _auth = FirebaseAuth.instance;
   var _user;
   List<String> _userComments = [];
@@ -16,13 +16,11 @@ class _CommentsState extends State<Comments> {
   @override
   void initState() {
     super.initState();
-    if(_user != null){
-      _getUserComments();
-    }
+    _getUser();
   }
 
   _getUser() async {
-    //_user = await FirebaseAuth.instance.currentUser;
+    _user = await FirebaseAuth.instance.currentUser;
     _getUserComments();
   }
 
@@ -40,7 +38,6 @@ class _CommentsState extends State<Comments> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,7 +50,9 @@ class _CommentsState extends State<Comments> {
         padding: const EdgeInsets.all(20),
         color: Colors.black12,
         child: Center(
-          child: ListView.builder(
+          child: _user != null
+              ? _userComments.isNotEmpty
+              ? ListView.builder(
             itemCount: _userComments.length,
             itemBuilder: (context, index) {
               return Card(
@@ -63,9 +62,12 @@ class _CommentsState extends State<Comments> {
                 ),
               );
             },
-          ),
+          )
+              : Text("You haven't made any comments yet.")
+              : Text("Please wait, loading..."),
         ),
       ),
     );
   }
 }
+

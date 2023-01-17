@@ -78,8 +78,8 @@ class _CommentsState extends State<Comments>{
 
   @override
   Widget build(BuildContext context) {
-    final loadedContent = ModalRoute.of(context)?.settings.arguments as Content;
-    _name = loadedContent.name ?? '';
+    var content = ModalRoute.of(context)?.settings.arguments as Map;
+    _name = content["content_name"];
     _fetch();
     return Scaffold(
         appBar: AppBar(

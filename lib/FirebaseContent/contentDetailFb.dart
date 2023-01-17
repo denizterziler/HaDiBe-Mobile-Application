@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:se_380_project/Firebase/auth.dart';
 import 'package:se_380_project/FirebaseContent/firebaseRate.dart';
 
+import '../Screens/comments.dart';
+
 
 class ContentDetailFb extends StatefulWidget {
   static const routeName = '/content-detail-fb';
@@ -100,7 +102,8 @@ class _ContentDetailFbState extends State<ContentDetailFb> {
                     backgroundColor:
                     MaterialStateProperty.all<Color>(Colors.black)),
                 onPressed: () {
-
+                  Navigator.of(context).pushNamed(Comments.routeName,
+                      arguments: content);
                 },
                 child: const Text("Comment",
                     style: TextStyle(color: Colors.white)),

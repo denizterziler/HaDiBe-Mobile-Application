@@ -8,6 +8,7 @@ import 'package:se_380_project/FirebaseContent/firebaseFavorites.dart';
 import 'package:se_380_project/FirebaseContent/firebaseWatchList.dart';
 import 'package:se_380_project/Screens/login_page.dart';
 import 'package:se_380_project/Screens/profile_page.dart';
+import 'package:se_380_project/Screens/user_comments.dart';
 import 'package:se_380_project/Screens/watch_list.dart';
 
 
@@ -56,7 +57,7 @@ class Menu extends StatelessWidget {
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => const Comments(),
+                        builder: (context) => UserComments(),
                       ),
                     );
                   },
