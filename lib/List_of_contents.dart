@@ -58,6 +58,8 @@ class _ListOfContentsState extends State<ListOfContents> {
               'con_hadiBe': e['hadiBe'],
               'con_rate_count': e['rateCount'],
               'con_id':e['id'],
+              'con_type':e['type'],
+              'con_length':e['length'],
             })
         .toList();
     return listItems;
@@ -123,7 +125,7 @@ class _ListOfContentsState extends State<ListOfContents> {
   GridView buildGridView(List<Map<dynamic, dynamic>> items) {
     final firebaseUser = FirebaseAuth.instance.currentUser!;
     return GridView.builder(
-      padding: const EdgeInsets.only(top: 5.0,bottom: 5.0),
+      padding: const EdgeInsets.only(top: 5.0,bottom: 5.0,left: 3.0,right: 3.0),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 1,
         childAspectRatio: 2 / 2.2,
@@ -141,11 +143,11 @@ class _ListOfContentsState extends State<ListOfContents> {
                 children: [
                   Text(
                     thisItem['content_rate'].toStringAsFixed(2),
-                    style: const TextStyle(color: Colors.white),
+                    style: const TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: Colors.white),
                   ),
                   const Icon(
                     Icons.star,
-                    size: 9,
+                    size: 15,
                   ),
                 ],
               ),
@@ -186,7 +188,7 @@ class _ListOfContentsState extends State<ListOfContents> {
                           }
                         });
                   }),
-              title: Text(thisItem['content_name']),
+              title: Text(thisItem['content_name'],style: const TextStyle(fontSize: 17,fontWeight: FontWeight.bold),),
               backgroundColor: Colors.black54,
             ),
             child: GestureDetector(

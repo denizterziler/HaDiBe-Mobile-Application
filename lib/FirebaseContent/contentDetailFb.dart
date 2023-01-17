@@ -160,15 +160,69 @@ class _ContentDetailFbState extends State<ContentDetailFb> {
         child: ListView(
           children: [
             Center(
-              child: Image.network(
-                content['image_url'],
-                scale: 1.2,
+              child: Container(
+                padding: const EdgeInsets.only(top: 8.0),
+                width: 300,
+                height: 350,
+                child: Image.network(
+                  content['image_url'],
+                  //scale: 1.2,
+                  fit: BoxFit.fill,
+                ),
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(25.0),
               child: Column(
                 children: [
+                  StreamBuilder(
+                      stream: FirebaseFirestore.instance.collection('Contents').doc(content['con_id']).snapshots(),
+                      builder:(context, snapshot) {
+                        if(snapshot.hasData){
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(30.0),
+                              child: Container(
+                                color: Colors.black,
+                                alignment: Alignment.center,
+                                constraints: const BoxConstraints(
+                                  maxWidth: 400,
+                                  maxHeight: 50,
+                                ),
+                                child: Text.rich(
+                                  TextSpan(
+                                    children: <InlineSpan>[
+                                      const WidgetSpan(
+                                          child: Icon(
+                                            Icons.alarm,
+                                            color: Colors.amber,
+                                            size: 20,
+                                          )),
+                                      WidgetSpan(
+                                          child: Container(
+                                            color: Colors.black,
+                                            padding: const EdgeInsets.all(1.0),
+                                            child: const Text("   "),
+                                          )),
+                                      TextSpan(
+                                        text:
+                                        content['con_type'] == 'Tv Series' ? '${content['con_length'].toString()} Episodes': '${content['con_length'].toString()} Minutes',
+                                      ),
+                                    ],
+                                  ),
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                      fontSize: 20, color: Colors.white),
+                                ),
+                              ),
+                            ),
+                          );
+                        }
+                        else{
+                          return const Text("Error");
+                        }
+                      }),
                   StreamBuilder(
                     stream: FirebaseFirestore.instance.collection('Contents').doc(content['con_id']).snapshots(),
                       builder:(context, snapshot) {
@@ -201,7 +255,7 @@ class _ContentDetailFbState extends State<ContentDetailFb> {
                                           )),
                                       TextSpan(
                                         text:
-                                        'Rate of ${content['content_name']} is ${content['content_rate']}/10',
+                                        'Rate : ${content['content_rate'].toStringAsFixed(2)}/10',
                                       ),
                                     ],
                                   ),
@@ -294,9 +348,9 @@ class _ContentDetailFbState extends State<ContentDetailFb> {
                                                   const EdgeInsets.all(1.0),
                                                   child: const Text("   "),
                                                 )),
-                                            TextSpan(
+                                            const TextSpan(
                                               text:
-                                              '${content['content_name']} is in your List',
+                                              'In your List',
                                             ),
                                           ],
                                         ),
@@ -335,9 +389,9 @@ class _ContentDetailFbState extends State<ContentDetailFb> {
                                                   const EdgeInsets.all(1.0),
                                                   child: const Text("   "),
                                                 )),
-                                            TextSpan(
+                                            const TextSpan(
                                               text:
-                                              '${content['content_name']} is not in your List',
+                                              'Not in your List',
                                             ),
                                           ],
                                         ),
@@ -389,9 +443,9 @@ class _ContentDetailFbState extends State<ContentDetailFb> {
                                                   const EdgeInsets.all(1.0),
                                               child: const Text("   "),
                                             )),
-                                            TextSpan(
+                                            const TextSpan(
                                               text:
-                                                  '${content['content_name']} is in your Favorites',
+                                                  'In your Favorites',
                                             ),
                                           ],
                                         ),
@@ -430,9 +484,9 @@ class _ContentDetailFbState extends State<ContentDetailFb> {
                                                   const EdgeInsets.all(1.0),
                                               child: const Text("   "),
                                             )),
-                                            TextSpan(
+                                            const TextSpan(
                                               text:
-                                                  '${content['content_name']} is not in your Favorites',
+                                                  'Not in your Favorites',
                                             ),
                                           ],
                                         ),
@@ -560,9 +614,9 @@ class _ContentDetailFbState extends State<ContentDetailFb> {
                                 padding: const EdgeInsets.all(1.0),
                                 child: const Text("   "),
                               )),
-                              TextSpan(
+                              const TextSpan(
                                 text:
-                                    'Description of ${content['content_name']}',
+                                    'Description',
                               ),
                             ],
                           ),

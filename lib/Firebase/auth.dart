@@ -18,7 +18,7 @@ class Auth {
   }
 
   getUser(user, context) async {
-    var firebaseUser = await FirebaseAuth.instance.currentUser;
+    var firebaseUser = FirebaseAuth.instance.currentUser;
     _firestore
         .collection('Users')
         .doc(firebaseUser?.uid)
@@ -42,7 +42,7 @@ class Auth {
   addToFirebaseFavs(String contentName) async {
     final firebaseUser = FirebaseAuth.instance.currentUser!;
     DocumentReference documentReference =
-        FirebaseFirestore.instance.collection('Users').doc(firebaseUser.uid);
+      FirebaseFirestore.instance.collection('Users').doc(firebaseUser.uid);
     DocumentSnapshot doc = await documentReference.get();
     List favs = doc['favs'];
     if (favs.contains(contentName) == true) {
@@ -71,19 +71,4 @@ class Auth {
       });
     }
   }
-  getFavoritesList() async{
-    final firebaseUser = FirebaseAuth.instance.currentUser!;
-    DocumentReference documentReference =
-    FirebaseFirestore.instance.collection('Users').doc(firebaseUser.uid);
-    DocumentSnapshot doc = await documentReference.get();
-    List favs = doc['favs'];
-    if(favs.isNotEmpty){
-      return favs;
-    }
-    else{
-      return 'Favorites is empty';
-    }
-  }
-
-
 }
