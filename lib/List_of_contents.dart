@@ -86,7 +86,7 @@ class _ListOfContentsState extends State<ListOfContents> {
               iconSize: 40,
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => FirebaseSearch(),
+                  builder: (context) => const FirebaseSearch(),
                 ));
               },
               icon: const Icon(Icons.search),
@@ -123,9 +123,10 @@ class _ListOfContentsState extends State<ListOfContents> {
   GridView buildGridView(List<Map<dynamic, dynamic>> items) {
     final firebaseUser = FirebaseAuth.instance.currentUser!;
     return GridView.builder(
+      padding: const EdgeInsets.only(top: 5.0,bottom: 5.0),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 1,
-        childAspectRatio: 3 / 2,
+        childAspectRatio: 2 / 2.2,
         crossAxisSpacing: 10,
         mainAxisSpacing: 10,
       ),
@@ -195,7 +196,7 @@ class _ListOfContentsState extends State<ListOfContents> {
               },
               child: Image.network(
                 thisItem['image_url'],
-                fit: BoxFit.cover,
+                fit: BoxFit.fill,
               ),
             ),
           ),
