@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:se_380_project/Firebase/auth.dart';
 import 'package:se_380_project/FirebaseContent/contentDetailFb.dart';
 import 'package:se_380_project/Screens/content_detail_page.dart';
 import 'package:se_380_project/Screens/search.dart';
@@ -20,7 +22,20 @@ class _ListOfContentsState extends State<ListOfContents> {
   final CollectionReference _referenceContents =
       FirebaseFirestore.instance.collection('Contents');
   late Stream<QuerySnapshot> _streamData;
+  final Auth _authService = Auth();
 
+  Future<bool> isFavorite(String contentName) async {
+    final firebaseUser = FirebaseAuth.instance.currentUser!;
+    DocumentReference documentReference =
+    FirebaseFirestore.instance.collection('Users').doc(firebaseUser.uid);
+    DocumentSnapshot doc = await documentReference.get();
+    List favList = doc['favs'];
+    if (favList.contains(contentName) == true) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   //late Future<QuerySnapshot> _futureData;
 
   @override
@@ -115,6 +130,7 @@ class _ListOfContentsState extends State<ListOfContents> {
   }
 
   GridView buildGridView(List<Map<dynamic, dynamic>> items) {
+    final firebaseUser = FirebaseAuth.instance.currentUser!;
     return GridView.builder(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 1,
@@ -122,6 +138,7 @@ class _ListOfContentsState extends State<ListOfContents> {
         crossAxisSpacing: 10,
         mainAxisSpacing: 10,
       ),
+      itemCount: items.length,
       itemBuilder: (context, index) {
         Map thisItem = items[index];
         return ClipRRect(
@@ -140,6 +157,42 @@ class _ListOfContentsState extends State<ListOfContents> {
                   ),
                 ],
               ),
+              leading: StreamBuilder<Object>(
+                  stream: FirebaseFirestore.instance
+                      .collection('Users')
+                      .doc(firebaseUser.uid)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    return FutureBuilder(
+                        future: isFavorite(thisItem['content_name']),
+                        builder: (BuildContext context, AsyncSnapshot snapshot) {
+                          if (snapshot.data == true) {
+                            return IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _authService
+                                        .addToFirebaseFavs(thisItem['content_name']);
+                                  });
+                                },
+                                icon: const Icon(
+                                  Icons.favorite,
+                                  color: Colors.red,
+                                ));
+                          } else {
+                            return IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _authService
+                                        .addToFirebaseFavs(thisItem['content_name']);
+                                  });
+                                },
+                                icon: const Icon(
+                                  Icons.favorite_border,
+                                  color: Colors.white,
+                                ));
+                          }
+                        });
+                  }),
               title: Text(thisItem['content_name']),
               backgroundColor: Colors.black54,
             ),

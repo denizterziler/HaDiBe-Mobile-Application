@@ -22,7 +22,7 @@ class _CommentsState extends State<Comments> {
   }
 
   _getUser() async {
-    _user = await FirebaseAuth.instance.currentUser;
+    //_user = await FirebaseAuth.instance.currentUser;
     _getUserComments();
   }
 
