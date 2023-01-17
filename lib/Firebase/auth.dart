@@ -55,7 +55,6 @@ class Auth {
       });
     }
   }
-
   addToFirebaseWatchList(String contentName) async {
     final firebaseUser = FirebaseAuth.instance.currentUser!;
     DocumentReference documentReference =
@@ -73,25 +72,6 @@ class Auth {
     }
   }
 
-  getFavorites() async {
-    List<Content> favContents = [];
-    final firebaseUser = FirebaseAuth.instance.currentUser!;
-    DocumentReference documentReference =
-        FirebaseFirestore.instance.collection('users').doc(firebaseUser.uid);
-    DocumentSnapshot doc = await documentReference.get();
-    List favNames = doc['favs'];
-  }
 
-  Future<bool> isFavorite(String contentName) async {
-    final firebaseUser = FirebaseAuth.instance.currentUser!;
-    DocumentReference documentReference =
-    FirebaseFirestore.instance.collection('Users').doc(firebaseUser.uid);
-    DocumentSnapshot doc = await documentReference.get();
-    List favList = doc['favs'];
-    if (favList.contains(contentName) == true) {
-      return true;
-    } else {
-     return false;
-    }
-  }
+
 }
