@@ -530,6 +530,7 @@ class _FilterByState extends State<FilterBy> {
                                       filterData.keys.where((element) =>
                                           filterData[element] == true));
                                   isSaved = true;
+                                  _saved(context);
                                 },
                                 label: const Text("Save"),
                               ),
@@ -549,7 +550,7 @@ class _FilterByState extends State<FilterBy> {
                                 onPressed: () {
                                   setState(() {
                                     _authService.resetFilters();
-
+                                    _reset(context);
                                     filterData = {
                                       "Series": false,
                                       "Movies": false,
@@ -577,6 +578,18 @@ class _FilterByState extends State<FilterBy> {
             );
           }),
     );
+  }
+  void _saved(BuildContext context) {
+    const snackBar = SnackBar(
+        content: Text("Your filters has been saved")
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+  void _reset(BuildContext context) {
+    const snackBar = SnackBar(
+        content: Text("Your filters has been reset")
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   isTrue(String filterName) async {

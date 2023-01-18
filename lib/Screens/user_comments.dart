@@ -47,9 +47,6 @@ class _UserCommentsState extends State<UserComments> {
       }
     }
   }
-
-
-
   @override
   Widget build(BuildContext context) {
     _getUser();
@@ -68,16 +65,23 @@ class _UserCommentsState extends State<UserComments> {
               ? ListView.builder(
             itemCount: _userComments.length,
             itemBuilder: (context, index) {
-              return Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text("Content: " + _userComments[index]['name'] + "\n" + " Your Comment: " + _userComments[index]['commentText']),
-                ),
+              return Column(
+                children: [
+                  ListTile(
+                    subtitle: Text("${_userComments[index]['name']}"),
+                    title: Text("Comment: ${_userComments[index]['commentText']}"),
+                    /*child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text("${"Content: " + _userComments[index]['name']}\n Your Comment: " + _userComments[index]['commentText']),
+                    ),*/
+                  ),
+                  const Divider(color: Colors.blueGrey,),
+                ],
               );
             },
           )
-              : Text("You haven't made any comments yet.")
-              : Text("Please wait, loading..."),
+              : const Text("You haven't made any comments yet.")
+              : const Text("Please wait, loading..."),
         ),
       ),
     );

@@ -52,7 +52,6 @@ class _ListOfContentsState extends State<ListOfContents> {
     // TODO: implement initState
     super.initState();
     _streamData = _referenceContents.snapshots();
-    print("init");
   }
 
   List<Map> parseData(QuerySnapshot querySnapshot) {
@@ -125,10 +124,6 @@ class _ListOfContentsState extends State<ListOfContents> {
               }
               if (snapshot.hasData) {
                 List<Map> items = parseData(snapshot.data);
-                print('filterData before future $filterData');
-                for (int i = 0; i < items.length; i++) {
-                  print('items before future ${items[i]['content_name']}');
-                }
                 return FutureBuilder(
                     future: filterItems(items, filterData),
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -275,24 +270,5 @@ class _ListOfContentsState extends State<ListOfContents> {
       }
     }
     return filteredItems;
-    /*print("INSIDE FILTER ITEMS");
-    List<Map> filteredList = <Map>[];
-    List<String> returnedList = filterData.keys
-        .where((element) => filterData[element] == true)
-        .toList();
-    print("returned list : $returnedList");
-    for (var item in returnedList) {
-      for (int i = 0; i < items.length; i++) {
-        if(items[i]['content_name'] == item || items[i]['platform'] == item) {
-          filteredList.add(items[i]);
-        }
-      }
-    }
-    if(filteredList.isEmpty){
-      return items;
-    }
-    else{
-    }
-    return filteredList;*/
   }
 }

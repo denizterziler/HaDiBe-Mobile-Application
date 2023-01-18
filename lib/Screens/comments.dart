@@ -15,14 +15,18 @@ class Comments extends StatefulWidget {
   final String authorComment;
   final String name;
 
-
-  const Comments({Key? key, this.commentText ="",  this.commentId = 0, this.authorComment = "", this.name = ""}) : super(key: key);
+  const Comments({Key? key,
+    this.commentText = "",
+    this.commentId = 0,
+    this.authorComment = "",
+    this.name = ""})
+      : super(key: key);
 
   @override
   State<Comments> createState() => _CommentsState();
 }
 
-class _CommentsState extends State<Comments>{
+class _CommentsState extends State<Comments> {
   String _username = '';
   String _commentText = '';
   int _commentId = 0;
@@ -40,8 +44,9 @@ class _CommentsState extends State<Comments>{
     });
   }
 
-
   List<String> commentArray = [];
+  List<String> usersArray = [];
+
   TextEditingController _controller = TextEditingController();
   List<Like> likes = [];
 
@@ -55,14 +60,41 @@ class _CommentsState extends State<Comments>{
   }
 
   _getContentComments() async {
-    if(_name != null && _name.isNotEmpty){
+    if (_name != null && _name.isNotEmpty) {
       QuerySnapshot snapshot = await FirebaseFirestore.instance
-          .collection('Comments').where('name', isEqualTo: _name).get();
-      if(snapshot.docs.isNotEmpty){
+          .collection('Comments')
+          .where('name', isEqualTo: _name)
+          .get();
+      if (snapshot.docs.isNotEmpty) {
         setState(() {
-          commentArray = snapshot.docs.map((doc) => doc['commentText']).cast<String>().toList();
-          if(likes.length < commentArray.length) {
-            for(int i = likes.length; i < commentArray.length; i++) {
+          commentArray = snapshot.docs
+              .map((doc) => doc['commentText'])
+              .cast<String>()
+              .toList();
+          if (likes.length < commentArray.length) {
+            for (int i = likes.length; i < commentArray.length; i++) {
+              likes.add(Like(isLiked: false));
+            }
+          }
+        });
+      }
+    }
+  }
+
+  _getContentCommentsUsers() async {
+    if (_name != null && _name.isNotEmpty) {
+      QuerySnapshot snapshot = await FirebaseFirestore.instance
+          .collection('Comments')
+          .where('name', isEqualTo: _name)
+          .get();
+      if (snapshot.docs.isNotEmpty) {
+        setState(() {
+          usersArray = snapshot.docs
+              .map((doc) => doc['authorComment'])
+              .cast<String>()
+              .toList();
+          if (likes.length < commentArray.length) {
+            for (int i = likes.length; i < commentArray.length; i++) {
               likes.add(Like(isLiked: false));
             }
           }
@@ -75,11 +107,18 @@ class _CommentsState extends State<Comments>{
     setState(() {
       commentArray.add(_controller.text);
       likes.add(Like(isLiked: false));
-      saveComments(commentText: _controller.text, commentId: commentArray.length -1, authorComment: _username, name: _name);
+      saveComments(
+          commentText: _controller.text,
+          commentId: commentArray.length - 1,
+          authorComment: _username,
+          name: _name);
     });
   }
-  
-  void saveComments({required String commentText, required int commentId, required String authorComment, required String name}) async {
+
+  void saveComments({required String commentText,
+    required int commentId,
+    required String authorComment,
+    required String name}) async {
     try {
       await FirebaseFirestore.instance.collection("Comments").add({
         "commentText": commentText,
@@ -95,9 +134,14 @@ class _CommentsState extends State<Comments>{
 
   @override
   Widget build(BuildContext context) {
-    var content = ModalRoute.of(context)?.settings.arguments as Map;
+    final firebaseUser = FirebaseAuth.instance.currentUser!;
+    var content = ModalRoute
+        .of(context)
+        ?.settings
+        .arguments as Map;
     _name = content["content_name"];
     _getContentComments();
+    _getContentCommentsUsers();
     _fetch();
     return Scaffold(
         appBar: AppBar(
@@ -106,79 +150,97 @@ class _CommentsState extends State<Comments>{
           title: const Text("Comments"),
         ),
         body: Container(
-        padding: const EdgeInsets.all(20),
-    color: Colors.black12,
-    child: Center(
-    child: ListView(
-    children: [
-    const SingleChildScrollView(
-    padding: EdgeInsets.fromLTRB(0, 10, 0, 40),
-    child: Text(
-    "Make a Comment: ",
-    style: TextStyle(color: Colors.black, fontSize: 24
-    ),
-    textAlign: TextAlign.center,
-    ),
-    ),
-    Card(
-    child: Column(
-    children:  [
-    TextField(
-    decoration: InputDecoration(
-    prefixIcon: Icon(Icons.comment, color: Colors.black)
-    ),
-    controller: _controller,
-    ),
-    ElevatedButton(
-    onPressed: (){
-    addComment();
-    },
-    child: Text('Add Comment'),
-    )
-    ],
-    ),
-    ),
-    const SingleChildScrollView(
-    padding: EdgeInsets.fromLTRB(0, 50, 0, 50),
-    child: Text(
-    "Comments: ",
-    style: TextStyle(color: Colors.black, fontSize: 24),
-    textAlign: TextAlign.center,
-    ),
-    ),
-    Card(
-    child: Column(
-    children: [
-    ListView.builder(
-    shrinkWrap: true,
-    itemCount: commentArray.length,
-    itemBuilder: (BuildContext context, int index) {
-    return Column(
-    children: [
-    Text('$_username: ${commentArray.elementAt(index)}'),
-    ElevatedButton(
-    onPressed: () {
-    setState(() {
-    likes[index].isLiked = !likes[index].isLiked;
-    });
-    },
-    child: Text(likes[index].isLiked ? 'Unlike' : 'Like'),
-    ),
-    ],
-    );
-    },
-    physics: ScrollPhysics()
-    ),
-    ],
-    ),
-    ),
-    ],
-    ),
-    ),
-    )
-    );
+          padding: const EdgeInsets.all(20),
+          color: Colors.black12,
+          child: Center(
+            child: Column(
+              children: [
+                Column(children: [
+                  const Text(
+                    "Make a Comment: ",
+                    style: TextStyle(color: Colors.black, fontSize: 24),
+                    textAlign: TextAlign.center,
+                  ),
+                  Card(
+                    child: Column(
+                      children: [
+                        TextField(
+                          decoration: const InputDecoration(
+                              prefixIcon:
+                              Icon(Icons.comment, color: Colors.black)),
+                          controller: _controller,
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            addComment();
+                          },
+                          child: const Text('Add Comment'),
+                        )
+                      ],
+                    ),
+                  ),
+                ],),
+                const SizedBox(
+                  height: 40,
+                ),
+                const Text(
+                  "Comments: ",
+                  style: TextStyle(color: Colors.black, fontSize: 24),
+                  textAlign: TextAlign.center,
+                ),
+                Expanded(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Container(
+                      color: Colors.black38,
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: commentArray.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Column(
+                              children: [
+                                ListTile(
+                                  title: Text(
+                                      commentArray.elementAt(index)
+                                  ),
+                                  subtitle: Text(usersArray.elementAt(index)),
+                                  trailing: IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        likes[index].isLiked =
+                                        !likes[index].isLiked;
+                                      });
+                                    },
+                                    icon: likes[index].isLiked ? const Icon(Icons.insert_emoticon_rounded,color: Colors.amber,) : const Icon(Icons.emoji_emotions_outlined),
+                                  ),
+                                ),
+                                const Divider(thickness: 2,color: Colors.black,),
+                              ],
+                            );
+                            /*return Column(
+                              children: [
+                                Text(
+                                    '${usersArray.elementAt(index)}: ${commentArray.elementAt(index)}'),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      likes[index].isLiked =
+                                          !likes[index].isLiked;
+                                    });
+                                  },
+                                  child: Text(
+                                      likes[index].isLiked ? 'Unlike' : 'Like'),
+                                ),
+                              ],
+                            );*/
+                          },
+                          physics: const ScrollPhysics()),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ));
   }
 }
-
-
-
