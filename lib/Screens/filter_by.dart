@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:se_380_project/Firebase/auth.dart';
 
 class FilterBy extends StatefulWidget {
   const FilterBy({Key? key}) : super(key: key);
@@ -8,6 +11,8 @@ class FilterBy extends StatefulWidget {
 }
 
 class _FilterByState extends State<FilterBy> {
+  final Auth _authService = Auth();
+
   bool Series = false;
   bool Movies = false;
   bool Netflix = false;
@@ -15,333 +20,575 @@ class _FilterByState extends State<FilterBy> {
   bool Action = false;
   bool Dram = false;
   bool Sci_fi = false;
-  bool Comedy = false;
+  bool Comics = false;
   bool Horror = false;
   bool Animation = false;
-  Map<String, dynamic> filterData = {
-    "Series": false,
-    "Movies": false,
-    "Netflix": false,
-    "Disney": false,
-    "Action": false,
-    "Dram": false,
-    "Sci_fi": false,
-    "Comedy": false,
-    "Horror": false,
-    "Animation": false
-  };
+  bool isSaved = false;
 
+  final firebaseUser = FirebaseAuth.instance.currentUser!;
+
+  late var _streamData;
+  Map<String, dynamic> filterData = {};
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _streamData = FirebaseFirestore.instance
+        .collection('Users')
+        .doc(firebaseUser.uid)
+        .snapshots();
+  }
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black.withOpacity(.75),
         centerTitle: true,
         title: const Text("Filter"),
         leading: IconButton(
-          onPressed: (){
-            Navigator.pop(context,filterData);
+          onPressed: () {
+            if(isSaved == true){
+              Navigator.pop(context, filterData);
+            }
+              else{
+              Navigator.pop(context);
+            }
           },
           icon: const Icon(Icons.arrow_back),
         ),
       ),
-      body: Container(
-        color: Colors.black38,
-        child: Center(
-          child: ListView(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
+      body: StreamBuilder<Object>(
+          stream: _streamData,
+          builder: (context, snapshot) {
+            return Container(
+              color: Colors.black38,
+              child: Center(
+                child: ListView(
                   children: [
-                    const Text(
-                      "Type",
-                      style: TextStyle(fontSize: 40),
-                    ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0) +
-                          const EdgeInsets.only(top: 25.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
                         children: [
-                          Row(
-                            children: [
-                              Checkbox(
-                                checkColor: Colors.white,
-                                activeColor: Colors.amber,
-                                value: Series,
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    Series = value!;
-                                    filterData["Series"] =
-                                        Series;
-                                  });
-                                },
-                              ),
-                              const Text("Series"),
-                            ],
+                          const Text(
+                            "Type",
+                            style: TextStyle(fontSize: 40),
                           ),
-                          Row(
-                            children: [
-                              Checkbox(
-                                checkColor: Colors.white,
-                                activeColor: Colors.amber,
-                                value: Movies,
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    Movies = value!;
-                                    filterData["Movies"] =
-                                        Movies;
-                                  });
-                                },
-                              ),
-                              const Text("Movies"),
-                            ],
+                          Padding(
+                            padding: const EdgeInsets.all(8.0) +
+                                const EdgeInsets.only(top: 25.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Row(
+                                  children: [
+                                    FutureBuilder(
+                                        future: isTrue("Series"),
+                                        builder: (BuildContext context,
+                                            AsyncSnapshot snapshot) {
+                                          if (snapshot.data == true) {
+                                            return IconButton(
+                                              onPressed: () {
+                                                setState(() {
+                                                  Series = snapshot.data!;
+                                                  filterData["Series"] = Series;
+                                                  _authService.FirebaseFiltersList("Series");
+                                                });
+                                              },
+                                              icon: const Icon(Icons.check_box),
+                                            );
+                                          }
+                                          if (snapshot.data == false) {
+                                            return IconButton(
+                                              onPressed: () {
+                                                setState(() {
+                                                  Series = snapshot.data!;
+                                                  filterData["Series"] = Series;
+                                                  _authService.FirebaseFiltersList("Series");
+                                                });
+                                              },
+                                              icon: const Icon(
+                                                Icons.check_box_outline_blank,
+                                                color: Colors.black38,
+                                              ),
+                                            );
+                                          }
+                                          return const Text("Some error");
+                                        }),
+                                    const Text("Series"),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    FutureBuilder(
+                                        future: isTrue("Movies"),
+                                        builder: (BuildContext context,
+                                            AsyncSnapshot snapshot) {
+                                          if (snapshot.data == true) {
+                                            return IconButton(
+                                              onPressed: () {
+                                                setState(() {
+                                                  Movies = snapshot.data!;
+                                                  filterData["Movies"] = Movies;
+                                                  _authService.FirebaseFiltersList("Movies");
+                                                });
+                                              },
+                                              icon: const Icon(Icons.check_box),
+                                            );
+                                          }
+                                          if (snapshot.data == false) {
+                                            return IconButton(
+                                              onPressed: () {
+                                                setState(() {
+                                                  Movies = snapshot.data!;
+                                                  filterData["Movies"] = Movies;
+                                                  _authService.FirebaseFiltersList("Movies");
+                                                });
+                                              },
+                                              icon: const Icon(
+                                                Icons.check_box_outline_blank,
+                                                color: Colors.black38,
+                                              ),
+                                            );
+                                          }
+                                          return const Text("Some error");
+                                        }),
+                                    const Text("Movies"),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
                     ),
+                    Column(
+                      children: [
+                        const Text(
+                          "Platform",
+                          style: TextStyle(fontSize: 40),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0) +
+                              const EdgeInsets.only(top: 25.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Row(
+                                children: [
+                                  FutureBuilder(
+                                      future: isTrue("Netflix"),
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot snapshot) {
+                                        if (snapshot.data == true) {
+                                          return IconButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                Netflix = snapshot.data!;
+                                                filterData["Netflix"] = Netflix;
+                                                _authService.FirebaseFiltersList("Netflix");
+                                              });
+                                            },
+                                            icon: const Icon(Icons.check_box),
+                                          );
+                                        }
+                                        if (snapshot.data == false) {
+                                          return IconButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                Netflix = snapshot.data!;
+                                                filterData["Netflix"] = Netflix;
+                                                _authService.FirebaseFiltersList("Netflix");
+                                              });
+                                            },
+                                            icon: const Icon(
+                                              Icons.check_box_outline_blank,
+                                              color: Colors.black38,
+                                            ),
+                                          );
+                                        }
+                                        return const Text("Some error");
+                                      }),
+                                  const Text("Netflix"),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  FutureBuilder(
+                                      future: isTrue("Disney"),
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot snapshot) {
+                                        if (snapshot.data == true) {
+                                          return IconButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                Disney = snapshot.data!;
+                                                filterData["Disney"] = Disney;
+                                                _authService.FirebaseFiltersList("Disney");
+                                              });
+                                            },
+                                            icon: const Icon(Icons.check_box),
+                                          );
+                                        }
+                                        if (snapshot.data == false) {
+                                          return IconButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                Disney = snapshot.data!;
+                                                filterData["Disney"] = Disney;
+                                                _authService.FirebaseFiltersList("Disney");
+                                              });
+                                            },
+                                            icon: const Icon(
+                                              Icons.check_box_outline_blank,
+                                              color: Colors.black38,
+                                            ),
+                                          );
+                                        }
+                                        return const Text("Some error");
+                                      }),
+                                  const Text("Disney+"),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        const Text(
+                          "Category",
+                          style: TextStyle(fontSize: 40),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0) +
+                              const EdgeInsets.only(top: 25.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      FutureBuilder(
+                                          future: isTrue("Action"),
+                                          builder: (BuildContext context,
+                                              AsyncSnapshot snapshot) {
+                                            if (snapshot.data == true) {
+                                              return IconButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    Action = snapshot.data!;
+                                                    filterData["Action"] = Action;
+                                                    _authService.FirebaseFiltersList("Action");
+                                                  });
+                                                },
+                                                icon: const Icon(Icons.check_box),
+                                              );
+                                            }
+                                            if (snapshot.data == false) {
+                                              return IconButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    Action = snapshot.data!;
+                                                    filterData["Action"] = Action;
+                                                    _authService.FirebaseFiltersList("Action");
+                                                  });
+                                                },
+                                                icon: const Icon(
+                                                  Icons.check_box_outline_blank,
+                                                  color: Colors.black38,
+                                                ),
+                                              );
+                                            }
+                                            return const Text("Some error");
+                                          }),
+                                      const Text("Action"),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      FutureBuilder(
+                                          future: isTrue("Sci_fi"),
+                                          builder: (BuildContext context,
+                                              AsyncSnapshot snapshot) {
+                                            if (snapshot.data == true) {
+                                              return IconButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    Sci_fi = snapshot.data!;
+                                                    filterData["Sci_fi"] = Sci_fi;
+                                                    _authService.FirebaseFiltersList("Sci_fi");
+                                                  });
+                                                },
+                                                icon: const Icon(Icons.check_box),
+                                              );
+                                            }
+                                            if (snapshot.data == false) {
+                                              return IconButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    Sci_fi = snapshot.data!;
+                                                    filterData["Sci_fi"] = Sci_fi;
+                                                    _authService.FirebaseFiltersList("Sci_fi");
+                                                  });
+                                                },
+                                                icon: const Icon(
+                                                  Icons.check_box_outline_blank,
+                                                  color: Colors.black38,
+                                                ),
+                                              );
+                                            }
+                                            return const Text("Some error");
+                                          }),
+                                      const Text("Sci-fi"),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      FutureBuilder(
+                                          future: isTrue("Horror"),
+                                          builder: (BuildContext context,
+                                              AsyncSnapshot snapshot) {
+                                            if (snapshot.data == true) {
+                                              return IconButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    Horror = snapshot.data!;
+                                                    filterData["Horror"] = Horror;
+                                                    _authService.FirebaseFiltersList("Horror");
+                                                  });
+                                                },
+                                                icon: const Icon(Icons.check_box),
+                                              );
+                                            }
+                                            if (snapshot.data == false) {
+                                              return IconButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    Horror = snapshot.data!;
+                                                    filterData["Horror"] = Horror;
+                                                    _authService.FirebaseFiltersList("Horror");
+                                                  });
+                                                },
+                                                icon: const Icon(
+                                                  Icons.check_box_outline_blank,
+                                                  color: Colors.black38,
+                                                ),
+                                              );
+                                            }
+                                            return const Text("Some error");
+                                          }),
+                                      const Text("Horror"),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      FutureBuilder(
+                                          future: isTrue("Dram"),
+                                          builder: (BuildContext context,
+                                              AsyncSnapshot snapshot) {
+                                            if (snapshot.data == true) {
+                                              return IconButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    Dram = snapshot.data!;
+                                                    filterData["Dram"] = Dram;
+                                                    _authService.FirebaseFiltersList("Dram");
+                                                  });
+                                                },
+                                                icon: const Icon(Icons.check_box),
+                                              );
+                                            }
+                                            if (snapshot.data == false) {
+                                              return IconButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    Dram = snapshot.data!;
+                                                    filterData["Dram"] = Dram;
+                                                    _authService.FirebaseFiltersList("Dram");
+                                                  });
+                                                },
+                                                icon: const Icon(
+                                                  Icons.check_box_outline_blank,
+                                                  color: Colors.black38,
+                                                ),
+                                              );
+                                            }
+                                            return const Text("Some error");
+                                          }),
+                                      const Text("Dram"),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      FutureBuilder(
+                                          future: isTrue("Comics"),
+                                          builder: (BuildContext context,
+                                              AsyncSnapshot snapshot) {
+                                            if (snapshot.data == true) {
+                                              return IconButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    Comics = snapshot.data!;
+                                                    filterData["Comics"] = Comics;
+                                                    _authService.FirebaseFiltersList("Comics");
+                                                  });
+                                                },
+                                                icon: const Icon(Icons.check_box),
+                                              );
+                                            }
+                                            if (snapshot.data == false) {
+                                              return IconButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    Comics = snapshot.data!;
+                                                    filterData["Comics"] = Comics;
+                                                    _authService.FirebaseFiltersList("Comics");
+                                                  });
+                                                },
+                                                icon: const Icon(
+                                                  Icons.check_box_outline_blank,
+                                                  color: Colors.black38,
+                                                ),
+                                              );
+                                            }
+                                            return const Text("Some error");
+                                          }),
+                                      const Text("Comics"),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      FutureBuilder(
+                                          future: isTrue("Animation"),
+                                          builder: (BuildContext context,
+                                              AsyncSnapshot snapshot) {
+                                            if (snapshot.data == true) {
+                                              return IconButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    Animation = snapshot.data!;
+                                                    filterData["Animation"] = Animation;
+                                                    _authService.FirebaseFiltersList("Animation");
+                                                  });
+                                                },
+                                                icon: const Icon(Icons.check_box),
+                                              );
+                                            }
+                                            if (snapshot.data == false) {
+                                              return IconButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    Animation = snapshot.data!;
+                                                    filterData["Animation"] = Animation;
+                                                    _authService.FirebaseFiltersList("Animation");
+                                                  });
+                                                },
+                                                icon: const Icon(
+                                                  Icons.check_box_outline_blank,
+                                                  color: Colors.black38,
+                                                ),
+                                              );
+                                            }
+                                            return const Text("Some error");
+                                          }),
+                                      const Text("Animation"),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20.0),
+                          child: Column(
+                            children: [
+                              ElevatedButton.icon(
+                                style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.amber)),
+                                icon: const Icon(Icons.save),
+                                onPressed: () {
+                                  print(filterData.keys.where((element) =>
+                                      filterData[element] == true));
+                                  _authService.addToFirebaseFilters(
+                                      filterData.keys.where((element) =>
+                                          filterData[element] == true));
+                                  isSaved = true;
+                                },
+                                label: const Text("Save"),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20.0),
+                          child: Column(
+                            children: [
+                              ElevatedButton.icon(
+                                style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.amber)),
+                                icon: const Icon(Icons.lock_reset),
+                                onPressed: () {
+                                  setState(() {
+                                    _authService.resetFilters();
+
+                                    filterData = {
+                                      "Series": false,
+                                      "Movies": false,
+                                      "Netflix": false,
+                                      "Disney": false,
+                                      "Action": false,
+                                      "Dram": false,
+                                      "Sci_fi": false,
+                                      "Comics": false,
+                                      "Horror": false,
+                                      "Animation": false
+                                    };
+                                  });
+                                },
+                                label: const Text("Reset"),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    )
                   ],
                 ),
               ),
-              Column(
-                children: [
-                  const Text(
-                    "Platform",
-                    style: TextStyle(fontSize: 40),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0) +
-                        const EdgeInsets.only(top: 25.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Row(
-                          children: [
-                            Checkbox(
-                              checkColor: Colors.white,
-                              activeColor: Colors.amber,
-                              value: Netflix,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  Netflix = value!;
-                                  filterData["Netflix"] = Netflix;
-                                });
-                              },
-                            ),
-                            const Text("Netflix"),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Checkbox(
-                              checkColor: Colors.white,
-                              activeColor: Colors.amber,
-                              value: Disney,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  Disney = value!;
-                                  filterData["Disney"] = Disney;
-                                });
-                              },
-                            ),
-                            const Text("Disney+"),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              Column(
-                children: [
-                  const Text(
-                    "Category",
-                    style: TextStyle(fontSize: 40),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0) +
-                        const EdgeInsets.only(top: 25.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Checkbox(
-                                  checkColor: Colors.white,
-                                  activeColor: Colors.amber,
-                                  value: Action,
-                                  onChanged: (bool? value) {
-                                    setState(() {
-                                      Action = value!;
-                                      filterData["Action"] = Action;
-                                    });
-                                  },
-                                ),
-                                const Text("Action"),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Checkbox(
-                                  checkColor: Colors.white,
-                                  activeColor: Colors.amber,
-                                  value: Sci_fi,
-                                  onChanged: (bool? value) {
-                                    setState(() {
-                                      Sci_fi = value!;
-                                      filterData["Sci_fi"] = Sci_fi;
-                                    });
-                                  },
-                                ),
-                                const Text("Sci-fi"),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Checkbox(
-                                  checkColor: Colors.white,
-                                  activeColor: Colors.amber,
-                                  value: Horror,
-                                  onChanged: (bool? value) {
-                                    setState(() {
-                                      Horror = value!;
-                                      filterData["Horror"] = Horror;
-                                    });
-                                  },
-                                ),
-                                const Text("Horror"),
-                              ],
-                            ),
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Checkbox(
-                                  checkColor: Colors.white,
-                                  activeColor: Colors.amber,
-                                  value: Dram,
-                                  onChanged: (bool? value) {
-                                    setState(() {
-                                      Dram = value!;
-                                      filterData["Dram"] = Dram;
-                                    });
-                                  },
-                                ),
-                                const Text("Dram"),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Checkbox(
-                                  checkColor: Colors.white,
-                                  activeColor: Colors.amber,
-                                  value: Comedy,
-                                  onChanged: (bool? value) {
-                                    setState(() {
-                                      Comedy = value!;
-                                      filterData["Comedy"] = Comedy;
-                                    });
-                                  },
-                                ),
-                                const Text("Comedy"),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Checkbox(
-                                  checkColor: Colors.white,
-                                  activeColor: Colors.amber,
-                                  value: Animation,
-                                  onChanged: (bool? value) {
-                                    setState(() {
-                                      Animation = value!;
-                                      filterData["Animation"] = Animation;
-                                    });
-                                  },
-                                ),
-                                const Text("Animation"),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20.0),
-                    child: Column(
-                      children: [
-                        ElevatedButton.icon(
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  Colors.amber)),
-                          icon: const Icon(Icons.save),
-                          onPressed: () {
-                            print(filterData.keys.where((element) => filterData[element] == true));
-                          },
-                          label: const Text("Save"),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20.0),
-                    child: Column(
-                      children: [
-                        ElevatedButton.icon(
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  Colors.amber)),
-                          icon: const Icon(Icons.lock_reset),
-                          onPressed: () {
-                            setState(() {
-                              Series = false;
-                              Movies = false;
-                              Netflix = false;
-                              Disney = false;
-                              Action = false;
-                              Dram = false;
-                              Sci_fi = false;
-                              Comedy = false;
-                              Horror = false;
-                              Animation = false;
-                              filterData = {
-                                "Series": false,
-                                "Movies": false,
-                                "Netflix": false,
-                                "Disney": false,
-                                "Action": false,
-                                "Dram": false,
-                                "Sci_fi": false,
-                                "Comedy": false,
-                                "Horror": false,
-                                "Animation": false
-                              };
-                            });
-                          },
-                          label: const Text("Reset"),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ),
-      ),
+            );
+          }),
     );
+  }
+
+  isTrue(String filterName) async {
+    final firebaseUser = FirebaseAuth.instance.currentUser!;
+    DocumentReference documentReference =
+        FirebaseFirestore.instance.collection('Users').doc(firebaseUser.uid);
+    DocumentSnapshot doc = await documentReference.get();
+    List filters = doc['filters'];
+    if (filters.contains(filterName) == true) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

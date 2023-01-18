@@ -125,7 +125,7 @@ class _ListOfContentsState extends State<ListOfContents> {
               }
               if (snapshot.hasData) {
                 List<Map> items = parseData(snapshot.data);
-                /*print('filterData before future $filterData');
+                print('filterData before future $filterData');
                 for (int i = 0; i < items.length; i++) {
                   print('items before future ${items[i]['content_name']}');
                 }
@@ -137,8 +137,8 @@ class _ListOfContentsState extends State<ListOfContents> {
                           : const Center(
                               child: CircularProgressIndicator(),
                             );
-                    });*/
-                return buildGridView(items);
+                    });
+                //return buildGridView(items);
               }
               return const Center(child: CircularProgressIndicator());
             },
@@ -247,18 +247,35 @@ class _ListOfContentsState extends State<ListOfContents> {
     setState(() {
       filterData = filteredData;
     });
-    Iterable<String> returnedList =
-        filterData.keys.where((element) => filterData[element] == true);
-    print("after return first ${returnedList.toList()[0]}");
-    for (var item
-        in filterData.keys.where((element) => filterData[element] == true)) {
-      print(item);
+  }
+  Future<List> Filters() async{
+    final firebaseUser = FirebaseAuth.instance.currentUser!;
+    DocumentReference documentReference =
+    FirebaseFirestore.instance.collection('Users').doc(firebaseUser.uid);
+    DocumentSnapshot doc = await documentReference.get();
+    List filters = doc['filters'];
+    if(filters.isNotEmpty){
+      return filters;
     }
+    return [];
   }
 
   Future<List<Map>> filterItems(
       List<Map> items, Map<String, dynamic> filterData) async {
-    print("INSIDE FILTER ITEMS");
+    List<Map> filteredItems = <Map>[];
+    var filters = await Filters();
+    if(filters.isEmpty){
+      return items;
+    }
+    for(var filter in filters){
+      for(int i = 0 ; i< items.length ; i++){
+        if(items[i]['con_type'] == filter || items[i]['content_platform'] == filter || items[i]['con_category'] == filter){
+          filteredItems.add(items[i]);
+        }
+      }
+    }
+    return filteredItems;
+    /*print("INSIDE FILTER ITEMS");
     List<Map> filteredList = <Map>[];
     List<String> returnedList = filterData.keys
         .where((element) => filterData[element] == true)
@@ -275,7 +292,7 @@ class _ListOfContentsState extends State<ListOfContents> {
       return items;
     }
     else{
-      return filteredList;
     }
+    return filteredList;*/
   }
 }

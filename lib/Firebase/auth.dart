@@ -36,6 +36,7 @@ class Auth {
       'favs': [],
       'watchList': [],
       'allTimeFavorite' : "Not Decided Yet",
+      'filters': [],
     });
     return user.user;
   }
@@ -69,6 +70,46 @@ class Auth {
     } else {
       documentReference.update({
         'watchList': FieldValue.arrayUnion([contentName])
+      });
+    }
+  }
+  addToFirebaseFilters(Iterable <String> filters) async {
+    final firebaseUser = FirebaseAuth.instance.currentUser!;
+    DocumentReference documentReference =
+    FirebaseFirestore.instance.collection('Users').doc(firebaseUser.uid);
+    for(var filterName in filters){
+      documentReference.update({
+        'filters': FieldValue.arrayUnion([filterName])
+      });
+    }
+  }
+  FirebaseFiltersList(String filterName) async{
+    final firebaseUser = FirebaseAuth.instance.currentUser!;
+    DocumentReference documentReference =
+    FirebaseFirestore.instance.collection('Users').doc(firebaseUser.uid);
+    DocumentSnapshot doc = await documentReference.get();
+    List filterList = doc['filters'];
+    if(filterList.contains(filterName)){
+      documentReference.update({
+        'filters': FieldValue.arrayRemove([filterName])
+      });
+    }
+    else{
+      documentReference.update({
+        'filters': FieldValue.arrayUnion([filterName])
+      });
+    }
+
+  }
+  resetFilters() async{
+    final firebaseUser = FirebaseAuth.instance.currentUser!;
+    DocumentReference documentReference =
+    FirebaseFirestore.instance.collection('Users').doc(firebaseUser.uid);
+    DocumentSnapshot doc = await documentReference.get();
+    List filters = doc['filters'];
+    for(var filter in filters){
+      documentReference.update({
+        'filters': FieldValue.arrayRemove([filter])
       });
     }
   }
