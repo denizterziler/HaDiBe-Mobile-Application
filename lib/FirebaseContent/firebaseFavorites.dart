@@ -59,6 +59,10 @@ class _FirebaseFavoriteListState extends State<FirebaseFavoriteList> {
               'con_category': e['category'],
               'con_description': e['description'],
               'con_hadiBe': e['hadiBe'],
+              'con_rate_count': e['rateCount'],
+              'con_id': e['id'],
+              'con_type': e['type'],
+              'con_length': e['length'],
             })
         .toList();
     return listItems;
@@ -100,128 +104,136 @@ class _FirebaseFavoriteListState extends State<FirebaseFavoriteList> {
 
   buildGridView(List<Map<dynamic, dynamic>> items) {
     final firebaseUser = FirebaseAuth.instance.currentUser!;
-    return items.isNotEmpty ?
-     GridView.builder(
-      padding:
-          const EdgeInsets.only(top: 5.0, bottom: 5.0, left: 3.0, right: 3.0),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 1,
-        childAspectRatio: 2 / 2.2,
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-      ),
-      itemCount: items.length,
-      itemBuilder: (context, index) {
-        Map thisItem = items[index];
-        return ClipRRect(
-          borderRadius: BorderRadius.circular(10),
-          child: GridTile(
-            footer: GridTileBar(
-              trailing: Row(
-                children: [
-                  Text(
-                    thisItem['content_rate'].toStringAsFixed(2),
-                    style: const TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: Colors.white),
-                  ),
-                  const Icon(
-                    Icons.star,
-                    size: 15,
-                  ),
-                ],
-              ),
-              leading: StreamBuilder<Object>(
-                  stream: FirebaseFirestore.instance
-                      .collection('Users')
-                      .doc(firebaseUser.uid)
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    return FutureBuilder(
-                        future: isFavorite(thisItem['content_name']),
-                        builder:
-                            (BuildContext context, AsyncSnapshot snapshot) {
-                          if (snapshot.data == true) {
-                            return IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    _authService.addToFirebaseFavs(
-                                        thisItem['content_name']);
-                                  });
-                                },
-                                icon: const Icon(
-                                  Icons.favorite,
-                                  color: Colors.red,
-                                ));
-                          } else {
-                            return IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    _authService.addToFirebaseFavs(
-                                        thisItem['content_name']);
-                                  });
-                                },
-                                icon: const Icon(
-                                  Icons.favorite_border,
-                                  color: Colors.white,
-                                ));
-                          }
-                        });
-                  }),
-              title: Text(thisItem['content_name'],style: const TextStyle(fontSize: 17,fontWeight: FontWeight.bold),),
-              backgroundColor: Colors.black54,
+    return items.isNotEmpty
+        ? GridView.builder(
+            padding: const EdgeInsets.only(
+                top: 5.0, bottom: 5.0, left: 3.0, right: 3.0),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 1,
+              childAspectRatio: 2 / 2.2,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
             ),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.of(context)
-                    .pushNamed(ContentDetailFb.routeName, arguments: thisItem);
-              },
-              child: Image.network(
-                thisItem['image_url'],
-                fit: BoxFit.fill,
-              ),
-            ),
-          ),
-        );
-      },
-    ):
-    Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(30.0),
-                child: Container(
-                  width: 350,
-                  height: 50,
-                  color: Colors.blue,
-                  child: const Center(
-                    child: Text("You don't have any favorite content",
-                      style: TextStyle(fontSize: 20),
+            itemCount: items.length,
+            itemBuilder: (context, index) {
+              Map thisItem = items[index];
+              return ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: GridTile(
+                  footer: GridTileBar(
+                    trailing: Row(
+                      children: [
+                        Text(
+                          thisItem['content_rate'].toStringAsFixed(2),
+                          style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
+                        const Icon(
+                          Icons.star,
+                          size: 15,
+                        ),
+                      ],
+                    ),
+                    leading: StreamBuilder<Object>(
+                        stream: FirebaseFirestore.instance
+                            .collection('Users')
+                            .doc(firebaseUser.uid)
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          return FutureBuilder(
+                              future: isFavorite(thisItem['content_name']),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot snapshot) {
+                                if (snapshot.data == true) {
+                                  return IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          _authService.addToFirebaseFavs(
+                                              thisItem['content_name']);
+                                        });
+                                      },
+                                      icon: const Icon(
+                                        Icons.favorite,
+                                        color: Colors.red,
+                                      ));
+                                } else {
+                                  return IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          _authService.addToFirebaseFavs(
+                                              thisItem['content_name']);
+                                        });
+                                      },
+                                      icon: const Icon(
+                                        Icons.favorite_border,
+                                        color: Colors.white,
+                                      ));
+                                }
+                              });
+                        }),
+                    title: Text(
+                      thisItem['content_name'],
+                      style: const TextStyle(
+                          fontSize: 17, fontWeight: FontWeight.bold),
+                    ),
+                    backgroundColor: Colors.black54,
+                  ),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushNamed(ContentDetailFb.routeName,
+                          arguments: thisItem);
+                    },
+                    child: Image.network(
+                      thisItem['image_url'],
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                ),
+              );
+            },
+          )
+        : Center(
+            child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(30.0),
+                  child: Container(
+                    width: 350,
+                    height: 50,
+                    color: Colors.blue,
+                    child: const Center(
+                      child: Text(
+                        "You don't have any favorite content",
+                        style: TextStyle(fontSize: 20),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(30.0),
-                child: Container(
-                  width: 300,
-                  height: 100,
-                  color: Colors.red,
-                  child: const Center(
-                    child: Text(
-                      "You can add contents with Favorite buttons",
-                      style: TextStyle(fontSize: 20),
-                      textAlign: TextAlign.center,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(30.0),
+                  child: Container(
+                    width: 300,
+                    height: 100,
+                    color: Colors.red,
+                    child: const Center(
+                      child: Text(
+                        "You can add contents with Favorite buttons",
+                        style: TextStyle(fontSize: 20),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            )
-          ],
-        ));
+              )
+            ],
+          ));
   }
 }

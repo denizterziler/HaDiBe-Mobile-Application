@@ -24,6 +24,18 @@ class _ListOfContentsState extends State<ListOfContents> {
       FirebaseFirestore.instance.collection('Contents');
   late Stream<QuerySnapshot> _streamData;
   final Auth _authService = Auth();
+  Map<String, dynamic> filterData = {
+    "Series": false,
+    "Movies": false,
+    "Netflix": false,
+    "Disney": false,
+    "Action": false,
+    "Dram": false,
+    "Sci_fi": false,
+    "Comedy": false,
+    "Horror": false,
+    "Animation": false
+  };
 
   Future<bool> isFavorite(String contentName) async {
     final firebaseUser = FirebaseAuth.instance.currentUser!;
@@ -43,6 +55,7 @@ class _ListOfContentsState extends State<ListOfContents> {
     // TODO: implement initState
     super.initState();
     _streamData = _referenceContents.snapshots();
+    print("init");
   }
 
   List<Map> parseData(QuerySnapshot querySnapshot) {
@@ -57,9 +70,9 @@ class _ListOfContentsState extends State<ListOfContents> {
               'con_description': e['description'],
               'con_hadiBe': e['hadiBe'],
               'con_rate_count': e['rateCount'],
-              'con_id':e['id'],
-              'con_type':e['type'],
-              'con_length':e['length'],
+              'con_id': e['id'],
+              'con_type': e['type'],
+              'con_length': e['length'],
             })
         .toList();
     return listItems;
@@ -96,9 +109,10 @@ class _ListOfContentsState extends State<ListOfContents> {
             IconButton(
               iconSize: 40,
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
+                /*Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => const FilterBy(),
-                ));
+                ));*/
+                _navigateAndDisplayFilters(context);
               },
               icon: const Icon(Icons.filter_list_sharp),
             ),
@@ -114,6 +128,19 @@ class _ListOfContentsState extends State<ListOfContents> {
               }
               if (snapshot.hasData) {
                 List<Map> items = parseData(snapshot.data);
+                /*print('filterData before future $filterData');
+                for (int i = 0; i < items.length; i++) {
+                  print('items before future ${items[i]['content_name']}');
+                }
+                return FutureBuilder(
+                    future: filterItems(items, filterData),
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      return snapshot.hasData
+                          ? buildGridView(snapshot.data)
+                          : const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                    });*/
                 return buildGridView(items);
               }
               return const Center(child: CircularProgressIndicator());
@@ -125,7 +152,8 @@ class _ListOfContentsState extends State<ListOfContents> {
   GridView buildGridView(List<Map<dynamic, dynamic>> items) {
     final firebaseUser = FirebaseAuth.instance.currentUser!;
     return GridView.builder(
-      padding: const EdgeInsets.only(top: 5.0,bottom: 5.0,left: 3.0,right: 3.0),
+      padding:
+          const EdgeInsets.only(top: 5.0, bottom: 5.0, left: 3.0, right: 3.0),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 1,
         childAspectRatio: 2 / 2.2,
@@ -143,7 +171,10 @@ class _ListOfContentsState extends State<ListOfContents> {
                 children: [
                   Text(
                     thisItem['content_rate'].toStringAsFixed(2),
-                    style: const TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: Colors.white),
+                    style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
                   ),
                   const Icon(
                     Icons.star,
@@ -188,7 +219,11 @@ class _ListOfContentsState extends State<ListOfContents> {
                           }
                         });
                   }),
-              title: Text(thisItem['content_name'],style: const TextStyle(fontSize: 17,fontWeight: FontWeight.bold),),
+              title: Text(
+                thisItem['content_name'],
+                style:
+                    const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+              ),
               backgroundColor: Colors.black54,
             ),
             child: GestureDetector(
@@ -205,5 +240,45 @@ class _ListOfContentsState extends State<ListOfContents> {
         );
       },
     );
+  }
+
+  Future<void> _navigateAndDisplayFilters(BuildContext context) async {
+    final filteredData = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => FilterBy()),
+    );
+    setState(() {
+      filterData = filteredData;
+    });
+    Iterable<String> returnedList =
+        filterData.keys.where((element) => filterData[element] == true);
+    print("after return first ${returnedList.toList()[0]}");
+    for (var item
+        in filterData.keys.where((element) => filterData[element] == true)) {
+      print(item);
+    }
+  }
+
+  Future<List<Map>> filterItems(
+      List<Map> items, Map<String, dynamic> filterData) async {
+    print("INSIDE FILTER ITEMS");
+    List<Map> filteredList = <Map>[];
+    List<String> returnedList = filterData.keys
+        .where((element) => filterData[element] == true)
+        .toList();
+    print("returned list : $returnedList");
+    for (var item in returnedList) {
+      for (int i = 0; i < items.length; i++) {
+        if(items[i]['content_name'] == item || items[i]['platform'] == item) {
+          filteredList.add(items[i]);
+        }
+      }
+    }
+    if(filteredList.isEmpty){
+      return items;
+    }
+    else{
+      return filteredList;
+    }
   }
 }

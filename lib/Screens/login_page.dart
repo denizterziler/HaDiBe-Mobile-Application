@@ -16,7 +16,10 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool passwordVisible = false;
+  final _formKey = GlobalKey<FormState>();
+  final _passKey = GlobalKey<FormState>();
   final Auth _authService = Auth();
+
 
   @override
   Widget build(BuildContext context) {
@@ -43,90 +46,113 @@ class _LoginPageState extends State<LoginPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    TextField(
-                        controller: _emailController,
-                        style: const TextStyle(
-                          color: Colors.white,
-                        ),
-                        cursorColor: Colors.white,
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: const InputDecoration(
-                          prefixIcon: Icon(
-                            Icons.mail,
+                    Form(
+                      key: _formKey,
+                      child: TextFormField(
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "You have to enter your email";
+                            }
+                            return null;
+                          },
+                          controller: _emailController,
+                          style: const TextStyle(
                             color: Colors.white,
                           ),
-                          hintText: 'E-Mail',
-                          prefixText: ' ',
-                          hintStyle: TextStyle(color: Colors.white),
-                          focusColor: Colors.white,
-                          focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                            color: Colors.white,
+                          cursorColor: Colors.white,
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: const InputDecoration(
+                            prefixIcon: Icon(
+                              Icons.mail,
+                              color: Colors.white,
+                            ),
+                            hintText: 'E-Mail',
+                            prefixText: ' ',
+                            hintStyle: TextStyle(color: Colors.white),
+                            focusColor: Colors.white,
+                            focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                              color: Colors.white,
+                            )),
+                            enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                              color: Colors.white,
+                            )),
                           )),
-                          enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                            color: Colors.white,
-                          )),
-                        )),
+                    ),
                     SizedBox(
                       height: size.height * 0.02,
                     ),
-                    TextField(
-                        style: const TextStyle(
-                          color: Colors.white,
-                        ),
-                        cursorColor: Colors.white,
-                        controller: _passwordController,
-                        obscureText: !passwordVisible,
-                        decoration: InputDecoration(
-                          prefixIcon: const Icon(
-                            Icons.vpn_key,
+                    Form(
+                      key: _passKey,
+                      child: TextFormField(
+                        validator: (value){
+                          if(value == null || value.isEmpty){
+                            return 'You cannot leave this area blank';
+                          }
+                          return null;
+                        },
+                          style: const TextStyle(
                             color: Colors.white,
                           ),
-                          suffixIcon: IconButton(
-                              icon: Icon(
-                                passwordVisible ? Icons.visibility : Icons.visibility_off,color: Colors.white,),
-                              onPressed: () {
-                                setState(() {
-                                  passwordVisible = !passwordVisible;
-                                });
-                              }),
-                          hintText: 'Password',
-                          prefixText: ' ',
-                          hintStyle: const TextStyle(
-                            color: Colors.white,
-                          ),
-                          focusColor: Colors.white,
-                          focusedBorder: const UnderlineInputBorder(
-                              borderSide: BorderSide(
-                            color: Colors.white,
+                          cursorColor: Colors.white,
+                          controller: _passwordController,
+                          obscureText: !passwordVisible,
+                          decoration: InputDecoration(
+                            prefixIcon: const Icon(
+                              Icons.vpn_key,
+                              color: Colors.white,
+                            ),
+                            suffixIcon: IconButton(
+                                icon: Icon(
+                                  passwordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    passwordVisible = !passwordVisible;
+                                  });
+                                }),
+                            hintText: 'Password',
+                            prefixText: ' ',
+                            hintStyle: const TextStyle(
+                              color: Colors.white,
+                            ),
+                            focusColor: Colors.white,
+                            focusedBorder: const UnderlineInputBorder(
+                                borderSide: BorderSide(
+                              color: Colors.white,
+                            )),
+                            enabledBorder: const UnderlineInputBorder(
+                                borderSide: BorderSide(
+                              color: Colors.white,
+                            )),
                           )),
-                          enabledBorder: const UnderlineInputBorder(
-                              borderSide: BorderSide(
-                            color: Colors.white,
-                          )),
-                        )),
+                    ),
                     SizedBox(
                       height: size.height * 0.08,
                     ),
                     InkWell(
                       onTap: () {
-                        _authService
-                            .signIn(_emailController.text,
-                                _passwordController.text)
-                            .then((value) {
-                          return Navigator.of(context)
-                              .pushNamed(ListOfContents.routeName);
-                        });
+                        if (_formKey.currentState!.validate() && _passKey.currentState!.validate()) {
+                          _authService
+                              .signIn(_emailController.text,
+                                  _passwordController.text)
+                              .then((value) {
+                            return Navigator.of(context)
+                                .pushNamed(ListOfContents.routeName);
+                          });
+                        }
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(vertical: 5),
                         decoration: BoxDecoration(
-                            border:
-                                Border.all(color: Colors.white, width: 2),
+                            border: Border.all(color: Colors.white, width: 2),
                             //color: colorPrimaryShade,
-                            borderRadius: const BorderRadius.all(
-                                Radius.circular(30))),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(30))),
                         child: const Padding(
                           padding: EdgeInsets.all(5.0),
                           child: Center(
@@ -148,8 +174,7 @@ class _LoginPageState extends State<LoginPage> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    const RegisterPage()));
+                                builder: (context) => const RegisterPage()));
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

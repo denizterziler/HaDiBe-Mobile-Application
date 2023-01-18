@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:se_380_project/FirebaseContent/favMovieAndSerie.dart';
 import 'package:se_380_project/Screens/avatar_page.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -15,9 +16,40 @@ class _ProfilePageState extends State<ProfilePage> {
   String email = "";
   String url = "";
   String password = "";
+  String favMovie = "";
+  final CollectionReference _referenceContents =
+      FirebaseFirestore.instance.collection('Contents');
+  late Stream<QuerySnapshot> _streamData;
+
+  List<Map> parseData(QuerySnapshot querySnapshot) {
+    List<QueryDocumentSnapshot> listDocs = querySnapshot.docs;
+    List<Map> listItems = listDocs
+        .map((e) => {
+              'content_name': e['name'],
+              'content_platform': e['platform'],
+              'image_url': e['imageUrl'],
+              'content_rate': e['rate'],
+              'con_category': e['category'],
+              'con_description': e['description'],
+              'con_hadiBe': e['hadiBe'],
+              'con_rate_count': e['rateCount'],
+              'con_id': e['id'],
+              'con_type': e['type'],
+              'con_length': e['length'],
+            })
+        .toList();
+    return listItems;
+  }
+
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _streamData = _referenceContents.snapshots();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final firebaseUser = FirebaseAuth.instance.currentUser!;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black.withOpacity(.75),
@@ -25,7 +57,7 @@ class _ProfilePageState extends State<ProfilePage> {
         title: FutureBuilder(
           builder: (context, snapshot) {
             if (snapshot.connectionState != ConnectionState.done) {
-              return const Text("loading...");
+              return const Text("Loading...");
             }
             return Text(name);
           },
@@ -36,33 +68,23 @@ class _ProfilePageState extends State<ProfilePage> {
         color: Colors.black38,
         child: Column(
           children: [
-            /*FutureBuilder(
-              builder: (context, snapshot) {
-                if (snapshot.connectionState != ConnectionState.done) {
-                  return const Text("loading...");
-                }
-                return Text(email);
-              },
-              future: _fetch(),
-            ),*/
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: FutureBuilder(
-                builder: (context,snapshot){
-                  if (snapshot.connectionState != ConnectionState.done){
-                    return const Text("Image Loading..");
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState != ConnectionState.done) {
+                    return const Text("Image Loading...");
                   }
                   return CircleAvatar(
                     radius: 55,
-                    backgroundImage: url == "" ? const NetworkImage("https://www.clipartmax.com/png/middle/437-4374952_no-avatar-male-female.png") : NetworkImage(url),
+                    backgroundImage: url == ""
+                        ? const NetworkImage(
+                            "https://www.clipartmax.com/png/middle/437-4374952_no-avatar-male-female.png")
+                        : NetworkImage(url),
                   );
                 },
                 future: _fetch(),
               ),
-              /*CircleAvatar(
-                radius: 55,
-                backgroundImage: NetworkImage(url),
-              ),*/
             ),
             SizedBox(
               height: 100,
@@ -109,81 +131,84 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
             ),
-            const SizedBox(
-              height: 30,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: StreamBuilder<Object>(
+                  stream: FirebaseFirestore.instance
+                      .collection('Users')
+                      .doc(firebaseUser.uid)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    return FutureBuilder(
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState != ConnectionState.done) {
+                          return const Text("Loading...");
+                        }
+                        return Container(
+                            color: Colors.redAccent,
+                            height: 45,
+                            child: Center(
+                                child: Text(
+                              "All Time Favorite:  $favMovie",
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                            )));
+                      },
+                      future: _fetch(),
+                    );
+                  }),
             ),
-            SizedBox(
-              height: 100,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: 70,
-                      width: 180,
-                      child: ElevatedButton(
-                        style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all<Color>(Colors.amber)),
-                        onPressed: () {
-                          _navigateAndDisplayAvatars(context);
-                        },
-                        child: const Text("Change Avatar"),
-                      ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SizedBox(
+                    height: 70,
+                    width: 180,
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.amber)),
+                      onPressed: () {
+                        _navigateAndDisplayAvatars(context);
+                      },
+                      child: const Text("Change Avatar"),
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-            SizedBox(
-              height: 100,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: 70,
-                      width: 180,
-                      child: ElevatedButton(
-                        style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all<Color>(Colors.amber)),
-                        onPressed: null,
-                        child: const Text("Favorite Movie"),
-                      ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SizedBox(
+                    height: 70,
+                    width: 180,
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.amber)),
+                      onPressed: () {
+                        _navigateAndDisplayMoviesAndSeries(context);
+                      },
+                      child: const Text("All Times Favorite"),
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-            SizedBox(
-              height: 100,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: 70,
-                      width: 180,
-                      child: ElevatedButton(
-                        style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all<Color>(Colors.amber)),
-                        onPressed: null,
-                        child: const Text("Favorite Series"),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              ],
             ),
           ],
         ),
       ),
     );
+  }
+
+  _navigateAndDisplayMoviesAndSeries(context) async {
+    final favoriteMovie = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const AllTimeFavorite()),
+    );
+    setState(() {
+      favMovie = favoriteMovie;
+    });
   }
 
   _fetch() async {
@@ -197,9 +222,9 @@ class _ProfilePageState extends State<ProfilePage> {
       email = value.get('email');
       url = value.get('URL');
       password = value.get('password');
+      favMovie = value.get('allTimeFavorite');
     });
   }
-
 
   Future<void> _navigateAndDisplayAvatars(BuildContext context) async {
     final imageUrl = await Navigator.push(
@@ -210,6 +235,8 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void updateImage(String imageUrl) {
-    setState(() => url = imageUrl);
+    setState(() {
+      url = imageUrl;
+    });
   }
 }

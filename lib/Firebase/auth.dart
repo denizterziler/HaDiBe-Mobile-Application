@@ -8,7 +8,8 @@ class Auth {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<User?> signIn(String email, String password) async {
-    var user = await _auth.signInWithEmailAndPassword(
+
+    UserCredential user = await _auth.signInWithEmailAndPassword(
         email: email, password: password);
     return user.user;
   }
@@ -35,6 +36,7 @@ class Auth {
       'password': password,
       'favs': [],
       'watchList': [],
+      'allTimeFavorite' : "",
     });
     return user.user;
   }
@@ -72,3 +74,4 @@ class Auth {
     }
   }
 }
+

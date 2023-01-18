@@ -65,13 +65,17 @@ class _FirebaseWatchListState extends State<FirebaseWatchList> {
     List<QueryDocumentSnapshot> listDocs = querySnapshot.docs;
     List<Map> listItems = listDocs
         .map((e) => {
-              'content_name': e['name'],
-              'content_platform': e['platform'],
-              'image_url': e['imageUrl'],
-              'content_rate': e['rate'],
-              'con_category': e['category'],
-              'con_description': e['description'],
-              'con_hadiBe': e['hadiBe'],
+      'content_name': e['name'],
+      'content_platform': e['platform'],
+      'image_url': e['imageUrl'],
+      'content_rate': e['rate'],
+      'con_category': e['category'],
+      'con_description': e['description'],
+      'con_hadiBe': e['hadiBe'],
+      'con_rate_count': e['rateCount'],
+      'con_id': e['id'],
+      'con_type': e['type'],
+      'con_length': e['length'],
             })
         .toList();
     return listItems;

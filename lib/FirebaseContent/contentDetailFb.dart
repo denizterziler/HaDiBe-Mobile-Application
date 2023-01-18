@@ -210,7 +210,7 @@ class _ContentDetailFbState extends State<ContentDetailFb> {
                                           )),
                                       TextSpan(
                                         text:
-                                        content['con_type'] == 'Tv Series' ? '${content['con_length'].toString()} Episodes': '${content['con_length'].toString()} Minutes',
+                                        content['con_type'] == 'Movies' ? '${content['con_length'].toString()} Minutes': '${content['con_length'].toString()} Episodes',
                                       ),
                                     ],
                                   ),

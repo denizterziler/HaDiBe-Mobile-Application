@@ -8,27 +8,27 @@ class FilterBy extends StatefulWidget {
 }
 
 class _FilterByState extends State<FilterBy> {
-  bool isCheckedSeries = false;
-  bool isCheckedMovies = false;
-  bool netflix = false;
-  bool disney = false;
-  bool action = false;
-  bool dram = false;
-  bool sci_fi = false;
-  bool comedy = false;
-  bool horror = false;
-  bool animation = false;
+  bool Series = false;
+  bool Movies = false;
+  bool Netflix = false;
+  bool Disney = false;
+  bool Action = false;
+  bool Dram = false;
+  bool Sci_fi = false;
+  bool Comedy = false;
+  bool Horror = false;
+  bool Animation = false;
   Map<String, dynamic> filterData = {
-    "isCheckedSeries": false,
-    "isCheckedMovies": false,
-    "netflix": false,
-    "disney": false,
-    "action": false,
-    "dram": false,
-    "sci_fi": false,
-    "comedy": false,
-    "horror": false,
-    "animation": false
+    "Series": false,
+    "Movies": false,
+    "Netflix": false,
+    "Disney": false,
+    "Action": false,
+    "Dram": false,
+    "Sci_fi": false,
+    "Comedy": false,
+    "Horror": false,
+    "Animation": false
   };
 
   @override
@@ -38,6 +38,12 @@ class _FilterByState extends State<FilterBy> {
         backgroundColor: Colors.black.withOpacity(.75),
         centerTitle: true,
         title: const Text("Filter"),
+        leading: IconButton(
+          onPressed: (){
+            Navigator.pop(context,filterData);
+          },
+          icon: const Icon(Icons.arrow_back),
+        ),
       ),
       body: Container(
         color: Colors.black38,
@@ -63,12 +69,12 @@ class _FilterByState extends State<FilterBy> {
                               Checkbox(
                                 checkColor: Colors.white,
                                 activeColor: Colors.amber,
-                                value: isCheckedSeries,
+                                value: Series,
                                 onChanged: (bool? value) {
                                   setState(() {
-                                    isCheckedSeries = value!;
-                                    filterData["isCheckedSeries"] =
-                                        isCheckedSeries;
+                                    Series = value!;
+                                    filterData["Series"] =
+                                        Series;
                                   });
                                 },
                               ),
@@ -80,12 +86,12 @@ class _FilterByState extends State<FilterBy> {
                               Checkbox(
                                 checkColor: Colors.white,
                                 activeColor: Colors.amber,
-                                value: isCheckedMovies,
+                                value: Movies,
                                 onChanged: (bool? value) {
                                   setState(() {
-                                    isCheckedMovies = value!;
-                                    filterData["isCheckedMovies"] =
-                                        isCheckedMovies;
+                                    Movies = value!;
+                                    filterData["Movies"] =
+                                        Movies;
                                   });
                                 },
                               ),
@@ -115,11 +121,11 @@ class _FilterByState extends State<FilterBy> {
                             Checkbox(
                               checkColor: Colors.white,
                               activeColor: Colors.amber,
-                              value: netflix,
+                              value: Netflix,
                               onChanged: (bool? value) {
                                 setState(() {
-                                  netflix = value!;
-                                  filterData["netflix"] = netflix;
+                                  Netflix = value!;
+                                  filterData["Netflix"] = Netflix;
                                 });
                               },
                             ),
@@ -131,11 +137,11 @@ class _FilterByState extends State<FilterBy> {
                             Checkbox(
                               checkColor: Colors.white,
                               activeColor: Colors.amber,
-                              value: disney,
+                              value: Disney,
                               onChanged: (bool? value) {
                                 setState(() {
-                                  disney = value!;
-                                  filterData["disney"] = disney;
+                                  Disney = value!;
+                                  filterData["Disney"] = Disney;
                                 });
                               },
                             ),
@@ -167,11 +173,11 @@ class _FilterByState extends State<FilterBy> {
                                 Checkbox(
                                   checkColor: Colors.white,
                                   activeColor: Colors.amber,
-                                  value: action,
+                                  value: Action,
                                   onChanged: (bool? value) {
                                     setState(() {
-                                      action = value!;
-                                      filterData["action"] = action;
+                                      Action = value!;
+                                      filterData["Action"] = Action;
                                     });
                                   },
                                 ),
@@ -183,11 +189,11 @@ class _FilterByState extends State<FilterBy> {
                                 Checkbox(
                                   checkColor: Colors.white,
                                   activeColor: Colors.amber,
-                                  value: sci_fi,
+                                  value: Sci_fi,
                                   onChanged: (bool? value) {
                                     setState(() {
-                                      sci_fi = value!;
-                                      filterData["sci_fi"] = sci_fi;
+                                      Sci_fi = value!;
+                                      filterData["Sci_fi"] = Sci_fi;
                                     });
                                   },
                                 ),
@@ -199,11 +205,11 @@ class _FilterByState extends State<FilterBy> {
                                 Checkbox(
                                   checkColor: Colors.white,
                                   activeColor: Colors.amber,
-                                  value: horror,
+                                  value: Horror,
                                   onChanged: (bool? value) {
                                     setState(() {
-                                      horror = value!;
-                                      filterData["horror"] = horror;
+                                      Horror = value!;
+                                      filterData["Horror"] = Horror;
                                     });
                                   },
                                 ),
@@ -220,11 +226,11 @@ class _FilterByState extends State<FilterBy> {
                                 Checkbox(
                                   checkColor: Colors.white,
                                   activeColor: Colors.amber,
-                                  value: dram,
+                                  value: Dram,
                                   onChanged: (bool? value) {
                                     setState(() {
-                                      dram = value!;
-                                      filterData["dram"] = dram;
+                                      Dram = value!;
+                                      filterData["Dram"] = Dram;
                                     });
                                   },
                                 ),
@@ -236,11 +242,11 @@ class _FilterByState extends State<FilterBy> {
                                 Checkbox(
                                   checkColor: Colors.white,
                                   activeColor: Colors.amber,
-                                  value: comedy,
+                                  value: Comedy,
                                   onChanged: (bool? value) {
                                     setState(() {
-                                      comedy = value!;
-                                      filterData["comedy"] = comedy;
+                                      Comedy = value!;
+                                      filterData["Comedy"] = Comedy;
                                     });
                                   },
                                 ),
@@ -252,11 +258,11 @@ class _FilterByState extends State<FilterBy> {
                                 Checkbox(
                                   checkColor: Colors.white,
                                   activeColor: Colors.amber,
-                                  value: animation,
+                                  value: Animation,
                                   onChanged: (bool? value) {
                                     setState(() {
-                                      animation = value!;
-                                      filterData["animation"] = animation;
+                                      Animation = value!;
+                                      filterData["Animation"] = Animation;
                                     });
                                   },
                                 ),
@@ -283,7 +289,7 @@ class _FilterByState extends State<FilterBy> {
                                   Colors.amber)),
                           icon: const Icon(Icons.save),
                           onPressed: () {
-                            print(filterData);
+                            print(filterData.keys.where((element) => filterData[element] == true));
                           },
                           label: const Text("Save"),
                         ),
@@ -301,27 +307,27 @@ class _FilterByState extends State<FilterBy> {
                           icon: const Icon(Icons.lock_reset),
                           onPressed: () {
                             setState(() {
-                              isCheckedSeries = false;
-                              isCheckedMovies = false;
-                              netflix = false;
-                              disney = false;
-                              action = false;
-                              dram = false;
-                              sci_fi = false;
-                              comedy = false;
-                              horror = false;
-                              animation = false;
+                              Series = false;
+                              Movies = false;
+                              Netflix = false;
+                              Disney = false;
+                              Action = false;
+                              Dram = false;
+                              Sci_fi = false;
+                              Comedy = false;
+                              Horror = false;
+                              Animation = false;
                               filterData = {
-                                "isCheckedSeries": false,
-                                "isCheckedMovies": false,
-                                "netflix": false,
-                                "disney": false,
-                                "action": false,
-                                "dram": false,
-                                "sci_fi": false,
-                                "comedy": false,
-                                "horror": false,
-                                "animation": false
+                                "Series": false,
+                                "Movies": false,
+                                "Netflix": false,
+                                "Disney": false,
+                                "Action": false,
+                                "Dram": false,
+                                "Sci_fi": false,
+                                "Comedy": false,
+                                "Horror": false,
+                                "Animation": false
                               };
                             });
                           },
