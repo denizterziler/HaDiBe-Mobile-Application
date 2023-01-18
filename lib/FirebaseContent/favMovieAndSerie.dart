@@ -32,66 +32,69 @@ class _AllTimeFavoriteState extends State<AllTimeFavorite> {
           icon: const Icon(Icons.arrow_back),
         ),
       ),
-      body:StreamBuilder<QuerySnapshot>(
-        stream: _streamData,
-        builder:
-            (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-          return (snapshot.connectionState == ConnectionState.waiting)
-              ? const Center(
-            child: CircularProgressIndicator(),
-          )
-              : ListView.builder(
-              itemCount: snapshot.data!.docs.length,
-              itemBuilder: (context, index) {
-                var data = snapshot.data!.docs[index].data()
-                as Map<String, dynamic>;
-                  return ListTile(
-                    title: Text(
-                      data['name'],
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                          color: Colors.black54,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: Text(
-                      data['platform'],
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                          color: Colors.black54,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          data['rate'].toStringAsFixed(2),
-                          style: const TextStyle(color: Colors.black54,fontSize: 19,fontWeight: FontWeight.bold),
-                        ),
-                        const Icon(
-                          Icons.star,
-                          size: 25,
-                          color: Colors.amber,
-                        ),
-                      ],
-                    ),
-                    leading: CircleAvatar(
-                      backgroundImage:
-                      NetworkImage(data['imageUrl']),
-                    ),
-                    onTap: (){
-                      favoriteChanged(context);
-                      _setFavorite(data['name']);
-                    },
+      body:Container(
+        color: Colors.black38,
+        child: StreamBuilder<QuerySnapshot>(
+          stream: _streamData,
+          builder:
+              (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+            return (snapshot.connectionState == ConnectionState.waiting)
+                ? const Center(
+              child: CircularProgressIndicator(),
+            )
+                : ListView.builder(
+                itemCount: snapshot.data!.docs.length,
+                itemBuilder: (context, index) {
+                  var data = snapshot.data!.docs[index].data()
+                  as Map<String, dynamic>;
+                    return ListTile(
+                      title: Text(
+                        data['name'],
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                            color: Colors.black54,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Text(
+                        data['platform'],
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                            color: Colors.black54,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            data['rate'].toStringAsFixed(2),
+                            style: const TextStyle(color: Colors.black54,fontSize: 19,fontWeight: FontWeight.bold),
+                          ),
+                          const Icon(
+                            Icons.star,
+                            size: 25,
+                            color: Colors.amber,
+                          ),
+                        ],
+                      ),
+                      leading: CircleAvatar(
+                        backgroundImage:
+                        NetworkImage(data['imageUrl']),
+                      ),
+                      onTap: (){
+                        favoriteChanged(context);
+                        _setFavorite(data['name']);
+                      },
 
-                  );
+                    );
 
-                return Container();
-              });
-        },
+                  return Container();
+                });
+          },
+        ),
       )
     );
   }

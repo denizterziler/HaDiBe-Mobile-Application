@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:se_380_project/FirebaseContent/favMovieAndSerie.dart';
+import 'package:se_380_project/FirebaseContent/otherUsers.dart';
 import 'package:se_380_project/Screens/avatar_page.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -193,12 +194,33 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                 ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SizedBox(
+                    height: 70,
+                    width: 180,
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all<Color>(Colors.amber)),
+                      onPressed: () {
+                        _navigateAndDisplayOtherUsers(context);
+                      },
+                      child: const Text("Other Users"),
+                    ),
+                  ),
+                ),
               ],
             ),
           ],
         ),
       ),
     );
+  }
+
+  _navigateAndDisplayOtherUsers(context) async {
+    await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const OtherUsers()));
   }
 
   _navigateAndDisplayMoviesAndSeries(context) async {

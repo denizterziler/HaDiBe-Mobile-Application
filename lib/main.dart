@@ -25,6 +25,24 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'HaDiBe!',
+      theme: ThemeData(
+        primaryColor: Colors.black12,
+      ),
+      home: const LoginPage(),
+      routes: {
+        FirebaseRate.routeName:(context) => FirebaseRate(),
+        ContentDetailFb.routeName:(context) => ContentDetailFb(),
+        ListOfContents.routeName: (context) => ListOfContents(),
+        ContentDetailPage.routeName: (context) => const ContentDetailPage(),
+        Rate.routeName: (context) => const Rate(),
+        Favorites.routeName: (context) => const Favorites(),
+        SearchPage.routeName: (context) => const SearchPage(),
+        Comments.routeName: (context) => const Comments(),
+      },
+      debugShowCheckedModeBanner: false,
+    );
     return MultiProvider(
       providers: [ChangeNotifierProvider<ContentProvider>.value(
         value: ContentProvider(),

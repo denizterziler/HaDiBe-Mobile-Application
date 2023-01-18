@@ -32,11 +32,11 @@ class Auth {
     await _firestore.collection("Users").doc(user.user!.uid).set({
       'userName': name,
       'email': email,
-      'URL': "",
+      'URL': "https://www.clipartmax.com/png/middle/437-4374952_no-avatar-male-female.png",
       'password': password,
       'favs': [],
       'watchList': [],
-      'allTimeFavorite' : "",
+      'allTimeFavorite' : "Not Decided Yet",
     });
     return user.user;
   }
