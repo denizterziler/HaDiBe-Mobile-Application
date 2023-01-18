@@ -54,6 +54,23 @@ class _CommentsState extends State<Comments>{
     _name = '';
   }
 
+  _getContentComments() async {
+    if(_name != null && _name.isNotEmpty){
+      QuerySnapshot snapshot = await FirebaseFirestore.instance
+          .collection('Comments').where('name', isEqualTo: _name).get();
+      if(snapshot.docs.isNotEmpty){
+        setState(() {
+          commentArray = snapshot.docs.map((doc) => doc['commentText']).cast<String>().toList();
+          if(likes.length < commentArray.length) {
+            for(int i = likes.length; i < commentArray.length; i++) {
+              likes.add(Like(isLiked: false));
+            }
+          }
+        });
+      }
+    }
+  }
+
   void addComment() {
     setState(() {
       commentArray.add(_controller.text);
@@ -61,6 +78,7 @@ class _CommentsState extends State<Comments>{
       saveComments(commentText: _controller.text, commentId: commentArray.length -1, authorComment: _username, name: _name);
     });
   }
+  
   void saveComments({required String commentText, required int commentId, required String authorComment, required String name}) async {
     try {
       await FirebaseFirestore.instance.collection("Comments").add({
@@ -79,6 +97,7 @@ class _CommentsState extends State<Comments>{
   Widget build(BuildContext context) {
     var content = ModalRoute.of(context)?.settings.arguments as Map;
     _name = content["content_name"];
+    _getContentComments();
     _fetch();
     return Scaffold(
         appBar: AppBar(

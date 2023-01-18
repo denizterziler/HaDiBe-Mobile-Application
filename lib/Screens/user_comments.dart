@@ -10,42 +10,49 @@ class UserComments extends StatefulWidget {
 
 class _UserCommentsState extends State<UserComments> {
   FirebaseAuth _auth = FirebaseAuth.instance;
-  var _user;
-  List<String> _userComments = [];
+  var _username;
+  List<Map<String, dynamic>> _userComments = [];
+
 
   @override
   void initState() {
     super.initState();
-    _getUser();
-    _getUserComments();
   }
 
   _getUser() async {
-    _user = await FirebaseAuth.instance.currentUser;
-    if(_user != null) {
-      final userDoc = await FirebaseFirestore.instance.collection('Users').doc(_user.uid).get();
-      setState(() {
-        _user = userDoc.get('userName');
-      });
-    }
+    final firebaseUser = FirebaseAuth.instance.currentUser!;
+    final value = await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(firebaseUser.uid)
+        .get();
+    _username = value.get('userName');
+    _getUserComments();
   }
 
 
   _getUserComments() async {
-    if (_user != null) {
+    if (_username != null && _username.isNotEmpty) {
       QuerySnapshot snapshot = await FirebaseFirestore.instance
-          .collection('Comments').where('authorComment', isEqualTo: _user.userName).get();
-      if(snapshot.docs.isNotEmpty){
+          .collection('Comments')
+          .where('authorComment', isEqualTo: _username)
+          .get();
+      if (snapshot.docs.isNotEmpty) {
         setState(() {
-          _userComments = snapshot.docs.map((doc) => doc['commentText']).cast<String>().toList();
+          _userComments = snapshot.docs.map((doc) =>
+          {"name":doc['name'], "commentText":doc['commentText']}
+          ).toList();
         });
+
+
       }
     }
   }
 
 
+
   @override
   Widget build(BuildContext context) {
+    _getUser();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black.withOpacity(.75),
@@ -56,7 +63,7 @@ class _UserCommentsState extends State<UserComments> {
         padding: const EdgeInsets.all(20),
         color: Colors.black12,
         child: Center(
-          child: _user != null
+          child: _username != null
               ? _userComments.isNotEmpty
               ? ListView.builder(
             itemCount: _userComments.length,
@@ -64,7 +71,7 @@ class _UserCommentsState extends State<UserComments> {
               return Card(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text(_userComments[index]),
+                  child: Text("Content: " + _userComments[index]['name'] + "\n" + " Your Comment: " + _userComments[index]['commentText']),
                 ),
               );
             },
