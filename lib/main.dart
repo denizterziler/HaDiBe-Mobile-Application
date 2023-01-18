@@ -3,14 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:se_380_project/FirebaseContent/contentDetailFb.dart';
 import 'package:se_380_project/FirebaseContent/firebaseRate.dart';
 import 'package:se_380_project/Screens/comments.dart';
-import 'package:se_380_project/Screens/favorites.dart';
 import 'package:se_380_project/Screens/login_page.dart';
-import 'package:se_380_project/Screens/rate.dart';
-import 'package:se_380_project/Screens/search.dart';
 import 'List_of_contents.dart';
-import 'package:provider/provider.dart';
-import './Providers/content_provider.dart';
-import './Screens/content_detail_page.dart';
 
 
 Future<void> main() async {
@@ -35,37 +29,9 @@ class MyApp extends StatelessWidget {
         FirebaseRate.routeName:(context) => FirebaseRate(),
         ContentDetailFb.routeName:(context) => ContentDetailFb(),
         ListOfContents.routeName: (context) => ListOfContents(),
-        ContentDetailPage.routeName: (context) => const ContentDetailPage(),
-        Rate.routeName: (context) => const Rate(),
-        Favorites.routeName: (context) => const Favorites(),
-        SearchPage.routeName: (context) => const SearchPage(),
         Comments.routeName: (context) => const Comments(),
       },
       debugShowCheckedModeBanner: false,
-    );
-    return MultiProvider(
-      providers: [ChangeNotifierProvider<ContentProvider>.value(
-        value: ContentProvider(),
-      )
-      ],
-      child: MaterialApp(
-        title: 'HaDiBe!',
-        theme: ThemeData(
-          primaryColor: Colors.black12,
-        ),
-        home: const LoginPage(),
-        routes: {
-          FirebaseRate.routeName:(context) => FirebaseRate(),
-          ContentDetailFb.routeName:(context) => ContentDetailFb(),
-          ListOfContents.routeName: (context) => ListOfContents(),
-          ContentDetailPage.routeName: (context) => const ContentDetailPage(),
-          Rate.routeName: (context) => const Rate(),
-          Favorites.routeName: (context) => const Favorites(),
-          SearchPage.routeName: (context) => const SearchPage(),
-          Comments.routeName: (context) => const Comments(),
-        },
-        debugShowCheckedModeBanner: false,
-      ),
     );
   }
 }

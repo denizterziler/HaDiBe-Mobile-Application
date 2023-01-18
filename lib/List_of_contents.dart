@@ -4,9 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:se_380_project/Firebase/auth.dart';
 import 'package:se_380_project/FirebaseContent/contentDetailFb.dart';
 import 'package:se_380_project/FirebaseContent/firebaseSearch.dart';
-import 'package:se_380_project/Screens/content_detail_page.dart';
-import 'package:se_380_project/Screens/search.dart';
-import 'package:se_380_project/Widgets/content_grid.dart';
 import 'Screens/filter_by.dart';
 import 'Screens/menu.dart';
 

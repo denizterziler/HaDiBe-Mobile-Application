@@ -503,44 +503,54 @@ class _ContentDetailFbState extends State<ContentDetailFb> {
                               }
                             });
                       }),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(30.0),
-                      child: Container(
-                        color: Colors.black,
-                        alignment: Alignment.center,
-                        constraints: const BoxConstraints(
-                          maxWidth: 400,
-                          maxHeight: 50,
-                        ),
-                        child: Text.rich(
-                          TextSpan(
-                            children: <InlineSpan>[
-                              const WidgetSpan(
-                                  child: Icon(
-                                Icons.warning_amber,
-                                color: Colors.redAccent,
-                                size: 20,
-                              )),
-                              WidgetSpan(
-                                  child: Container(
-                                color: Colors.black,
-                                padding: const EdgeInsets.all(1.0),
-                                child: const Text("   "),
-                              )),
-                              TextSpan(
-                                text:
-                                    '${content['con_hadiBe'].toString()} HaDiBe',
+                  StreamBuilder<Object>(
+                    stream: FirebaseFirestore.instance.collection('Contents').doc(content['con_id']).snapshots(),
+                    builder: (context, snapshot) {
+                      if(snapshot.hasData){
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(30.0),
+                            child: Container(
+                              color: Colors.black,
+                              alignment: Alignment.center,
+                              constraints: const BoxConstraints(
+                                maxWidth: 400,
+                                maxHeight: 50,
                               ),
-                            ],
+                              child: Text.rich(
+                                TextSpan(
+                                  children: <InlineSpan>[
+                                    const WidgetSpan(
+                                        child: Icon(
+                                          Icons.warning_amber,
+                                          color: Colors.redAccent,
+                                          size: 20,
+                                        )),
+                                    WidgetSpan(
+                                        child: Container(
+                                          color: Colors.black,
+                                          padding: const EdgeInsets.all(1.0),
+                                          child: const Text("   "),
+                                        )),
+                                    TextSpan(
+                                      text:
+                                      '${content['con_hadiBe'].toString()} HaDiBe',
+                                    ),
+                                  ],
+                                ),
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                    fontSize: 20, color: Colors.white),
+                              ),
+                            ),
                           ),
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                              fontSize: 20, color: Colors.white),
-                        ),
-                      ),
-                    ),
+                        );
+                      }else
+                      {
+                        return const Text("Some error");
+                      }
+                    }
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),

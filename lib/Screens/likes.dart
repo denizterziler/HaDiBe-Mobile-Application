@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:se_380_project/Widgets/likes_content_grid.dart';
-class Likes extends StatefulWidget {
-  static const routeName = '/favorites';
+/*class Likes extends StatefulWidget {
+  static const routeName = '/likes';
 
   const Likes({Key? key}) : super(key: key);
 
@@ -24,4 +24,4 @@ class _LikesState extends State<Likes> {
       ),
     );
   }
-}
+}*/

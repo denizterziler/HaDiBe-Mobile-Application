@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:se_380_project/Models/content.dart';
-import 'package:se_380_project/Providers/content_provider.dart';
-import 'package:se_380_project/Screens/content_detail_page.dart';
-
-class ContentInLikes extends StatefulWidget {
+/*class ContentInLikes extends StatefulWidget {
   const ContentInLikes({Key? key}) : super(key: key);
 
   @override
@@ -57,4 +53,4 @@ class _ContentInLikesState extends State<ContentInLikes> {
       ),
     );
   }
-}
+}*/
