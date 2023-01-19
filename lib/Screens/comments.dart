@@ -35,6 +35,8 @@ class _CommentsState extends State<Comments> {
   int _commentId = 0;
   String _authorComment = '';
   String _name = '';
+  final _commentKey = GlobalKey<FormState>();
+
 
   _fetch() async {
     final firebaseUser = FirebaseAuth.instance.currentUser!;
@@ -149,6 +151,7 @@ class _CommentsState extends State<Comments> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
     final firebaseUser = FirebaseAuth.instance.currentUser!;
@@ -179,15 +182,32 @@ class _CommentsState extends State<Comments> {
                     Card(
                       child: Column(
                         children: [
-                          TextField(
-                            decoration: const InputDecoration(
-                                prefixIcon:
-                                    Icon(Icons.comment, color: Colors.black)),
-                            controller: _controller,
+                          Form(
+                            key: _commentKey,
+                            child: TextFormField(
+                              validator: (value){
+                                if(value==null||value.isEmpty){
+                                  return 'You cannot make empty comment';
+                                }
+                                if(value.contains("bad word")){
+                                  return 'Banned words!!!';
+                                }
+                                if(value.length < 5){
+                                  return 'At least 5 characters';
+                                }
+                                return null;
+                              },
+                              decoration: const InputDecoration(
+                                  prefixIcon:
+                                      Icon(Icons.comment, color: Colors.black)),
+                              controller: _controller,
+                            ),
                           ),
                           ElevatedButton(
                             onPressed: () {
-                              addComment();
+                              if(_commentKey.currentState!.validate()){
+                                addComment();
+                              }
                             },
                             child: const Text('Add Comment'),
                           )
