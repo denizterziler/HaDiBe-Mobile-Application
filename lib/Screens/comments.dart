@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:se_380_project/Firebase/auth.dart';
 
 class Like {
   bool isLiked;
@@ -15,11 +16,12 @@ class Comments extends StatefulWidget {
   final String authorComment;
   final String name;
 
-  const Comments({Key? key,
-    this.commentText = "",
-    this.commentId = 0,
-    this.authorComment = "",
-    this.name = ""})
+  const Comments(
+      {Key? key,
+      this.commentText = "",
+      this.commentId = 0,
+      this.authorComment = "",
+      this.name = ""})
       : super(key: key);
 
   @override
@@ -27,6 +29,7 @@ class Comments extends StatefulWidget {
 }
 
 class _CommentsState extends State<Comments> {
+  final Auth _authService = Auth();
   String _username = '';
   String _commentText = '';
   int _commentId = 0;
@@ -44,10 +47,23 @@ class _CommentsState extends State<Comments> {
     });
   }
 
+  Future<bool> isLiked(String comment) async {
+    final firebaseUser = FirebaseAuth.instance.currentUser!;
+    DocumentReference documentReference =
+        FirebaseFirestore.instance.collection('Users').doc(firebaseUser.uid);
+    DocumentSnapshot doc = await documentReference.get();
+    List likedCT = doc['likedCT'];
+    if (likedCT.contains(comment) == true) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   List<String> commentArray = [];
   List<String> usersArray = [];
 
-  TextEditingController _controller = TextEditingController();
+  final TextEditingController _controller = TextEditingController();
   List<Like> likes = [];
 
   @override
@@ -115,10 +131,11 @@ class _CommentsState extends State<Comments> {
     });
   }
 
-  void saveComments({required String commentText,
-    required int commentId,
-    required String authorComment,
-    required String name}) async {
+  void saveComments(
+      {required String commentText,
+      required int commentId,
+      required String authorComment,
+      required String name}) async {
     try {
       await FirebaseFirestore.instance.collection("Comments").add({
         "commentText": commentText,
@@ -135,10 +152,7 @@ class _CommentsState extends State<Comments> {
   @override
   Widget build(BuildContext context) {
     final firebaseUser = FirebaseAuth.instance.currentUser!;
-    var content = ModalRoute
-        .of(context)
-        ?.settings
-        .arguments as Map;
+    var content = ModalRoute.of(context)?.settings.arguments as Map;
     _name = content["content_name"];
     _getContentComments();
     _getContentCommentsUsers();
@@ -155,31 +169,33 @@ class _CommentsState extends State<Comments> {
           child: Center(
             child: Column(
               children: [
-                Column(children: [
-                  const Text(
-                    "Make a Comment: ",
-                    style: TextStyle(color: Colors.black, fontSize: 24),
-                    textAlign: TextAlign.center,
-                  ),
-                  Card(
-                    child: Column(
-                      children: [
-                        TextField(
-                          decoration: const InputDecoration(
-                              prefixIcon:
-                              Icon(Icons.comment, color: Colors.black)),
-                          controller: _controller,
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            addComment();
-                          },
-                          child: const Text('Add Comment'),
-                        )
-                      ],
+                Column(
+                  children: [
+                    const Text(
+                      "Make a Comment: ",
+                      style: TextStyle(color: Colors.black, fontSize: 24),
+                      textAlign: TextAlign.center,
                     ),
-                  ),
-                ],),
+                    Card(
+                      child: Column(
+                        children: [
+                          TextField(
+                            decoration: const InputDecoration(
+                                prefixIcon:
+                                    Icon(Icons.comment, color: Colors.black)),
+                            controller: _controller,
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              addComment();
+                            },
+                            child: const Text('Add Comment'),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
                 const SizedBox(
                   height: 40,
                 ),
@@ -200,39 +216,58 @@ class _CommentsState extends State<Comments> {
                             return Column(
                               children: [
                                 ListTile(
-                                  title: Text(
-                                      commentArray.elementAt(index)
-                                  ),
+                                  title: Text(commentArray.elementAt(index)),
                                   subtitle: Text(usersArray.elementAt(index)),
-                                  trailing: IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        likes[index].isLiked =
-                                        !likes[index].isLiked;
-                                      });
-                                    },
-                                    icon: likes[index].isLiked ? const Icon(Icons.insert_emoticon_rounded,color: Colors.amber,) : const Icon(Icons.emoji_emotions_outlined),
-                                  ),
+                                  trailing: StreamBuilder<Object>(
+                                      stream: FirebaseFirestore.instance
+                                          .collection('Users')
+                                          .doc(firebaseUser.uid)
+                                          .snapshots(),
+                                      builder: (context, snapshot) {
+                                        return FutureBuilder(
+                                            future: isLiked(
+                                                commentArray.elementAt(index)),
+                                            builder: (BuildContext context,
+                                                AsyncSnapshot snapshot) {
+                                              if (snapshot.data == true) {
+                                                return IconButton(
+                                                  onPressed: () {
+                                                    setState(() {
+
+                                                      _authService
+                                                          .addToFirebaseLiked(
+                                                              commentArray.elementAt(index));
+                                                    });
+                                                  },
+                                                  icon: const Icon(
+                                                    Icons
+                                                        .insert_emoticon_rounded,
+                                                    color: Colors.amber,
+                                                  ),
+                                                );
+                                              } else {
+                                                return IconButton(
+                                                  onPressed: () {
+                                                    setState(() {
+
+                                                      _authService
+                                                          .addToFirebaseLiked(
+                                                          commentArray.elementAt(index));
+                                                    });
+                                                  },
+                                                  icon: const Icon(Icons
+                                                      .emoji_emotions_outlined),
+                                                );
+                                              }
+                                            });
+                                      }),
                                 ),
-                                const Divider(thickness: 2,color: Colors.black,),
+                                const Divider(
+                                  thickness: 2,
+                                  color: Colors.black,
+                                ),
                               ],
                             );
-                            /*return Column(
-                              children: [
-                                Text(
-                                    '${usersArray.elementAt(index)}: ${commentArray.elementAt(index)}'),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      likes[index].isLiked =
-                                          !likes[index].isLiked;
-                                    });
-                                  },
-                                  child: Text(
-                                      likes[index].isLiked ? 'Unlike' : 'Like'),
-                                ),
-                              ],
-                            );*/
                           },
                           physics: const ScrollPhysics()),
                     ),

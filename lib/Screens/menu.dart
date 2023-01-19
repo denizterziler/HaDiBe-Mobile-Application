@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:se_380_project/Firebase/auth.dart';
+import 'package:se_380_project/FirebaseContent/firebaseLiked.dart';
 import 'package:se_380_project/Screens/comments.dart';
 import 'package:se_380_project/FirebaseContent/firebaseFavorites.dart';
 import 'package:se_380_project/FirebaseContent/firebaseWatchList.dart';
@@ -83,11 +84,11 @@ class Menu extends StatelessWidget {
                 child: ElevatedButton(
                   style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.amber)),
                   onPressed: () {
-                    /*Navigator.of(context).push(
+                    Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => const Likes(),
+                        builder: (context) =>  const FirebaseLiked(),
                       ),
-                    );*/
+                    );
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -115,14 +116,9 @@ class Menu extends StatelessWidget {
                 child: ElevatedButton(
                   style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.amber)),
                   onPressed: () {
-                    /*Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const WatchListPage(),
-                      ),
-                    );*/
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) =>  FirebaseWatchList(),
+                        builder: (context) =>  const FirebaseWatchList(),
                       ),
                     );
                   },
@@ -152,13 +148,10 @@ class Menu extends StatelessWidget {
                 child: ElevatedButton(
                   style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.amber)),
                   onPressed: () {
-                    /*Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const Favorites(),
-                        ),);*/
+
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => FirebaseFavoriteList(),
+                        builder: (context) => const FirebaseFavoriteList(),
                       ),);
                   },
                   child: Row(

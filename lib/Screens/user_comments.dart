@@ -70,18 +70,54 @@ class _UserCommentsState extends State<UserComments> {
                   ListTile(
                     subtitle: Text("${_userComments[index]['name']}"),
                     title: Text("Comment: ${_userComments[index]['commentText']}"),
-                    /*child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text("${"Content: " + _userComments[index]['name']}\n Your Comment: " + _userComments[index]['commentText']),
-                    ),*/
                   ),
                   const Divider(color: Colors.blueGrey,),
                 ],
               );
             },
           )
-              : const Text("You haven't made any comments yet.")
-              : const Text("Please wait, loading..."),
+              : const Center(child: CircularProgressIndicator())
+              : Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(30.0),
+                      child: Container(
+                        width: 350,
+                        height: 50,
+                        color: Colors.blue,
+                        child: const Center(
+                          child: Text(
+                            "You don't have any comments",
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(30.0),
+                      child: Container(
+                        width: 300,
+                        height: 100,
+                        color: Colors.red,
+                        child: const Center(
+                          child: Text(
+                            "You can make comments from Content Detail Page",
+                            style: TextStyle(fontSize: 20),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              )),
         ),
       ),
     );

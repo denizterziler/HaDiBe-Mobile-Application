@@ -168,6 +168,20 @@ class _FirebaseSearchState extends State<FirebaseSearch> {
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold),
                                   ),
+                                  trailing: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        data['rate'].toStringAsFixed(2),
+                                        style: const TextStyle(color: Colors.black54,fontSize: 19,fontWeight: FontWeight.bold),
+                                      ),
+                                      const Icon(
+                                        Icons.star,
+                                        size: 25,
+                                        color: Colors.amber,
+                                      ),
+                                    ],
+                                  ),
                                   leading: CircleAvatar(
                                     backgroundImage:
                                         NetworkImage(data['imageUrl']),

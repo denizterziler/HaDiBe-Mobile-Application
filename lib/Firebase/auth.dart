@@ -37,6 +37,7 @@ class Auth {
       'watchList': [],
       'allTimeFavorite' : "Not Decided Yet",
       'filters': [],
+      'likedCT' : [],
     });
     return user.user;
   }
@@ -80,6 +81,22 @@ class Auth {
     for(var filterName in filters){
       documentReference.update({
         'filters': FieldValue.arrayUnion([filterName])
+      });
+    }
+  }
+  addToFirebaseLiked(String commentText) async {
+    final firebaseUser = FirebaseAuth.instance.currentUser!;
+    DocumentReference documentReference =
+    FirebaseFirestore.instance.collection('Users').doc(firebaseUser.uid);
+    DocumentSnapshot doc = await documentReference.get();
+    List likedComments = doc['likedCT'];
+    if (likedComments.contains(commentText) == true) {
+      documentReference.update({
+        'likedCT': FieldValue.arrayRemove([commentText])
+      });
+    } else {
+      documentReference.update({
+        'likedCT': FieldValue.arrayUnion([commentText])
       });
     }
   }
