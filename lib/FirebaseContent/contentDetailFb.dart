@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:se_380_project/Firebase/auth.dart';
 import 'package:se_380_project/FirebaseContent/firebaseRate.dart';
-
 import '../Screens/comments.dart';
 
 

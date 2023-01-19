@@ -9,7 +9,6 @@ class UserComments extends StatefulWidget {
 }
 
 class _UserCommentsState extends State<UserComments> {
-  FirebaseAuth _auth = FirebaseAuth.instance;
   var _username;
   List<Map<String, dynamic>> _userComments = [];
 

@@ -26,8 +26,8 @@ class MyApp extends StatelessWidget {
       ),
       home: const LoginPage(),
       routes: {
-        FirebaseRate.routeName:(context) => FirebaseRate(),
-        ContentDetailFb.routeName:(context) => ContentDetailFb(),
+        FirebaseRate.routeName:(context) => const FirebaseRate(),
+        ContentDetailFb.routeName:(context) => const ContentDetailFb(),
         ListOfContents.routeName: (context) => ListOfContents(),
         Comments.routeName: (context) => const Comments(),
       },

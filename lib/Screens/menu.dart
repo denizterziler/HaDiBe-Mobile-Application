@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:se_380_project/Firebase/auth.dart';
 import 'package:se_380_project/FirebaseContent/firebaseLiked.dart';
-import 'package:se_380_project/Screens/comments.dart';
 import 'package:se_380_project/FirebaseContent/firebaseFavorites.dart';
 import 'package:se_380_project/FirebaseContent/firebaseWatchList.dart';
-import 'package:se_380_project/Screens/login_page.dart';
 import 'package:se_380_project/Screens/profile_page.dart';
 import 'package:se_380_project/Screens/user_comments.dart';
 
 
-import 'likes.dart';
 
 class Menu extends StatelessWidget {
   Menu({Key? key}) : super(key: key);
