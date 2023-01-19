@@ -96,7 +96,6 @@ class _FirebaseLikedState extends State<FirebaseLiked> {
   }
 
   buildGridView(List<Map<dynamic, dynamic>> items) {
-    final firebaseUser = FirebaseAuth.instance.currentUser!;
     return items.isNotEmpty
         ? ListView.builder(
       itemCount: items.length,
@@ -118,15 +117,13 @@ class _FirebaseLikedState extends State<FirebaseLiked> {
                               fontWeight: FontWeight.bold,
                               color: Colors.white),
                         ),
-                        subtitle: Text(
-                          thisComment['comment_author'],
+                        subtitle: Text('${thisComment['comment_author']} said to : ${thisComment['comment_content_name']}',
                           style: const TextStyle(
                               fontSize: 10, fontWeight: FontWeight.bold),
                         ),
                         trailing: IconButton(
                           onPressed: () {
                             setState(() {
-
                               _authService
                                   .addToFirebaseLiked(
                                   thisComment['comment_text']);
