@@ -204,7 +204,7 @@ class _FirebaseLikedState extends State<FirebaseLiked> {
                   color: Colors.red,
                   child: const Center(
                     child: Text(
-                      "You can add contents with Like buttons",
+                      "You can add comments to this page with Like buttons",
                       style: TextStyle(fontSize: 20),
                       textAlign: TextAlign.center,
                     ),

@@ -16,37 +16,9 @@ class _ProfilePageState extends State<ProfilePage> {
   String name = "";
   String email = "";
   String url = "";
-  String password = "";
   String favMovie = "";
-  final CollectionReference _referenceContents =
-      FirebaseFirestore.instance.collection('Contents');
-  late Stream<QuerySnapshot> _streamData;
 
-  List<Map> parseData(QuerySnapshot querySnapshot) {
-    List<QueryDocumentSnapshot> listDocs = querySnapshot.docs;
-    List<Map> listItems = listDocs
-        .map((e) => {
-              'content_name': e['name'],
-              'content_platform': e['platform'],
-              'image_url': e['imageUrl'],
-              'content_rate': e['rate'],
-              'con_category': e['category'],
-              'con_description': e['description'],
-              'con_hadiBe': e['hadiBe'],
-              'con_rate_count': e['rateCount'],
-              'con_id': e['id'],
-              'con_type': e['type'],
-              'con_length': e['length'],
-            })
-        .toList();
-    return listItems;
-  }
 
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _streamData = _referenceContents.snapshots();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -134,13 +106,8 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: StreamBuilder<Object>(
-                  stream: FirebaseFirestore.instance
-                      .collection('Users')
-                      .doc(firebaseUser.uid)
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    return FutureBuilder(
+              child:
+                  FutureBuilder(
                       builder: (context, snapshot) {
                         if (snapshot.connectionState != ConnectionState.done) {
                           return const Text("Loading...");
@@ -156,8 +123,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             )));
                       },
                       future: _fetch(),
-                    );
-                  }),
+                    )
+
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -243,7 +210,6 @@ class _ProfilePageState extends State<ProfilePage> {
       name = value.get('userName');
       email = value.get('email');
       url = value.get('URL');
-      password = value.get('password');
       favMovie = value.get('allTimeFavorite');
     });
   }

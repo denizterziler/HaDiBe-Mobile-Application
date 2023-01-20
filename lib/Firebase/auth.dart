@@ -32,7 +32,6 @@ class Auth {
       'userName': name,
       'email': email,
       'URL': "https://www.clipartmax.com/png/middle/437-4374952_no-avatar-male-female.png",
-      'password': password,
       'favs': [],
       'watchList': [],
       'allTimeFavorite' : "Not Decided Yet",

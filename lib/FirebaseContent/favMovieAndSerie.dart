@@ -85,6 +85,7 @@ class _AllTimeFavoriteState extends State<AllTimeFavorite> {
                         NetworkImage(data['imageUrl']),
                       ),
                       onTap: (){
+                        name = data['name'];
                         favoriteChanged(context);
                         _setFavorite(data['name']);
                       },
